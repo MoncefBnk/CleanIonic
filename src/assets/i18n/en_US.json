@@ -1,0 +1,9 @@
+{
+  "auth": {
+    "email_required": "Email is required",
+    "email_format": "Invalid email format",
+    "password_required": "Password is required",
+    "password_minSize": "Password must be at least 8 characters long"
+  }
+}
+
