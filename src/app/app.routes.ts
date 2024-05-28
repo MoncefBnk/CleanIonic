@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { EAuthPage } from './core/models/refData';
 import { AuthService } from './core/services/auth.service';
+import { tabroutes } from './shared/tabs/tabs.routes';
 
 
 export const routes: Routes = [
@@ -31,4 +32,11 @@ export const routes: Routes = [
     path: 'forgot-password',
     redirectTo: 'auth',
   },
+  ...tabroutes,
+  {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
+  }
+
+
 ];
