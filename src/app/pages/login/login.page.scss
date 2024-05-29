@@ -27,9 +27,12 @@ form{
     }
     ion-item{
       --background: transparent;
-      border : 0.063rem solid #E5E5E5;
-
+      border : 0.063rem solid #A3A3A3;
+      ion-input{
+        --placeholder-color: #A3A3A3;
+      }
     }
+
 
   }
   ion-button{
