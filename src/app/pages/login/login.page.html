@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <ion-list class="bg-transparent">
+    <p class="input-label">Email</p>
     <ion-item>
-      <ion-input type="email" formControlName="email" name="email" label="Email" labelPlacement="floating"
-        placeholder="exemple@exemple.com" fill="outline"></ion-input>
+      <ion-input type="email" formControlName="email" name="email"  placeholder="exemple@exemple.com" fill="outline"></ion-input>
     </ion-item>
     @if(form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)){
     <div>
@@ -14,9 +14,9 @@
       }
     </div>
     }
+    <p class="input-label">Password</p>
     <ion-item>
-      <ion-input type="password" formControlName="password" name="password" label="Password" labelPlacement="floating"
-        placeholder="••••••••••••••" fill="outline"> </ion-input>
+      <ion-input type="password" formControlName="password" name="password" placeholder="••••••••••••••" ></ion-input>
     </ion-item>
     @if(form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)){
     <div>

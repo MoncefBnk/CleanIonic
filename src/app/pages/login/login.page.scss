@@ -16,13 +16,21 @@ ion-grid {
   padding: 25% 0;
 }
 form{
-  padding: 0 5%;
+  padding: 5% 5%;
   text-align: center;
   ion-list{
-    padding-bottom: 5%;
+    padding: 5%;
+    .input-label{
+      color: #A3A3A3;
+      text-align: left;
+      font-size: 14px;
+    }
     ion-item{
       --background: transparent;
-      padding: 1%;
+      border : 1px solid #A3A3A3;
+      ion-input{
+        height: 54px;
+      }
     }
   }
   ion-button{
