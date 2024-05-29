@@ -33,12 +33,11 @@
     </div>
     }
     <br>
-    <a class="start" href="">{{ 'auth.reset_password'|translate }}</a>
+    <a class="start" (click)="onPasswordLostModal()">{{ 'auth.reset_password'|translate }}</a>
   </ion-list>
   @if(error){
   <p class="error">{{ error }}</p>
   }
-
   <ion-button type="submit" [disabled]="!form.valid && !submitForm">{{ 'auth.login'|translate }}</ion-button>
   <a href="">{{ 'auth.not_registered'|translate }}</a>
 </form>
