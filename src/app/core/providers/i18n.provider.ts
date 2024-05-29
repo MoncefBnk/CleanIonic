@@ -1,7 +1,7 @@
 import { importProvidersFrom } from '@angular/core';
 
 import { HttpClient } from "@angular/common/http";
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -11,7 +11,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 export const i18nProviders = importProvidersFrom(
   TranslateModule.forRoot({
     loader: {
-      provide: TranslateModule,
+      provide: TranslateLoader,
       useFactory: HttpLoaderFactory,
       deps: [HttpClient]
     }
