@@ -1,6 +1,7 @@
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 import {
   IonicRouteStrategy,
   provideIonicAngular,
@@ -26,6 +27,7 @@ bootstrapApplication(AppComponent, {
     i18nProviders,
     provideHttpClient(),
     provideIonicAngular(),
+    importProvidersFrom(IonicModule.forRoot()),
     provideRouter(routes),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy, },
   ],

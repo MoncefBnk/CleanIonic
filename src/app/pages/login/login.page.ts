@@ -1,3 +1,5 @@
+import { alertOutline } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
@@ -47,6 +49,7 @@ import { PasswordLostComponent } from 'src/app/shared/modal/password-lost/passwo
   ],
 })
 export class LoginPage implements OnInit {
+
   error = '';
   submitForm = false;
 
@@ -64,7 +67,11 @@ export class LoginPage implements OnInit {
       Validators.minLength(8),
     ]),
   });
-  constructor() {}
+  constructor() {
+    addIcons({
+    'alert-circle-outline': alertOutline,
+  });
+}
 
   ngOnInit() {}
 
