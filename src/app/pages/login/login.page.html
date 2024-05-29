@@ -16,7 +16,8 @@
     }
     <p class="input-label">{{ 'auth.password'|translate }}</p>
     <ion-item>
-      <ion-input type="password" formControlName="password" name="password" placeholder="••••••••••••••" ></ion-input>
+      <ion-input type="{{ showPassword ? 'text' : 'password' }}"  formControlName="password" name="password" placeholder="••••••••••••••" ></ion-input>
+      <ion-icon size="small" name="{{ showPassword ? 'eye-off-outline' : 'eye-outline' }}" slot="end" (click)="togglePasswordVisibility()"></ion-icon>
     </ion-item>
     @if(form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)){
     <div>
@@ -34,12 +35,10 @@
     <br>
     <a class="start" href="">{{ 'auth.reset_password'|translate }}</a>
   </ion-list>
-  <br>
   @if(error){
   <p class="error">{{ error }}</p>
   }
 
   <ion-button type="submit" [disabled]="!form.valid && !submitForm">{{ 'auth.login'|translate }}</ion-button>
-  <br>
   <a href="">{{ 'auth.not_registered'|translate }}</a>
 </form>

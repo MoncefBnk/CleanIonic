@@ -1,4 +1,4 @@
-import { alertOutline } from 'ionicons/icons';
+import { alertOutline, eye, eyeOff, eyeOffOutline, eyeOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -50,9 +50,10 @@ import { PasswordLostComponent } from 'src/app/shared/modal/password-lost/passwo
 })
 export class LoginPage implements OnInit {
 
-  error = '';
-  submitForm = false;
-
+  error: string = '';
+  submitForm:boolean = false;
+  password: string = '';
+  showPassword: boolean = false;
   private modalCtl = inject(ModalController);
   private router = inject(Router);
   private serviceAuth = inject(AuthentificationService);
@@ -70,8 +71,14 @@ export class LoginPage implements OnInit {
   constructor() {
     addIcons({
     'alert-circle-outline': alertOutline,
+    'eye-off-outline': eyeOffOutline,
+    'eye-outline': eyeOutline,
   });
 }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   ngOnInit() {}
 
