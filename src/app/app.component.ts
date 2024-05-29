@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   private translate = inject(TranslateService);
   constructor() {}
   ngOnInit(): void {
-    this.translate.use('fr_FR');
-    this.translate.setDefaultLang('fr_FR');
+    this.translate.use('en_US');
+    this.translate.setDefaultLang('en_US');
   }
 }

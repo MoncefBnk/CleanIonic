@@ -1,42 +1,45 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" style="padding-top: 35% ">
   <ion-list class="bg-transparent">
-    <p class="input-label">Email</p>
+    <p class="input-label">{{ 'auth.email'|translate }}</p>
     <ion-item>
       <ion-input type="email" formControlName="email" name="email"  placeholder="exemple@exemple.com" fill="outline"></ion-input>
     </ion-item>
     @if(form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)){
     <div>
       @if(form.get('email')?.errors?.['required'] ){
-      <p class="error">{{ 'auth.email_required'|translate }}</p>
+      <p class="error start">{{ 'auth.email_required'|translate }}</p>
       }
       @else if(form.get('email')?.errors?.['pattern'] ){
-      <p class="error">{{ 'auth.email_format'|translate }}</p>
+      <p class="error start">{{ 'auth.email_format'|translate }}</p>
       }
     </div>
     }
-    <p class="input-label">Password</p>
+    <p class="input-label">{{ 'auth.password'|translate }}</p>
     <ion-item>
       <ion-input type="password" formControlName="password" name="password" placeholder="••••••••••••••" ></ion-input>
     </ion-item>
     @if(form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)){
     <div>
       @if(form.get('password')?.errors?.['required'] ){
-      <p class="error">Password require</p>
+      <p class="error start">{{ 'auth.password_required'|translate }}</p>
       }
       @else if(form.get('password')?.errors?.['pattern'] ){
-      <p class="error">Format password invalid</p>
+      <p class="error start">{{ 'auth.password_fromat'|translate }}</p>
       }
       @else if(form.get('password')?.errors?.['minlength'] ){
-      <p class="error">Size password invalid</p>
+      <p class="error start">{{ 'auth.password_minSize'|translate }}</p>
       }
     </div>
     }
+    <br>
+    <a class="start" href="">{{ 'auth.reset_password'|translate }}</a>
   </ion-list>
   <br>
   @if(error){
   <p class="error">{{ error }}</p>
   }
+
+  <ion-button type="submit" [disabled]="!form.valid && !submitForm">{{ 'auth.login'|translate }}</ion-button>
   <br>
-  <ion-button type="submit" [disabled]="!form.valid && !submitForm">Se Connecter</ion-button>
-  <a href="">Pas encore inscrit ?</a>
+  <a href="">{{ 'auth.not_registered'|translate }}</a>
 </form>

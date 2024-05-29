@@ -23,23 +23,24 @@ form{
     .input-label{
       color: #A3A3A3;
       text-align: left;
-      font-size: 14px;
+      font-size:  0.875rem;
     }
     ion-item{
       --background: transparent;
-      border : 1px solid #A3A3A3;
-      ion-input{
-        height: 54px;
-      }
+      border : 0.063rem solid #E5E5E5;
+
     }
+
   }
   ion-button{
   --color: white;
     --background: #15AB90;
   }
   a{
+    font-size: 0.875rem;
     display: block;
     color: #15AB90;
+    text-decoration:none
   }
   .bg-transparent {
     background: transparent;

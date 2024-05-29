@@ -1,8 +1,14 @@
 {
   "auth": {
+    "email" : "Adress email",
+    "password" : "Mot de passe",
     "email_required": "L'email est obligatoire",
     "email_format": "Le format du mail est invalide",
     "password_required": "Le mot de passe est obligatoire",
-    "password_minSize": "Le mot de passe doit contenir au moins 8 caractères"
+    "password_fromat": "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre et un caractères spécial",
+    "password_minSize": "Le mot de passe doit contenir au moins 8 caractères",
+    "reset_password": "Mot de passe oublié ?",
+    "login": "Se connecter",
+    "not_registered": "Pas encore inscrit ?"
   }
 }

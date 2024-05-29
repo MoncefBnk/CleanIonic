@@ -38,6 +38,9 @@
 
 
 /* Global CSS */
+.start {
+  text-align: start;
+}
 .center {
   text-align: center;
 }
@@ -55,4 +58,5 @@ img {
 }
 .error {
   color: red;
+  font-size: 0.75rem;
 }
