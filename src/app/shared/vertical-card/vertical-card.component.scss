@@ -1,0 +1,14 @@
+ion-img::part(image) {
+    border-radius : 30px!important;
+
+}
+
+ion-img {
+    width: 90px;
+    height: 90px;
+}
+
+.list-style {
+    display: flex; 
+    justify-content: center;
+}

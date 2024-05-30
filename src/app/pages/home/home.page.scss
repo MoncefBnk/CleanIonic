@@ -1,71 +1,90 @@
 ion-content {
-    /*.home-header {
-        width: 327px;
-        height: 46px;
-    }*/
-   /* .logo {
-        height: 35px;
-        width: 30px;
-        margin-left: 17%;
-        margin-top: 25%;
-    }*/
-    .home-header {
-        width: 100%; // Full width of the toolbar
-        height: 46px; // Height as per your design
-        display: flex;
-        align-items: center; // Vertically align items
-    
-        ion-avatar {
-          width: 30px; // Adjust width as needed
-          height: 30px; // Adjust height as needed
-          margin-left: 10px; // Adjust margin to fit your design
-    
-          .logo {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; // Ensures the image fits within the avatar without distortion
-          }
+  padding: 5%;
+  .home-header {
+      width: 100%; // Full width of the toolbar
+      height: 46px; // Height as per your design
+      display: flex;
+      align-items: center; // Vertically align items
+
+      .user_logo {
+        width: 48px;
+        height: 48px;
+        ion-button {
+          width: 48px!important;
+          height: 48px!important;
         }
+    
+        .logo {
+          width: 24px;
+          height: 24px;
+          object-fit: contain; // Ensures the image fits within the avatar without distortion
+        }
+      }
     }
 
-    .card {
-      width: 327px;
-      height: 170px;
-      background-image: url('/assets/home/default.svg');
-      background-position: center;
-      background-repeat: no-repeat;
+  
+
+  ion-row {
+    justify-content: center;
+  }
+
+  .card {
+    width: 327px;
+    height: 170px;
+    background-image: url('/assets/home/default.svg');
+    background-color: transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+    align-items: center;    /* Center vertically */
+    justify-content: center; /* Center horizontally */
+  }
+  ion-card {
+    --background: transparent !important;
     }
-     /*   .card {
-            width: 200px;
-            background-color: #ffffff; 
-            border: 1px solid #dddddd; 
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-          }
-          
-          .card::before,
-          .card::after {
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            width: 40px;
-            background-color: blue;
-          }
-          
-          .card::before {
-            left: -20px;
-            height: 30px;
-          }
-          
-          .card::after {
-            right: -20px;
-            height: 20px;
-          }
-          
-          .content {
-            padding: 20px; 
-          }
-        */
+
+  .image_default {
+    border-bottom-right-radius: 10px !important;
+    overflow: hidden;
+    object-fit: fill;
+    position: absolute; 
+    width: 100%;
+    height: 100%;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: px;
+    margin-bottom: 3px;
+  }
+
+  .img-style {
+    width: 127px; 
+    height:170px;
+    padding-top: 0px;
+    margin-top:0px;
+    border-radius: 0;
+  }
+
+    ion-icon {
+      width: 24px;height:24px;
+    }
+
+    .no-padding {
+      padding-bottom: 0px;
+      padding-top: 0px;
+    }
+
+    .img-col {
+      flex: 0 0 auto;
+      width: auto;
+    }
+
+    .album-col {
+      padding-top: 10px;
+      padding-bottom: 0px;
+      div {
+        width: 155px;
+        color:white
+      }
+    }
      
 }

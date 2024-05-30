@@ -17,9 +17,9 @@ export const tabroutes: Routes = [
           import('../../pages/tab2/tab2.page').then((m) => m.Tab2Page),
       },
       {
-        path: 'tab3',
+        path: 'playlist',
         loadComponent: () =>
-          import('../../pages/tab3/tab3.page').then((m) => m.Tab3Page),
+          import('../../pages/playlist/playlist.page').then((m) => m.PlaylistPage),
       },
       {
         path: 'profile',
@@ -28,7 +28,7 @@ export const tabroutes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/home',
         pathMatch: 'full',
       },
     ],
