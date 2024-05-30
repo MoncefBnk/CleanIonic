@@ -1,30 +1,61 @@
+import { alertOutline, eyeOffOutline, eyeOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
-import { Router } from '@angular/router';
-import { alertOutline } from 'ionicons/icons';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
-import { Component, OnInit, inject } from '@angular/core';
-import { LoginRequestError } from 'src/app/core/interfaces/login';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonList, IonButton } from '@ionic/angular/standalone';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonList,
+  IonItem,
+  IonInput,
+  IonButton,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
-import { PasswordLostComponent } from 'src/app/shared/modal/password-lost/password-lost.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/core/services/local-storage.service';
+import { LoginRequestError, LoginRequestSuccess } from 'src/app/core/interfaces/login';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonButton, IonList, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    IonIcon,
+    IonItem,
+    IonList,
+    IonTitle,
+    IonInput,
+    IonHeader,
+    IonButton,
+    IonToolbar,
+    IonContent,
+    FormsModule,
+    CommonModule,
+    TranslateModule,
+    ReactiveFormsModule,
+  ],
 })
 export class RegisterPage implements OnInit {
 
-  error = '';
-  submitForm = false;
-
-  private modalCtl = inject(ModalController);
-  private router = inject(Router);
+  error: string = '';
+  submitForm: boolean = false;
+  showPassword: boolean = false;
   private serviceAuth = inject(AuthentificationService);
+  private localStore = inject(LocalStorageService);
+  private router = inject(Router);
 
   form: FormGroup = new FormGroup({
     email: new FormControl('', [
@@ -35,37 +66,53 @@ export class RegisterPage implements OnInit {
       Validators.required,
       Validators.minLength(8),
     ]),
+    phoneNumber: new FormControl('', [
+      Validators.required,
+      Validators.pattern('^[0-9-]+$'),
+    ]),
+    firstName: new FormControl('', Validators.required),
+    lastName: new FormControl('', Validators.required),
   });
+
   constructor() {
     addIcons({
-    'alert-circle-outline': alertOutline,
-  });
-}
+      'alert-circle-outline': alertOutline,
+      'eye-off-outline': eyeOffOutline,
+      'eye-outline': eyeOutline,
+    });
+  }
 
   ngOnInit() {}
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     this.error = '';
     if (this.form.valid) {
       this.submitForm = true;
-      this.serviceAuth
-        .login(this.form.value.email, this.form.value.password)
-        .subscribe((data: any | LoginRequestError) => {
-          if (data.error) {
-            this.error = data.message;
-          } else {
-            // Add LocalStorage User
-            this.router.navigateByUrl('/home');
-          }
-          console.log(data);
-        });
+      const data = this.serviceAuth.register(this.form.value.email, this.form.value.password, this.form.value.phoneNumber, this.form.value.firstName, this.form.value.lastName)
+        if (data.error) {
+          const error = data as LoginRequestError;
+          this.error = error?.message ?? '';
+        } else {
+          const success = data as LoginRequestSuccess;
+          this.localStore.setItem('user', success.user);
+          this.localStore.setItem('token', success.token);
+          this.router.navigateByUrl('/home');
+        }
+        console.log(data);
+
+        // .subscribe((data: any) => {
+        //   if (data.error) {
+        //     this.error = data?.message ?? '';
+        //   } else {
+        //     this.localStore.setItem('user', data.user);
+        //     this.localStore.setItem('token', data.token);
+        //     this.router.navigateByUrl('/home');
+        //   }
+        // });
     }
   }
-  async onPasswordLostModal() {
-    const modal = await this.modalCtl.create({
-      component: PasswordLostComponent,
-    });
-    modal.present();
-  }
 }
-

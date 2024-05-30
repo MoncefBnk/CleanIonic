@@ -9,6 +9,7 @@ import {
   IonButton,
   IonTitle,
   IonContent, IonInput, IonItem } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
 
 @Component({
@@ -16,7 +17,7 @@ import { AuthentificationService } from 'src/app/core/services/authentification.
   selector: 'app-password-lost',
   templateUrl: './password-lost.component.html',
   styleUrls: ['./password-lost.component.scss'],
-  imports: [IonItem, IonInput, IonContent, IonTitle, IonButton, IonButtons, IonToolbar, IonHeader],
+  imports: [IonItem, IonInput, IonContent, IonTitle, IonButton, IonButtons, IonToolbar, IonHeader, TranslateModule],
 })
 export class PasswordLostComponent {
 
@@ -50,6 +51,10 @@ export class PasswordLostComponent {
   // }
   async cancel(){
     await this.modalCtl.dismiss();
+  }
+
+  Submit(){
+    console.log('Submit');
   }
 }
 

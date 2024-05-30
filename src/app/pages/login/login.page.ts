@@ -1,4 +1,4 @@
-import { alertOutline, eye, eyeOff, eyeOffOutline, eyeOutline } from 'ionicons/icons';
+import { alertOutline, eyeOffOutline, eyeOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -23,9 +23,13 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { LoginRequestError } from 'src/app/core/interfaces/login';
+import {
+  LoginRequestError,
+  LoginRequestSuccess,
+} from 'src/app/core/interfaces/login';
 import { Router } from '@angular/router';
 import { PasswordLostComponent } from 'src/app/shared/modal/password-lost/password-lost.component';
+import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -48,15 +52,15 @@ import { PasswordLostComponent } from 'src/app/shared/modal/password-lost/passwo
     ReactiveFormsModule,
   ],
 })
-export class LoginPage implements OnInit {
-
+export class LoginPage {
   error: string = '';
-  submitForm:boolean = false;
+  submitForm: boolean = false;
   password: string = '';
   showPassword: boolean = false;
   private modalCtl = inject(ModalController);
   private router = inject(Router);
   private serviceAuth = inject(AuthentificationService);
+  private localStore = inject(LocalStorageService);
 
   form: FormGroup = new FormGroup({
     email: new FormControl('', [
@@ -70,11 +74,11 @@ export class LoginPage implements OnInit {
   });
   constructor() {
     addIcons({
-    'alert-circle-outline': alertOutline,
-    'eye-off-outline': eyeOffOutline,
-    'eye-outline': eyeOutline,
-  });
-}
+      'alert-circle-outline': alertOutline,
+      'eye-off-outline': eyeOffOutline,
+      'eye-outline': eyeOutline,
+    });
+  }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -86,21 +90,36 @@ export class LoginPage implements OnInit {
     this.error = '';
     if (this.form.valid) {
       this.submitForm = true;
-      this.serviceAuth
-        .login(this.form.value.email, this.form.value.password)
-        .subscribe((data: any | LoginRequestError) => {
-          if (data.error) {
-            this.error = data.message;
-          } else {
-            // Add LocalStorage User
-            this.router.navigateByUrl('/home');
-          }
-          console.log(data);
-        });
+      const data = this.serviceAuth.login(
+        this.form.value.email,
+        this.form.value.password
+      );
+      if (data.error) {
+        const error = data as LoginRequestError;
+        this.error = error?.message ?? '';
+      } else {
+        const success = data as LoginRequestSuccess;
+        this.localStore.setItem('user', success.user);
+        this.localStore.setItem('token', success.token);
+        this.router.navigateByUrl('/home');
+      }
+      console.log(data);
+
+      //       .subscribe((data:any ) => {
+      //         if (data.error) {
+      //           // this.error = data?.message ?? '';
+      //         } else {
+      //           this.localStore.setItem('user', data.user);
+      //           this.localStore.setItem('token', data.token);
+      //           this.router.navigateByUrl('/home');
+      //         }
+      //         console.log(data);
+      //       });
     }
   }
   async onPasswordLostModal() {
     const modal = await this.modalCtl.create({
+      cssClass: 'password-modal',
       component: PasswordLostComponent,
     });
     modal.present();
