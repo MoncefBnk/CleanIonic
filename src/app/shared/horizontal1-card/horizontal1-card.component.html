@@ -2,16 +2,17 @@
   <ion-item >
     <ion-grid>
       <ion-row >
-        <ion-col >
-          <div><ion-img src="{{item.cover}}" alt="albumcover"></ion-img></div>
+        <ion-col size="2">
+          <div class="image-layout"><ion-img src="{{item.cover}}" alt="albumcover"></ion-img></div>
         </ion-col>
-        <ion-col>
-          <h3 style="display: flex; justify-content: center;">{{item.title}}</h3>
+        <ion-col class="text-style" size="6">
+          <ion-text>
+            test
+            test
+          </ion-text></ion-col>
+        <ion-col class="text-style"  size="2">05:03
         </ion-col>
-        <ion-col>
-          <h3 style="display: flex; justify-content: center;">05:03</h3>
-        </ion-col>
-        <ion-col>
+        <ion-col size="2">
           <ion-buttons>
             <ion-button>
               <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
