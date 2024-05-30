@@ -8,11 +8,11 @@
         <h6 class="list-style"> songs</h6>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="songs && songs.length > 0">
+    <ion-row  *ngIf="songs && songs.length > 0">
       <ion-col *ngFor="let song of songs;">
         <div class="list-style"><ion-img class="image_default"  src="{{song.cover}}" alt="songcover"></ion-img></div>
-        <ion-text><h4 class="list-style">Amelia Cantata</h4></ion-text>
-        <ion-text>{{song.title}}</ion-text>
+        <ion-text class="list-style text-style"><h4 >Amelia Cantata</h4></ion-text>
+        <ion-text class="list-style text-style">{{song.title}}</ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>

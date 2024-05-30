@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ISong } from 'src/app/core/interfaces/song';
-import { IonButton,IonButtons,IonIcon,IonItem,IonList,IonImg, IonRow, IonCol, IonGrid } from '@ionic/angular/standalone';
+import { IonText,IonButton,IonButtons,IonIcon,IonItem,IonList,IonImg, IonRow, IonCol, IonGrid } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { ellipsisHorizontal } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
     IonIcon,
     IonButton,
     IonButtons,
+    IonText,
     CommonModule
   ]
 })
