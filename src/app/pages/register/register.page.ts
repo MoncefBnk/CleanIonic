@@ -19,8 +19,7 @@ import {
   IonItem,
   IonInput,
   IonButton,
-  IonIcon,
-} from '@ionic/angular/standalone';
+  IonIcon, IonRow, IonCol } from '@ionic/angular/standalone';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -32,7 +31,7 @@ import { LoginRequestError, LoginRequestSuccess } from 'src/app/core/interfaces/
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonCol, IonRow,
     IonIcon,
     IonItem,
     IonList,

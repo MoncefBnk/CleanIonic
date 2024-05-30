@@ -1,40 +1,104 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" style="padding-top: 35%">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" style="padding-top: 5%">
   <ion-list class="bg-transparent">
-    <p class="input-label">{{ 'auth.email'|translate }}</p>
+    <p class="input-label">{{ 'auth.register.email'|translate }}</p>
     <ion-item>
-      <ion-input type="email" formControlName="email" name="email" placeholder="exemple@exemple.com"></ion-input>
+      <ion-input
+        type="email"
+        formControlName="email"
+        name="email"
+        placeholder="exemple@exemple.com"
+      ></ion-input>
     </ion-item>
-    <div *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)">
-      <p class="error start" *ngIf="form.get('email')?.errors?.['required']">{{ 'auth.email_required'|translate }}</p>
-      <p class="error start" *ngIf="form.get('email')?.errors?.['pattern']">{{ 'auth.email_format'|translate }}</p>
+    <div
+      *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)"
+    >
+      <p class="error start" *ngIf="form.get('email')?.errors?.['required']">
+        {{ 'auth.email_required'|translate }}
+      </p>
+      <p class="error start" *ngIf="form.get('email')?.errors?.['pattern']">
+        {{ 'auth.email_format'|translate }}
+      </p>
     </div>
 
-    <p class="input-label">{{ 'auth.password'|translate }}</p>
+    <p class="input-label">{{ 'auth.register.password'|translate }}</p>
     <ion-item>
-      <ion-input [type]="showPassword ? 'text' : 'password'" formControlName="password" name="password" placeholder="••••••••••••••"></ion-input>
-      <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" slot="end" (click)="togglePasswordVisibility()"></ion-icon>
+      <ion-input
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        name="password"
+        placeholder="••••••••••••••"
+      ></ion-input>
+      <ion-icon
+        [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
+        slot="end"
+        (click)="togglePasswordVisibility()"
+      ></ion-icon>
     </ion-item>
-    <div *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
-      <p class="error start" *ngIf="form.get('password')?.errors?.['required']">{{ 'auth.password_required'|translate }}</p>
-      <p class="error start" *ngIf="form.get('password')?.errors?.['minlength']">{{ 'auth.password_minSize'|translate }}</p>
+    <div
+      *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)"
+    >
+      <p class="error start" *ngIf="form.get('password')?.errors?.['required']">
+        {{ 'auth.password_required'|translate }}
+      </p>
+      <p
+        class="error start"
+        *ngIf="form.get('password')?.errors?.['minlength']"
+      >
+        {{ 'auth.password_minSize'|translate }}
+      </p>
     </div>
 
-    <p class="input-label">{{ 'auth.phone_number'|translate }}</p>
+    <ion-row>
+      <ion-col>
+        <p class="input-label">{{ 'auth.register.first_name'|translate }}</p>
+        <ion-item style="display: flex">
+          <ion-input
+            type="text"
+            formControlName="firstName"
+            name="firstName"
+            placeholder="John"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <p class="input-label">{{ 'auth.register.last_name'|translate }}</p>
+        <ion-item style="display: flex">
+          <ion-input
+            type="text"
+            formControlName="lastName"
+            name="lastName"
+            placeholder="Doe"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <p class="input-label">{{ 'auth.register.birth_date'|translate }}</p>
     <ion-item>
-      <ion-input type="text" formControlName="phoneNumber" name="phoneNumber" placeholder="123-456-7890"></ion-input>
+      <ion-input
+        type="date"
+        formControlName="birthDate"
+        name="birthDate"
+        placeholder="01-01-2002"
+      ></ion-input>
     </ion-item>
 
-    <p class="input-label">{{ 'auth.first_name'|translate }}</p>
+    <p class="input-label">{{ 'auth.register.phone_number'|translate }}</p>
     <ion-item>
-      <ion-input type="text" formControlName="firstName" name="firstName" placeholder="John"></ion-input>
+      <ion-input
+        type="text"
+        formControlName="phoneNumber"
+        name="phoneNumber"
+        placeholder="123-456-7890"
+      ></ion-input>
     </ion-item>
-
-    <p class="input-label">{{ 'auth.last_name'|translate }}</p>
-    <ion-item>
-      <ion-input type="text" formControlName="lastName" name="lastName" placeholder="Doe"></ion-input>
-    </ion-item>
-
-    <ion-button type="submit" [disabled]="!form.valid && !submitForm">{{ 'auth.register'|translate }}</ion-button>
   </ion-list>
-  <div *ngIf="error" class="error">{{ error }}</div>
+  @if(error){
+  <div class="error">{{ error }}</div>
+  }
+
+  <ion-button type="submit" [disabled]="!form.valid && !submitForm"
+    >{{ 'auth.register.register'|translate }}</ion-button
+  >
+  <a href="">{{ 'auth.register.already_registered'|translate }}</a>
 </form>
