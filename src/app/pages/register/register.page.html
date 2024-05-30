@@ -9,17 +9,16 @@
         placeholder="exemple@exemple.com"
       ></ion-input>
     </ion-item>
-    <div
-      *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)"
-    >
-      <p class="error start" *ngIf="form.get('email')?.errors?.['required']">
-        {{ 'auth.email_required'|translate }}
-      </p>
-      <p class="error start" *ngIf="form.get('email')?.errors?.['pattern']">
-        {{ 'auth.email_format'|translate }}
-      </p>
-    </div>
-
+    @if(form.get('email')?.invalid && (form.get('email')?.dirty ||
+    form.get('email')?.touched)){
+      <div>
+        @if(form.get('email')?.errors?.['required'] ){
+        <p class="error start">{{ 'authlogin.email_required'|translate }}</p>
+        } @else if(form.get('email')?.errors?.['pattern'] ){
+        <p class="error start">{{ 'auth.email_format'|translate }}</p>
+        }
+      </div>
+    }
     <p class="input-label">{{ 'auth.register.password'|translate }}</p>
     <ion-item>
       <ion-input
@@ -29,25 +28,24 @@
         placeholder="••••••••••••••"
       ></ion-input>
       <ion-icon
+        size="small"
         [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
         slot="end"
         (click)="togglePasswordVisibility()"
       ></ion-icon>
     </ion-item>
-    <div
-      *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)"
-    >
-      <p class="error start" *ngIf="form.get('password')?.errors?.['required']">
-        {{ 'auth.password_required'|translate }}
-      </p>
-      <p
-        class="error start"
-        *ngIf="form.get('password')?.errors?.['minlength']"
-      >
-        {{ 'auth.password_minSize'|translate }}
-      </p>
+    @if(form.get('password')?.invalid && (form.get('password')?.dirty ||
+    form.get('password')?.touched)){
+    <div>
+      @if(form.get('password')?.errors?.['required'] ){
+      <p class="error start">{{ 'auth.password_required'|translate }}</p>
+      } @else if(form.get('password')?.errors?.['pattern'] ){
+      <p class="error start">{{ 'auth.password_fromat'|translate }}</p>
+      } @else if(form.get('password')?.errors?.['minlength'] ){
+      <p class="error start">{{ 'auth.password_minSize'|translate }}</p>
+      }
     </div>
-
+    }
     <ion-row>
       <ion-col>
         <p class="input-label">{{ 'auth.register.first_name'|translate }}</p>
