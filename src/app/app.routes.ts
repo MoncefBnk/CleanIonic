@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { EAuthPage } from './core/models/refData';
 import { AuthService } from './core/services/auth.service';
-import { tabroutes } from './shared/tabs/tabs.routes';
+import { tabroutes } from './layouts/tabs/tabs.routes';
 
 
 export const routes: Routes = [
@@ -24,14 +24,14 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'home',
-    loadComponent: () =>
-      import('./shared/tabs/tabs.page').then((m) => m.TabsPage),
-  },
-  {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'auth/login',
+    redirectTo: 'tabs/home',
+  },
+  {
+    path: 'tabs',
+    pathMatch: 'full',
+    redirectTo: 'tabs/home',
   },
   ...tabroutes,
   {
