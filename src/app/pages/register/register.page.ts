@@ -71,6 +71,7 @@ export class RegisterPage implements OnInit {
     ]),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
+    birthDate: new FormControl('', Validators.required),
   });
 
   constructor() {
