@@ -38,10 +38,13 @@
 
 
 /* Global CSS */
+.start {
+  text-align: start;
+}
 :root {
   --tab-icon-color: #B7B7B7; /* Inactive color */
   --tab-icon-color-selected: #15AB90; /* Active color */
-  --ion-color-primary: #15AB90; 
+  --ion-color-primary: #15AB90;
 }
 
 .center {
@@ -50,8 +53,17 @@
 img {
   max-width: 100%;
 }
+.pad-15 {
+  padding-top: 15%;
+}
+.pad-20 {
+  padding-top: 20%;
+}
 .pad-25 {
   padding-top: 25%;
+}
+.pad-35 {
+  padding-top: 35%;
 }
 .pad-50 {
   padding-top: 50%;
@@ -77,4 +89,10 @@ ion-icon {
 ion-button {
   text-transform: none;
 }
-
+.pad-75 {
+  padding-top: 75%;
+}
+.error {
+  color: red;
+  font-size: 0.75rem;
+}

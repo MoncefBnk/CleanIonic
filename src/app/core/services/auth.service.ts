@@ -3,12 +3,10 @@ import { EAuthPage } from '../models/refData';
 import { of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  constructor() { }
-
+  constructor() {}
 
   getPageAuth() {
     return of(EAuthPage.Login);

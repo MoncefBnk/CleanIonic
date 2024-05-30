@@ -1,13 +1,102 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" style="padding-top: 5%">
+  <ion-list class="bg-transparent">
+    <p class="input-label">{{ 'auth.register.email'|translate }}</p>
+    <ion-item>
+      <ion-input
+        type="email"
+        formControlName="email"
+        name="email"
+        placeholder="exemple@exemple.com"
+      ></ion-input>
+    </ion-item>
+    @if(form.get('email')?.invalid && (form.get('email')?.dirty ||
+    form.get('email')?.touched)){
+      <div>
+        @if(form.get('email')?.errors?.['required'] ){
+        <p class="error start">{{ 'authlogin.email_required'|translate }}</p>
+        } @else if(form.get('email')?.errors?.['pattern'] ){
+        <p class="error start">{{ 'auth.email_format'|translate }}</p>
+        }
+      </div>
+    }
+    <p class="input-label">{{ 'auth.register.password'|translate }}</p>
+    <ion-item>
+      <ion-input
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        name="password"
+        placeholder="••••••••••••••"
+      ></ion-input>
+      <ion-icon
+        size="small"
+        [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
+        slot="end"
+        (click)="togglePasswordVisibility()"
+      ></ion-icon>
+    </ion-item>
+    @if(form.get('password')?.invalid && (form.get('password')?.dirty ||
+    form.get('password')?.touched)){
+    <div>
+      @if(form.get('password')?.errors?.['required'] ){
+      <p class="error start">{{ 'auth.password_required'|translate }}</p>
+      } @else if(form.get('password')?.errors?.['pattern'] ){
+      <p class="error start">{{ 'auth.password_fromat'|translate }}</p>
+      } @else if(form.get('password')?.errors?.['minlength'] ){
+      <p class="error start">{{ 'auth.password_minSize'|translate }}</p>
+      }
+    </div>
+    }
+    <ion-row>
+      <ion-col>
+        <p class="input-label">{{ 'auth.register.first_name'|translate }}</p>
+        <ion-item style="display: flex">
+          <ion-input
+            type="text"
+            formControlName="firstName"
+            name="firstName"
+            placeholder="John"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <p class="input-label">{{ 'auth.register.last_name'|translate }}</p>
+        <ion-item style="display: flex">
+          <ion-input
+            type="text"
+            formControlName="lastName"
+            name="lastName"
+            placeholder="Doe"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+    <p class="input-label">{{ 'auth.register.birth_date'|translate }}</p>
+    <ion-item>
+      <ion-input
+        type="date"
+        formControlName="birthDate"
+        name="birthDate"
+        placeholder="01-01-2002"
+      ></ion-input>
+    </ion-item>
+
+    <p class="input-label">{{ 'auth.register.phone_number'|translate }}</p>
+    <ion-item>
+      <ion-input
+        type="text"
+        formControlName="phoneNumber"
+        name="phoneNumber"
+        placeholder="123-456-7890"
+      ></ion-input>
+    </ion-item>
+  </ion-list>
+  @if(error){
+  <div class="error">{{ error }}</div>
+  }
+
+  <ion-button type="submit" [disabled]="!form.valid && !submitForm"
+    >{{ 'auth.register.register'|translate }}</ion-button
+  >
+  <a href="/auth/login">{{ 'auth.register.already_registered'|translate }}</a>
+</form>
