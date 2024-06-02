@@ -1,0 +1,14 @@
+ion-toolbar {
+    --border-color: transparent;
+    --ion-toolbar-border-width: 0;
+    border: none;
+    box-shadow: none;
+    //--color: white;
+  }
+
+
+  .logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain; // Ensures the image fits within the avatar without distortion
+  }

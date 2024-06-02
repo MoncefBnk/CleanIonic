@@ -1,0 +1,18 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button>
+      @if (image) {
+        <ion-img  class="logo" src="assets/icon/logo_mini.png" alt="SpotyMike"></ion-img>
+      }
+      @else{
+        <ion-icon slot="icon-only" [name]="startIcon"></ion-icon>
+      }
+    </ion-button>
+  </ion-buttons>
+  <ion-buttons slot="end">
+    <ion-button>
+      <ion-icon slot="icon-only"  [name]="endIcon"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-title>{{title}}</ion-title>
+</ion-toolbar>
