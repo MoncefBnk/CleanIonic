@@ -33,4 +33,16 @@ export class Horizontal1CardComponent  implements OnInit {
 
   ngOnInit() {}
 
+  formatDuration(seconds: number): string {
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+
+    const formattedTime = [
+      mins.toString().padStart(2, '0'),
+      secs.toString().padStart(2, '0')
+    ].join(':');
+
+    return formattedTime;
+  }
+
 }

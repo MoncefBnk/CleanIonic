@@ -1,21 +1,25 @@
-
 <ion-list *ngFor="let item of playlists;">
-  <ion-item >
-    <ion-grid>
-      <ion-row >
-        <ion-col >
-          <div><ion-img src="{{item.cover}}" alt="albumcover"></ion-img></div>
-        </ion-col>
-        <ion-col>
-          <h3 class="text-style">{{item.title}}</h3>
-        </ion-col>
-        <ion-col>
-          <ion-buttons>
-            <ion-button>
-              <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-            </ion-button></ion-buttons>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+  <ion-item>
+    <div class="custom-card">
+      <div class="card-left">
+        <ion-img src="assets/icon/logo_mini.png" alt="albumcover"></ion-img>
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <div class="card-text">
+            <h2>Work Instrument</h2>
+            <p>Nama User</p>
+            <p>20 Songs</p> 
+          </div>
+          <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
+        </div>
+        <div class="card-footer">
+          <ion-icon name="heart-outline" class="bottom-right-icon"></ion-icon>
+          <ion-icon name="share-social-outline" class="bottom-right-icon"></ion-icon>
+        </div>
+      </div>
+    </div>
   </ion-item>
+  
+  
 </ion-list>
