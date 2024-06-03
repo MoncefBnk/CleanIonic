@@ -34,7 +34,9 @@ export class FirestoreService {
     const q = query(albumsCol, where('artist.name', '==', 'Mike'), limit(3));
     const albumsSnapshot = await getDocs(q);
     const albumsList = albumsSnapshot.docs.map((doc) => doc.data());
-    console.log(albumsList);
+    console.log('albumsCol',albumsCol);
+    console.log('q',q);
+    console.log('albumsList',albumsList);
     return albumsList;
   }
 
