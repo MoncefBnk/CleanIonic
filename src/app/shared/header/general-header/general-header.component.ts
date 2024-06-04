@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { addIcons } from 'ionicons';
-import { ellipsisHorizontal,search,settings } from 'ionicons/icons';
+import { arrowBack, ellipsisHorizontal,search,settings } from 'ionicons/icons';
 import { IonImg,IonTitle,IonToolbar,IonButtons,IonButton,IonIcon,IonBackButton} from '@ionic/angular/standalone';
 
 
@@ -19,7 +19,7 @@ export class GeneralHeaderComponent  implements OnInit {
   @Input() image: string|null = "";
 
   constructor() { 
-    addIcons({ search,ellipsisHorizontal,settings });
+    addIcons({ search,ellipsisHorizontal,settings,arrowBack });
   }
 
   ngOnInit() {}

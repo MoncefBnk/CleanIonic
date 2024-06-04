@@ -5,7 +5,12 @@
         <ion-img  class="logo" src="assets/icon/logo_mini.png" alt="SpotyMike"></ion-img>
       }
       @else{
-        <ion-icon slot="icon-only" [name]="startIcon"></ion-icon>
+        @if(startIcon) {
+          <ion-icon slot="icon-only" [name]="startIcon"></ion-icon>
+        }@else{
+          <ion-back-button defaultHref="/"  icon="arrow-back"></ion-back-button>
+        }
+        
       }
     </ion-button>
   </ion-buttons>

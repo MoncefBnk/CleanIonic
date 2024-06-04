@@ -14,6 +14,12 @@ import { Horizontal1CardComponent } from 'src/app/shared/horizontal1-card/horizo
 import { SwitchableButtonsComponent } from 'src/app/shared/switchable-buttons/switchable-buttons.component';
 import { VerticalCardComponent } from 'src/app/shared/vertical-card/vertical-card.component';
 
+
+interface LinkItem {
+  title: string;
+  link: string;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -61,7 +67,32 @@ export class HomePage {
   image : string = "assets/icon/logo_mini.png";
 
   musiccateg : string[] = ["All","R&B","Pop","Rock"];
-  elementTitles : string[] = ["Music Genres","Top Songs","Last Played","Top Albums", "Top Artists","Top Playlist"];
+  elementTitles: LinkItem[] = [
+    {
+      title: 'Music Genres',
+      link: 'search'
+    },
+    {
+      title: 'Top Songs',
+      link: '/search'
+    },
+    {
+      title: 'Last Played',
+      link: '/search'
+    },
+    {
+      title: 'Top Albums',
+      link: '/search'
+    },
+    {
+      title: 'Top Artists',
+      link: '/search'
+    },
+    {
+      title: 'Top Playlist',
+      link: '/search'
+    }
+  ];
   songs : ISongWithDetails[]=[];
   lastPlayeds: ILastPlayedWithDetails[]=[];
   albums : IAlbumsWithDetails[] = [];
