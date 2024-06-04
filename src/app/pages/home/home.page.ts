@@ -29,21 +29,21 @@ import { VerticalCardComponent } from 'src/app/shared/vertical-card/vertical-car
     IonCard,
     IonCardContent,
     IonAvatar,
-    IonImg, 
-    IonRow, 
-    IonCol, 
-    IonGrid, 
+    IonImg,
+    IonRow,
+    IonCol,
+    IonGrid,
     IonContent,
-    IonHeader, 
-    IonToolbar, 
-    IonTitle, 
-    IonContent, 
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
     ExploreContainerComponent,
     IonIcon,
     IonButtons,
     IonButton,
     IonRouterLink
-    
+
   ],
 
 })
@@ -72,5 +72,5 @@ export class HomePage {
     });
     console.log(this.songs);
   }
-  
+
 }

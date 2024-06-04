@@ -1,0 +1,43 @@
+<ion-content class="ion-content-player" [fullscreen]="true">
+  <ion-header>
+    <ion-toolbar class="transparent-header">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+      <ion-title>
+        Olivia Lyrics
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button>
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- i want to make an put the song image in the middle with rounded borders and paddings on the sides  -->
+  <div class="song-image">
+    <ion-img src="assets/test.jpg" alt="SpotyMike"></ion-img>
+  </div>
+
+  <ion-row>
+    <ion-col size="auto">
+      <ion-icon name="repeat" class="icon-sides"></ion-icon>
+    </ion-col>
+
+    <ion-col size="auto">
+      <ion-icon name="play-skip-back-outline" class="icon"></ion-icon>
+    </ion-col>
+    <ion-col size="auto">
+      <ion-icon name="{{ playing ? 'pause-circle' : 'play-circle' }}" class="icon-play" (click)="playMusic()"></ion-icon>
+    </ion-col>
+    <ion-col size="auto">
+      <ion-icon name="play-skip-forward-outline" class="icon"></ion-icon>
+    </ion-col>
+    <ion-col size="auto">
+      <ion-icon name="shuffle" class="icon-sides"></ion-icon>
+    </ion-col>
+  </ion-row>
+
+
+</ion-content>

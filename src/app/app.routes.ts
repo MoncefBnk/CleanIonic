@@ -27,6 +27,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
   },
   {
+    path: 'player',
+    loadComponent: () => import('./layouts/player/player.page').then( m => m.PlayerPage)
+  },
+  {
     path: '',
     redirectTo: '/home',
     pathMatch: 'full',

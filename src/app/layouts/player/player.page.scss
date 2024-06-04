@@ -1,0 +1,72 @@
+.ion-content-player {
+  --background: rgb(83, 113, 105);
+  --background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgb(83, 113, 105) 100%
+  );
+  .song-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    height: 370px;
+    width: 370px;
+  }
+
+  .song-image ion-img {
+    border-radius: 29px;
+    overflow: hidden;
+  }
+
+  ion-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  ion-icon.icon {
+    font-size: 2em;
+    margin: 0 10px;
+
+  }
+  ion-icon.icon-play {
+    font-size: 4em;
+    margin: 0 10px;
+    color: #15ab90;
+  }
+
+  ion-icon.icon-sides {
+    font-size: 2em;
+    margin: 0 10px;
+    color: #a3a3a3;
+  }
+}
+
+.transparent-header {
+  --background: transparent;
+  --box-shadow: none;
+  --border-color: transparent;
+  padding: 1rem 1rem;
+
+  ion-toolbar {
+    --ion-color-base: transparent;
+  }
+
+  ion-title {
+    color: white; /* Adjust the color as needed */
+  }
+
+  ion-icon {
+    color: white; /* Adjust the color as needed */
+  }
+  ion-back-button {
+    color: white; /* Adjust the color as needed */
+  }
+
+  ion-back-button::part(icon) {
+    font-size: 24px; /* Adjust size as needed */
+  }
+}
