@@ -4,6 +4,7 @@ import { IonText,IonButton,IonButtons,IonIcon,IonItem,IonList,IonImg, IonRow, Io
 import { addIcons } from 'ionicons';
 import { ellipsisHorizontal } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
+import { ILastPlayedWithDetails, IPlaylist } from 'src/app/core/interfaces/user';
 
 @Component({
   standalone: true,
@@ -26,7 +27,9 @@ import { CommonModule } from '@angular/common';
 })
 export class Horizontal1CardComponent  implements OnInit {
 
-  @Input() lastPlayeds: ISong[] = [];
+  @Input() lastPlayeds: ILastPlayedWithDetails[] = [];
+  @Input() playlists: IPlaylist[] =[];
+  
   constructor() {
     addIcons({ ellipsisHorizontal });
    }

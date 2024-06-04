@@ -5,7 +5,7 @@
       <ion-col *ngFor="let album of albums;" >
         <div class="list-style"><ion-img class="image_default" src="{{album.cover}}" alt="albumcover"></ion-img></div>
         <h3 class="list-style">{{album.title}}</h3>
-        <h6 class="list-style"> songs</h6>
+        <h6 class="list-style">{{ album.song ? album.song.length : 0 }} song(s)</h6>
       </ion-col>
     </ion-row>
     <ion-row  *ngIf="songs && songs.length > 0">
@@ -13,6 +13,13 @@
         <div class="list-style"><ion-img class="image_default"  src="{{song.cover}}" alt="songcover"></ion-img></div>
         <ion-text class="list-style text-style"><h4 >{{song.artist.artist}}</h4></ion-text>
         <ion-text class="list-style text-style">{{song.title}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="artists && artists.length > 0">
+      <ion-col *ngFor="let artist of artists;" >
+        <div class="list-style"><ion-img class="image_default" src="{{artist.avatar}}" alt="albumcover"></ion-img></div>
+        <h3 class="list-style">{{artist.artist}}</h3>
+        <h6 class="list-style">{{ artist.albums ? artist.albums.length : 0 }} album(s)</h6>
       </ion-col>
     </ion-row>
   </ion-grid>

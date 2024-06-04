@@ -11,15 +11,15 @@
               <ion-col size="auto" class="album-col" >
                 <div>
                   <h3>New Album</h3>
-                  <h2>R & B</h2>
-                  <h6>Discover 83 songs</h6>
+                  <h2>{{latestAlbum.category}}</h2>
+                  <h6>Discover {{ latestAlbum.song ? latestAlbum.song.length : 0 }} songs</h6>
                   <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
                 </div>
                 
               </ion-col>
               <ion-col size="auto" class="no-padding img-col">
                 <div class="img-style">
-                  <ion-img class="image_default" src="assets/test.jpg" alt="SpotyMike"></ion-img>
+                  <ion-img class="image_default" src="{{latestAlbum.cover}}" alt="SpotyMike"></ion-img>
                 </div>
                 
               </ion-col>
@@ -35,11 +35,11 @@
   <app-see-all [elementTitle] = "elementTitles[1]"></app-see-all>
   <app-vertical-card [songs] = "songs"></app-vertical-card>
   <app-see-all [elementTitle] = "elementTitles[2]"></app-see-all>
-  <app-horizontal1-card [lastPlayeds] = "songs"></app-horizontal1-card>
+  <app-horizontal1-card [lastPlayeds] = "lastPlayeds"></app-horizontal1-card>
   <app-see-all [elementTitle] = "elementTitles[3]"></app-see-all>
   <app-vertical-card [albums] = "albums"></app-vertical-card>
   <app-see-all [elementTitle] = "elementTitles[4]"></app-see-all>
-  <app-vertical-card [albums] = "albums"></app-vertical-card>
+  <app-vertical-card [artists] = "artists"></app-vertical-card>
   <app-see-all [elementTitle] = "elementTitles[5]"></app-see-all>
-  <app-vertical-card [albums] = "albums"></app-vertical-card>
+  <app-horizontal1-card [playlists] = "playlists"></app-horizontal1-card>
 </ion-content>

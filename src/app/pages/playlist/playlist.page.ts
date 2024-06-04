@@ -24,7 +24,8 @@ export class PlaylistPage {
 
   ngOnInit() {
     this.serviceFirestore.getTopPlaylist('qfxEo314Ql3IhTZfvGBU',5).then(playlists => {
-      this.playlists = playlists;
+      if(playlists)
+        this.playlists = playlists;
     });
     console.log(this.playlists);
   }

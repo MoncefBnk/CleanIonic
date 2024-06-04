@@ -3,8 +3,10 @@ import { Component, inject } from '@angular/core';
 import { IonRouterLinkWithHref,IonRouterLink,IonText,IonItem,IonList,IonCard,IonCardContent,IonAvatar,IonImg, IonRow, IonCol, IonGrid, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,IonButtons,IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowForward,search,arrowForwardOutline } from 'ionicons/icons';
-import { IAlbum } from 'src/app/core/interfaces/album';
+import { IAlbum, IAlbumsWithDetails } from 'src/app/core/interfaces/album';
+import { IArtist } from 'src/app/core/interfaces/artist';
 import { ISong, ISongWithDetails } from 'src/app/core/interfaces/song';
+import { ILastPlayedWithDetails, IPlaylist } from 'src/app/core/interfaces/user';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { SeeAllComponent } from 'src/app/shared/header/see-all/see-all.component';
@@ -61,15 +63,37 @@ export class HomePage {
   musiccateg : string[] = ["All","R&B","Pop","Rock"];
   elementTitles : string[] = ["Music Genres","Top Songs","Last Played","Top Albums", "Top Artists","Top Playlist"];
   songs : ISongWithDetails[]=[];
-  albums : IAlbum[] = [];
+  lastPlayeds: ILastPlayedWithDetails[]=[];
+  albums : IAlbumsWithDetails[] = [];
+  artists : IArtist[] =[];
+  playlists : IPlaylist[] =[];
+  latestAlbum = {} as IAlbum;
 
   ngOnInit() {
     this.serviceFirestore.getTopSongsWithDetails(5).then(songs => {
       this.songs = songs;
     });
-    this.serviceFirestore.getTopAlbums(5).then(songs => {
-      this.albums = songs;
+    this.serviceFirestore.getTopAlbums(5).then(albums => {
+      if(albums)
+        this.albums = albums;
     });
+    this.serviceFirestore.getLastPlayed('qfxEo314Ql3IhTZfvGBU',5).then(lastsongs => {
+      if(lastsongs)
+        this.lastPlayeds = lastsongs;
+    });
+    this.serviceFirestore.getTopArtists(5).then(artists => {
+      if(artists)
+        this.artists = artists;
+    });
+    this.serviceFirestore.getTopPlaylist('qfxEo314Ql3IhTZfvGBU',5).then(playlists => {
+      if(playlists)
+        this.playlists = playlists;
+    });
+    this.serviceFirestore.getLatestAlbum().then(latest => {
+      if(latest)
+        this.latestAlbum = latest;
+    });
+console.log(this.playlists);
     console.log(this.songs);
   }
   
