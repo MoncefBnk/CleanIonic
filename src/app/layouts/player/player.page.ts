@@ -15,11 +15,12 @@ import {
   IonBackButton,
   IonIcon,
   IonImg,
-  IonRange,
-} from '@ionic/angular/standalone';
+  IonRange, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { addIcons } from 'ionicons';
 import {
+  ellipsisHorizontal,
+  expand,
   heart,
   heartCircleOutline,
   heartCircleSharp,
@@ -44,7 +45,7 @@ import {
   templateUrl: './player.page.html',
   styleUrls: ['./player.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonCardContent, IonCard,
     IonRange,
     IonImg,
     IonIcon,
@@ -76,6 +77,8 @@ export class PlayerPage implements OnInit {
       pauseCircle,
       playSkipForwardOutline,
       shuffle,
+      ellipsisHorizontal,
+      expand,
     });
   }
 
@@ -89,6 +92,7 @@ export class PlayerPage implements OnInit {
     " ...la-la-la-la-la-la-la, la, la La-la-la-la-la-la-la-la la la-la, la Baby, I love you But if you wanna leave, take good care Hope you make a lot of nice friends out there But just remember there's a lot of bad and beware Beware",
     "Oh, baby, baby, it's a wild world It's hard to get by just upon a smile Oh, baby, baby, it's a wild world And I'll always remember you like a child, girl Oh, baby, baby, it's a wild world And it's hard to get by just upon a smile Oh, baby, baby, it's a wild world And I'll always remember you like a child, girl",
   ];
+  currentLyric: string = 'No Lyrics Found';
   start_icon: string = 'search';
   end_icon: string = 'search';
   image: string = 'assets/icon/logo_mini.png';
@@ -97,11 +101,10 @@ export class PlayerPage implements OnInit {
     this.isPlaying = !this.isPlaying;
   }
 
-  onIonChange(ev: Event) {
-    console.log(
-      'ionChange emitted value:',
-      (ev as RangeCustomEvent).detail.value
-    );
+  onIonChange(event: any) {
+    const value = event.detail.value;
+    const lyricIndex = Math.floor(value / (100 / this.lyrics.length));
+    this.currentLyric = this.lyrics[lyricIndex];
   }
 
   makeFavorite() {

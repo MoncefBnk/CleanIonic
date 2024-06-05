@@ -91,6 +91,41 @@
     margin: 0 0.625rem;
     color: #a3a3a3;
   }
+
+
+  .lyrics-card {
+    padding: 0rem;
+    height: 21em;
+    background-color: #f4f4f4;
+    border-radius: 1rem;
+  }
+
+  .lyrics-card ion-card-content {
+    padding: 1rem;
+    font-size: 1rem !important;
+    color: #333;
+    p{
+      font-size: 1.0625rem ;
+
+
+    }
+    lyrics-title {
+      padding: 0 !important;
+      font-weight: bold !important;
+      padding-bottom: 1rem !important;
+    }
+    .lyrics-icon {
+      font-size: 1.5rem;
+      color: #171621;
+      padding-bottom: 1rem !important;
+    }
+  }
+}
+
+ion-col {
+  padding:  0;
+  font-weight: bold;
+
 }
 
 .transparent-header {
