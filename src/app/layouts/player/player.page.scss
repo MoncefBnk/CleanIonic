@@ -4,7 +4,7 @@
     0deg,
     rgba(255, 255, 255, 1) 0%,
     rgba(255, 255, 255, 1) 50%,
-    rgb(83, 113, 105) 100%
+    rgb(83, 113, 105) 120%
   );
 
   .song-title {
@@ -48,6 +48,7 @@
     align-items: center;
     width: 100%;
     padding: 1.25rem;
+    padding-top: 0;
   }
 
   .icons-col {
