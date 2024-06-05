@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { RoundMenuComponent } from './round-menu.component';
+import { SwitchableButtonsComponent } from './switchable-buttons.component';
 
-describe('RoundMenuComponent', () => {
-  let component: RoundMenuComponent;
-  let fixture: ComponentFixture<RoundMenuComponent>;
+describe('SwitchableButtonsComponent', () => {
+  let component: SwitchableButtonsComponent;
+  let fixture: ComponentFixture<SwitchableButtonsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoundMenuComponent ],
+      declarations: [ SwitchableButtonsComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RoundMenuComponent);
+    fixture = TestBed.createComponent(SwitchableButtonsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -22,5 +22,8 @@
       "phone_number": "Phone number",
       "birth_date": "Birth date *"
     }
+  },
+  "home": {
+    "See all" : "Voir plus"
   }
 }
