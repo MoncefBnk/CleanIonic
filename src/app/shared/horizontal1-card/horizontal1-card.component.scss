@@ -1,17 +1,43 @@
 ion-img::part(image) {
     border-radius : 8px!important;
-
+    object-fit: fill!important;
 }
 
 ion-item {
     height: 50px;
+    .item-native {
+        padding: 0px!important;
+    }
+   
 }
 
-.image-layout {
-    height: 44px;
+ion-item::part(native) {
+    padding: 0px;
+}
+
+
+ion-img {
     width: 44px;
+    height: 44px;
 }
 
-.text-style {
-    display: flex;align-items:center
+.margin {
+    margin-left: 0px!important;
+    margin-right: 0px!important;
 }
+
+h2 {
+    font-weight: bold!important;
+}
+
+.metadata-end-wrapper {
+    position: absolute;
+  
+    top: 10px;
+    inset-inline-end: 10px;
+  
+    font-size: 0.8rem;
+  
+    display: flex;
+    align-items: center;
+  }

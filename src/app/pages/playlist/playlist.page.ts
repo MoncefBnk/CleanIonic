@@ -1,6 +1,6 @@
 import { ExploreContainerComponent } from './../../explore-container/explore-container.component';
 import { Component, inject } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { IPlaylist } from 'src/app/core/interfaces/user';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
@@ -12,7 +12,7 @@ import { Horizontal2CardComponent } from 'src/app/shared/horizontal2-card/horizo
   templateUrl: 'playlist.page.html',
   styleUrls: ['playlist.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent,Horizontal2CardComponent,GeneralHeaderComponent],
+  imports: [IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent,Horizontal2CardComponent,GeneralHeaderComponent],
 })
 export class PlaylistPage {
   constructor() {}

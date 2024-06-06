@@ -1,10 +1,10 @@
-<ion-list class="list-style">
+<ion-list class="flex justify-center gap-3">
   <ion-item lines="none" class="item-style" *ngFor="let category of categories| slice:0:4; let i = index">
     <ion-button
           [color]="selectedButton === i ? 'primary' : 'light'"
           (click)="toggleButton(i)"
           shape="round"
-        ><ion-text>{{ category }}</ion-text>
+        ><ion-text class="font-medium">{{ category }}</ion-text>
     </ion-button>
   </ion-item>
 </ion-list>
