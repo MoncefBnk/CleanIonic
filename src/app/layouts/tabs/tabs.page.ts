@@ -16,7 +16,7 @@ export class TabsPage {
 
   private albumsService = inject(FirestoreService);
   constructor() {
-    this.albumsService.getAlbums();
+    this.albumsService.getAlbums2();
     addIcons({ home, heartOutline, musicalNotes,person });
   }
 }

@@ -1,0 +1,460 @@
+{
+  "users": {
+    "userId1": {
+      "email": "user1@example.com",
+      "firstName": "First",
+      "lastName": "User",
+      "dateBirth": "1990-01-01T00:00:00",
+      "phoneNumber": "0624639799",
+      "followers": 178,
+      "isArtist": true,
+      "lastPlayed": [
+        "songId1",
+        "songId2"
+      ],
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "searchHistory": [
+        {
+          "search": "song1",
+          "type": "song"
+        },
+        {
+          "search": "album1",
+          "type": "album"
+        },
+        {
+          "search": "song2",
+          "type": "all"
+        }
+      ],
+      "playlists": {
+        "playlistId1": {
+          "name": "First User Playlist",
+          "createdAt": "2021-06-01T00:00:00",
+          "updatedAt": "2021-06-01T00:00:00",
+          "songs": [
+            {
+              "songId": "songId1",
+              "songName": "Song One",
+              "artistName": "ArtistOne",
+              "albumName": "Album One"
+            },
+            {
+              "songId": "songId2",
+              "songName": "Song Two",
+              "artistName": "ArtistOne",
+              "albumName": "Album One"
+            }
+          ]
+        }
+      }
+    },
+    "userId2": {
+      "email": "user2@example.com",
+      "firstName": "Second",
+      "lastName": "User",
+      "dateBirth": "1985-05-15T00:00:00",
+      "phoneNumber": "0624639799",
+      "followers": 178,
+      "isArtist": true,
+      "lastPlayed": [
+        "songId3",
+        "songId4"
+      ],
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "searchHistory": [
+        {
+          "search": "song4",
+          "type": "song"
+        },
+        {
+          "search": "album1",
+          "type": "album"
+        },
+        {
+          "search": "song2",
+          "type": "all"
+        },
+        {
+          "search": "song3",
+          "type": "song"
+        },
+        {
+          "search": "album5",
+          "type": "album"
+        }
+      ],
+      "playlists": {
+        "playlistId2": {
+          "name": "Second User Playlist",
+          "createdAt": "2021-06-01T00:00:00",
+          "updatedAt": "2021-06-01T00:00:00",
+          "songs": [
+            {
+              "songId": "songId3",
+              "songName": "Song Three",
+              "artistName": "ArtistOne",
+              "albumName": "Album Two"
+            },
+            {
+              "songId": "songId4",
+              "songName": "Song Four",
+              "artistName": "ArtistOne",
+              "albumName": "Album Two"
+            }
+          ]
+        }
+      }
+    },
+    "userId3": {
+      "email": "user3@example.com",
+      "firstName": "Third",
+      "lastName": "User",
+      "dateBirth": "2000-12-25T00:00:00",
+      "phoneNumber": "0624639799",
+      "followers": 178,
+      "isArtist": false,
+      "lastPlayed": [
+        "songId3",
+        "songId4"
+      ],
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "searchHistory": [],
+      "playlists": {
+        "playlistId3": {
+          "name": "Third User Playlist",
+          "createdAt": "2021-06-01T00:00:00",
+          "updatedAt": "2021-06-01T00:00:00",
+          "songs": [
+            {
+              "songId": "songId3",
+              "songName": "Song Three",
+              "artistName": "ArtistOne",
+              "albumName": "Album Two"
+            },
+            {
+              "songId": "songId4",
+              "songName": "Song Four",
+              "artistName": "ArtistOne",
+              "albumName": "Album Two"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "artists": {
+    "artistId1": {
+      "userId": "userId1",
+      "artistName": "ArtistOne",
+      "label": "Label One",
+      "description": "Description for Artist One",
+      "avatar": "https://example.com/avatar1.jpg",
+      "searchScore": 100,
+      "followers": 178,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "albums": [
+        "albumId1",
+        "albumId2"
+      ]
+    },
+    "artistId2": {
+      "userId": "userId2",
+      "artistName": "ArtistTwo",
+      "label": "Label Two",
+      "description": "Description for Artist Two",
+      "avatar": "https://example.com/avatar2.jpg",
+      "followers": 178,
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "albums": [
+        "albumId3"
+      ]
+    }
+  },
+  "albums": {
+    "albumId1": {
+      "title": "Album One",
+      "releaseDate": "2022-01-01T00:00:00",
+      "cover": "https://example.com/coverAlbum2.jpg",
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "category": "Pop",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "artist": {
+        "artistId": "artistId1",
+        "artistName": "ArtistOne"
+      },
+      "songs": [
+        {
+          "songId": "songId1",
+          "songName": "Song One"
+        },
+        {
+          "songId": "songId2",
+          "songName": "Song Two"
+        }
+      ]
+    },
+    "albumId2": {
+      "title": "Album Two",
+      "releaseDate": "2023-01-01T00:00:00",
+      "cover": "https://example.com/coverAlbum2.jpg",
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "category": "Pop",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "artist": {
+        "artistId": "artistId1",
+        "artistName": "ArtistOne"
+      },
+      "songs": [
+        {
+          "songId": "songId3",
+          "songName": "Song Three"
+        },
+        {
+          "songId": "songId4",
+          "songName": "Song Four"
+        }
+      ]
+    },
+    "albumId3": {
+      "title": "Album Three",
+      "releaseDate": "2021-06-01T00:00:00",
+      "cover": "https://example.com/coverAlbum3.jpg",
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "category": "Pop",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "artist": {
+        "artistId": "artistId2",
+        "artistName": "ArtistTwo"
+      },
+      "songs": [
+        {
+          "songId": "songId5",
+          "songName": "Song Five"
+        },
+        {
+          "songId": "songId6",
+          "songName": "Song Six"
+        }
+      ]
+    }
+  },
+  "songs": {
+    "songId1": {
+      "title": "Song One",
+      "duration": 210,
+      "fileUrl": "https://example.com/song1.mp3",
+      "cover": "https://example.com/coverSong1.jpg",
+      "artistId": "artistId1",
+      "albumId": "albumId1",
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00"
+    },
+    "songId2": {
+      "title": "Song Two",
+      "duration": 180,
+      "fileUrl": "https://example.com/song2.mp3",
+      "cover": "https://example.com/coverSong2.jpg",
+      "artistId": "artistId1",
+      "albumId": "albumId1",
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "lyrics": [
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 30
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 60
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 90
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 120
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 150
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 180
+        }
+      ]
+    },
+    "songId3": {
+      "title": "Song Three",
+      "duration": 200,
+      "fileUrl": "https://example.com/song3.mp3",
+      "cover": "https://example.com/coverSong3.jpg",
+      "artistId": "artistId1",
+      "albumId": "albumId2",
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "lyrics": [
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 30
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 60
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 90
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 120
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 150
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 180
+        }
+      ]
+    },
+    "songId4": {
+      "title": "Song Four",
+      "duration": 190,
+      "fileUrl": "https://example.com/song4.mp3",
+      "cover": "https://example.com/coverSong4.jpg",
+      "artistId": "artistId1",
+      "albumId": "albumId2",
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "lyrics": [
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 30
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 60
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 90
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 120
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 150
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 180
+        }
+      ]
+    },
+    "songId5": {
+      "title": "Song Five",
+      "duration": 220,
+      "fileUrl": "https://example.com/song5.mp3",
+      "cover": "https://example.com/coverSong5.jpg",
+      "artistId": "artistId2",
+      "albumId": "albumId3",
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "lyrics": [
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 30
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 60
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 90
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 120
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 150
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 180
+        }
+      ]
+    },
+    "songId6": {
+      "title": "Song Six",
+      "duration": 230,
+      "fileUrl": "https://example.com/song6.mp3",
+      "cover": "https://example.com/coverSong6.jpg",
+      "artistId": "artistId2",
+      "albumId": "albumId3",
+      "searchScore": 100,
+      "lastUpdatedSearchScore": "2024-05-30T00:00:00",
+      "createdAt": "2021-06-01T00:00:00",
+      "updatedAt": "2021-06-01T00:00:00",
+      "lyrics": [
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 30
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 60
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 90
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 120
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 150
+        },
+        {
+          "text": "Lyrics for song two",
+          "timestamp": 180
+        }
+      ]
+    }
+  }
+}

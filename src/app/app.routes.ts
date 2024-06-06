@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { EAuthPage } from './core/models/refData';
-import { AuthService } from './core/services/auth.service';
 import { tabroutes } from './layouts/tabs/tabs.routes';
 
 
@@ -23,11 +21,12 @@ export const routes: Routes = [
       },
     ],
   },
+  ...tabroutes,
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'tabs/home',
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
   },
+
   ...tabroutes,
   {
     path: 'profile',
@@ -37,7 +36,6 @@ export const routes: Routes = [
     path: 'search',
     loadComponent: () => import('./pages/search/search.page').then( m => m.SearchPage)
   }
-
 
 
 

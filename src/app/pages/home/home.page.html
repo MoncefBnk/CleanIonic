@@ -1,7 +1,9 @@
 
+
   <app-general-header  [endIcon] ="end_icon" [image] ="image" ></app-general-header>
 
 <ion-content class="ion-padding">
+
   <ion-grid>
     <ion-row>
       <ion-col size="auto" >
@@ -15,13 +17,13 @@
                   <h6 class="leading-relaxed text-sm">Discover {{ latestAlbum.song ? latestAlbum.song.length : 0 }} songs!</h6>
                   <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
                 </div>
-                
+
               </ion-col>
               <ion-col size="auto" class="no-padding img-col">
                 <div class="img-style">
                   <ion-img class="image_default" src="{{latestAlbum.cover}}" alt="SpotyMike"></ion-img>
                 </div>
-                
+
               </ion-col>
               <ion-col></ion-col>
             </ion-row>
