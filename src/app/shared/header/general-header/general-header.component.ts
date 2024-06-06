@@ -17,6 +17,7 @@ export class GeneralHeaderComponent  implements OnInit {
   @Input() endIcon: string|null = "";
   @Input() title: string|null = "";
   @Input() image: string|null = "";
+  @Input() backbutton: string|null = "";
 
   constructor() { 
     addIcons({ search,ellipsisHorizontal,settings,arrowBack });

@@ -20,6 +20,7 @@ export class PlaylistPage {
   private serviceFirestore = inject(FirestoreService);
   title : string = "Music Playlist"
   end_icon : string = "ellipsis-horizontal";
+
   playlists : IPlaylist[] = [];
 
   ngOnInit() {

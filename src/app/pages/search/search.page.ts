@@ -13,6 +13,10 @@ import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/gen
 })
 export class SearchPage implements OnInit {
 
+  end_icon : string = "search";
+  title : string = "Recherche";
+  backbutton : string = "back";
+
   constructor() { }
 
   ngOnInit() {

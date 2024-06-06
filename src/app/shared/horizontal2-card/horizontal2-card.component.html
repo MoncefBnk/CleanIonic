@@ -1,38 +1,25 @@
 <ion-list *ngFor="let item of playlists;">
-  <ion-item [button]="true" detail="false" class="relative">
-    <div class="unread-indicator-wrapper size-[100px] " slot="start">
-      <ion-img src="assets/icon/logo_mini.png" alt="albumcover"></ion-img>
+
+  <ion-item [button]="true" detail="false" class="relative ">
+    <div class="unread-indicator-wrapper size-[80px] " slot="start">
+      <ion-img src="assets/test.jpg" alt="albumcover"></ion-img>
     </div>
-    <ion-text class="text-left align-top ">
-      <h2 class="text-sm font-bold">{{item.name}}</h2>
+    <ion-text class="text-left h-20">
+      <h1 class="text-base font-bold">{{item.name}}</h1>
       <h3 class="text-sm font-light text-slate-500">{{ item.song ? item.song.length : 0 }} song(s)</h3>
     </ion-text>
-    <div class="metadata-end-wrapper gap-x-2" slot="end">
-      <ion-icon name="heart-outline" class="absolute"></ion-icon>
-      <ion-icon name="share-social-outline" class="bottom-right-icon"></ion-icon>
+    <div class="metadata-end-wrapper gap-x-2 flex flex-col justify-between h-full items-end h-20" slot="end">
+      <div>
+        <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
+      </div>
+      <div class="space-x-">
+        <ion-button shape="round" color="light" (click)="toggleIconColor()">
+          <ion-icon  class="absolute" [name]="isIconDark ? 'heart' : 'heart-outline'"></ion-icon>
+        </ion-button>
+        <ion-button shape="round" color="light" (click)="openModal(item)" >
+          <ion-icon name="share-social-outline"  class="absolute"></ion-icon>
+        </ion-button> 
+      </div> 
     </div>
   </ion-item>
-  <ion-item [button]="false" detail="false">
-    
-    <div class="custom-card">
-      <div class="card-left">
-        <ion-img src="assets/icon/logo_mini.png" alt="albumcover"></ion-img>
-      </div>
-      <div class="card-content">
-        <div class="card-header">
-          <div class="card-text">
-            <h2>{{item.name}}</h2>
-            <p>{{ item.song ? item.song.length : 0 }} Song(s)</p> 
-          </div>
-          <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
-        </div>
-        <div class="card-footer">
-          <ion-icon name="heart-outline" class="bottom-right-icon"></ion-icon>
-          <ion-icon name="share-social-outline" class="bottom-right-icon"></ion-icon>
-        </div>
-      </div>
-    </div>
-  </ion-item>
-  
-  
 </ion-list>

@@ -5,10 +5,11 @@
         <ion-img  class="logo" src="assets/icon/logo_mini.png" alt="SpotyMike"></ion-img>
       }
       @else{
-        @if(startIcon) {
-          <ion-icon slot="icon-only" [name]="startIcon"></ion-icon>
-        }@else{
+        
+        @if(backbutton){
           <ion-back-button defaultHref="/"  icon="arrow-back"></ion-back-button>
+        }@else {
+          <ion-icon slot="icon-only" [name]="startIcon"></ion-icon>
         }
         
       }
@@ -19,5 +20,5 @@
       <ion-icon slot="icon-only"  [name]="endIcon"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-title>{{title}}</ion-title>
+  <ion-title class="text-base font-bold">{{title}}</ion-title>
 </ion-toolbar>
