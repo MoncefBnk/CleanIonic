@@ -42,9 +42,15 @@ export class AuthentificationService {
         user: {
           role: 'user',
           isEmailVerified: true,
-          email: email,
-          name: 'moncef',
           id: '1234567890',
+          email: email,
+          firstname: 'moncef',
+          lastname: 'BENKHALFALLAH',
+          dateBirth: new Date('05/02/1998'),
+          followers: 0,
+          isArtist: true,
+          createdAt: new Date('05-02-1998'),
+          updatedAt: new Date('05-02-1998'),
         },
       } as LoginRequestSuccess;
     }
@@ -88,9 +94,15 @@ export class AuthentificationService {
         user: {
           role: 'user',
           isEmailVerified: true,
-          email: email,
-          name: 'moncef',
           id: '1234567890',
+          email: email,
+          firstname: 'moncef',
+          lastname: 'BENKHALFALLAH',
+          dateBirth: new Date('05-02-1998'),
+          followers: 0,
+          isArtist: true,
+          createdAt: new Date('05-02-1998'),
+          updatedAt: new Date('05-02-1998'),
         },
       } as LoginRequestSuccess;
     }

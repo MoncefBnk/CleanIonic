@@ -84,7 +84,7 @@ export class LoginPage {
     this.showPassword = !this.showPassword;
   }
 
-  ngOnInit() {}
+  // ngOnInit() {}
 
   onSubmit() {
     this.error = '';

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IAlbum } from 'src/app/core/interfaces/album';
-import { ISong } from 'src/app/core/interfaces/song';
+import { ISong, ISongWithDetails } from 'src/app/core/interfaces/song';
 import { IonText,IonItem,IonList,IonImg, IonRow, IonCol, IonGrid } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 
@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
 export class VerticalCardComponent  implements OnInit {
 
   @Input() albums: IAlbum[] = [];
-  @Input() songs: ISong[] = [];
+  @Input() songs: ISongWithDetails[] = [];
 
   constructor() { 
       
