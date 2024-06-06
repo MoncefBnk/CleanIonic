@@ -34,6 +34,8 @@ form{
       border : 0.063rem solid #E5E5E5;
       ion-input{
         --placeholder-color: #A3A3A3;
+        border-color: transparent;
+        background-color: transparent;
       }
     }
 
