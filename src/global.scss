@@ -58,22 +58,6 @@
 img {
   max-width: 100%;
 }
-.pad-15 {
-  padding-top: 15%;
-}
-.pad-20 {
-  padding-top: 20%;
-}
-.pad-25 {
-  padding-top: 25%;
-}
-.pad-35 {
-  padding-top: 35%;
-}
-.pad-50 {
-  padding-top: 50%;
-}
-
 .text-white {
   color: #ffffff; /* White color */
 }
@@ -91,13 +75,24 @@ ion-icon {
   color: inherit;
 }
 
+
 ion-button {
   text-transform: none;
-}
-.pad-75 {
-  padding-top: 75%;
 }
 .error {
   color: red;
   font-size: 0.75rem;
 }
+
+ion-modal {
+  --height:  50%;
+  --max-height : 90%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal::part(backdrop) {
+  background: rgba(209, 213, 219);
+  opacity: 1;
+}
+

@@ -1,3 +1,5 @@
+import { ISongWithDetails } from "./song";
+
 type ERole = 'user' | 'artist';
 
 export interface IUser {
@@ -15,11 +17,14 @@ export interface IUser {
   updatedAt: Date;
   searchHistory?: ISearchHistory[];
   playlist?: IPlaylist[];
+  lastPlayed?: ILastPlayed[];
 }
 
 interface ISearchHistory {
   id: string;
   type: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IPlaylist {
@@ -30,6 +35,17 @@ export interface IPlaylist {
   song: string [];
   playedScore: number;
   lastUpdatedPlayedScore: Date;
+}
+
+export interface ILastPlayed {
+  id: string;
+  songId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ILastPlayedWithDetails extends ILastPlayed {
+  song: ISongWithDetails;
 }
 
 interface IAccessToken {

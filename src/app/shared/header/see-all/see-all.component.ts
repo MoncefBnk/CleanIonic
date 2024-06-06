@@ -11,6 +11,7 @@ import { IonText,IonItem,IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,Io
 export class SeeAllComponent  implements OnInit {
 
   @Input() elementTitle: string = "";
+  @Input() link: string = "";
 
   constructor() { }
 
