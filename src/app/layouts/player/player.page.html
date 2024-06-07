@@ -75,19 +75,21 @@
   </ion-row>
 
   <!-- Lyrics section -->
-  <ion-card class="lyrics-card">
-    <ion-card-content>
-      <ion-row class="lyrics-title">
-        <ion-col size="6">
-          <p>Lyrics</p>
-        </ion-col>
-        <ion-col size="6" class="icons-col">
-          <ion-icon name="expand" class="lyrics-icon"></ion-icon>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <p>{{ currentLyric }}</p>
-      </ion-row>
-    </ion-card-content>
-  </ion-card>
+  <div [class.expanded]="isExpanded">
+    <ion-card class="lyrics-card">
+      <ion-card-content>
+        <ion-row class="lyrics-title">
+          <ion-col size="6">
+            <p>Lyrics</p>
+          </ion-col>
+          <ion-col size="6" class="icons-col">
+            <ion-icon name="expand" class="lyrics-icon" (click)="toggleExpand()"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <p>{{ currentLyric }}</p>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

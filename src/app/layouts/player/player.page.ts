@@ -83,6 +83,7 @@ export class PlayerPage implements OnInit {
   start_icon: string = 'search';
   end_icon: string = 'search';
   image: string = 'assets/icon/logo_mini.png';
+  isExpanded: boolean = false;
 
   constructor() {
     addIcons({
@@ -158,5 +159,9 @@ export class PlayerPage implements OnInit {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded;
   }
 }
