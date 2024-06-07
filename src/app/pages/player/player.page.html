@@ -71,7 +71,7 @@
             <p>Lyrics</p>
           </ion-col>
           <ion-col size="6" class="icons-col">
-            <ion-icon name="expand" class="lyrics-icon" (click)="toggleExpand()"></ion-icon>
+            <ion-icon name="{{isExpanded ? 'chevron-collapse-outline' :  'chevron-expand-outline'}}" class="lyrics-icon" (click)="toggleExpand()"></ion-icon>
           </ion-col>
         </ion-row>
         <ion-row>

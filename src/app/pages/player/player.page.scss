@@ -42,7 +42,7 @@
     padding-inline: 1rem;
   }
 
-  .media-buttons{
+  .media-buttons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -109,21 +109,30 @@
     padding: 1.5rem;
     font-size: 1rem !important;
     color: #333;
-    p {
-      font-size: 1.0625rem;
-    }
-    lyrics-title {
-      padding: 0 !important;
-      font-weight: bold !important;
-      padding-bottom: 1rem !important;
-    }
-    .lyrics-icon {
-      font-size: 1.5rem;
-      color: #171621;
-      padding-bottom: 1rem !important;
-    }
-
+    max-height: 100%; /* Ensure it doesn't exceed the card height */
+    overflow: auto; /* Enable scrolling */
   }
+
+  .lyrics-card ion-card-content p {
+    font-size: 1.0625rem;
+  }
+
+  .lyrics-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: bold !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .lyrics-icon {
+    font-size: 1.5rem;
+    color: #171621;
+    padding-bottom: 1rem !important;
+    cursor: pointer;
+  }
+
   .expanded .lyrics-card {
     height: 94vh;
   }

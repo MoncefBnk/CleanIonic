@@ -23,6 +23,8 @@ import {
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { addIcons } from 'ionicons';
 import {
+  chevronCollapseOutline,
+  chevronExpandOutline,
   ellipsisHorizontal,
   expand,
   heart,
@@ -102,7 +104,9 @@ export class PlayerPage implements OnInit {
       playSkipForwardOutline,
       shuffle,
       ellipsisHorizontal,
-      expand,
+
+      chevronCollapseOutline,
+      chevronExpandOutline,
     });
   }
 
