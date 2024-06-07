@@ -343,7 +343,7 @@ export class FirestoreService {
           album
   
         };
-
+        console.log(song);
         return song;
       }
       else {
@@ -387,6 +387,7 @@ export class FirestoreService {
       return null;
     
   }
+  
 
   /** end playlist */
 

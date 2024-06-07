@@ -1,6 +1,6 @@
 <div class="" *ngIf="lastPlayeds && lastPlayeds.length > 0">
   <ion-list class="margin" [inset]="true" *ngFor="let item of lastPlayeds;">
-    <ion-item [button]="true" detail="false">
+    <ion-item [button]="true" detail="false" (click)="playmusic(item.songId)">
       <div class="unread-indicator-wrapper" slot="start">
         <ion-img src="{{item.song.cover}}" class="image_default" alt="albumcover"></ion-img>
       </div>
@@ -10,7 +10,9 @@
       </ion-label>
       <div class="metadata-end-wrapper gap-x-2" slot="end">
         <ion-note >{{ formatDuration(item.song.duration) }}</ion-note>
-        <ion-icon  name="ellipsis-horizontal"></ion-icon>
+        <ion-button shape="round" color="light"  aria-label="Favorite">
+          <ion-icon name="ellipsis-horizontal"  class="absolute"></ion-icon>
+        </ion-button>
       </div>
     </ion-item>
   </ion-list>
@@ -18,7 +20,7 @@
 
 <div *ngIf="playlists && playlists.length > 0">
   <ion-list class="margin" *ngFor="let item of playlists;">
-    <ion-item [button]="true" detail="false">
+    <ion-item [button]="true" detail="false" (click)="navigatetoPlaylist(item.id)">
       
       <ion-label slot="start">
         <h2 class="text-sm font-bold">{{item.name}}</h2>
