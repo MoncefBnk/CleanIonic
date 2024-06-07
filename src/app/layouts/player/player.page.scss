@@ -18,7 +18,7 @@
     color: #404040;
   }
   .range {
-    padding-inline: 1.25rem;
+    padding-inline: 1rem;
   }
 
   .song-image {
@@ -42,12 +42,18 @@
     padding-inline: 1rem;
   }
 
+  .media-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 1rem;
+  }
   .song-info {
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
-    padding: 1.25rem;
+    padding: 1.5rem;
     padding-top: 0;
   }
 
@@ -92,7 +98,6 @@
     color: #a3a3a3;
   }
 
-
   .lyrics-card {
     padding: 0rem;
     height: 21em;
@@ -101,13 +106,11 @@
   }
 
   .lyrics-card ion-card-content {
-    padding: 1rem;
+    padding: 1.5rem;
     font-size: 1rem !important;
     color: #333;
-    p{
-      font-size: 1.0625rem ;
-
-
+    p {
+      font-size: 1.0625rem;
     }
     lyrics-title {
       padding: 0 !important;
@@ -119,13 +122,25 @@
       color: #171621;
       padding-bottom: 1rem !important;
     }
+
+  }
+  .expanded .lyrics-card {
+    height: 94vh;
+  }
+
+  .time {
+    padding-inline: 1rem;
+    font-size: 1rem;
+    font-weight: lighter;
+    color: #404040;
+    text-align: center;
+    width: 4rem;
   }
 }
 
 ion-col {
-  padding:  0;
+  padding: 0;
   font-weight: bold;
-
 }
 
 .transparent-header {

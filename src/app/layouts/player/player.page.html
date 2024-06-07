@@ -36,51 +36,60 @@
 
   <!-- Range slider -->
   <ion-row>
-    <ion-range
-      class="range"
-      aria-label="Range with ionChange"
-      (ionChange)="onIonChange($event)"
-    ></ion-range>
+
+      <ion-range
+        class="range"
+        [value]="progress"
+        (ionChange)="onIonChange($event)"
+      ></ion-range>
+
+  </ion-row>
+
+  <!-- Time and duration -->
+  <ion-row>
+    <ion-col size="6" style="text-align: left;" class="time">{{ currentTime }}</ion-col>
+    <ion-col size="6"   style="text-align: right;" class="time">{{ duration }}</ion-col>
   </ion-row>
 
   <!-- Music controls -->
-  <ion-row>
-    <ion-col size="auto">
+  <ion-row class="media-buttons">
+    <ion-col class="left" size="2">
       <ion-icon name="repeat" class="icon-sides"></ion-icon>
     </ion-col>
-    <ion-col size="auto">
+    <ion-col class="right" size="2">
       <ion-icon name="play-skip-back-outline" class="icon"></ion-icon>
     </ion-col>
-    <ion-col size="auto">
+    <ion-col class="center" size="4">
       <ion-icon
         name="{{ isPlaying ? 'pause-circle' : 'play-circle' }}"
         class="icon-play"
         (click)="playMusic()"
       ></ion-icon>
     </ion-col>
-    <ion-col size="auto">
+    <ion-col class="left" size="2">
       <ion-icon name="play-skip-forward-outline" class="icon"></ion-icon>
     </ion-col>
-    <ion-col size="auto">
+    <ion-col class="right" size="2">
       <ion-icon name="shuffle" class="icon-sides"></ion-icon>
     </ion-col>
   </ion-row>
 
   <!-- Lyrics section -->
-  <ion-card class="lyrics-card">
-    <ion-card-content>
-      <ion-row class="lyrics-title">
-        <ion-col size="6">
-          <p >Lyrics</p>
-        </ion-col>
-        <ion-col  size="6" class="icons-col">
-          <ion-icon name="expand" class="lyrics-icon"></ion-icon>
-        </ion-col>
-
-      </ion-row>
-      <ion-row>
-        <p>{{ currentLyric }}</p>
-      </ion-row>
-    </ion-card-content>
-  </ion-card>
+  <div [class.expanded]="isExpanded">
+    <ion-card class="lyrics-card">
+      <ion-card-content>
+        <ion-row class="lyrics-title">
+          <ion-col size="6">
+            <p>Lyrics</p>
+          </ion-col>
+          <ion-col size="6" class="icons-col">
+            <ion-icon name="expand" class="lyrics-icon" (click)="toggleExpand()"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <p>{{ currentLyric }}</p>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
