@@ -34,13 +34,17 @@
     </ion-col>
   </ion-row>
 
-  <!-- Range slider -->
+  <!-- Range slider with time -->
   <ion-row>
-    <ion-range
-      class="range"
-      aria-label="Range with ionChange"
-      (ionChange)="onIonChange($event)"
-    ></ion-range>
+    <ion-col size="auto" class="time">{{ currentTime }}</ion-col>
+    <ion-col>
+      <ion-range
+        class="range"
+        [value]="progress"
+        (ionChange)="onIonChange($event)"
+      ></ion-range>
+    </ion-col>
+    <ion-col size="auto" class="time">{{ duration }}</ion-col>
   </ion-row>
 
   <!-- Music controls -->
@@ -71,12 +75,11 @@
     <ion-card-content>
       <ion-row class="lyrics-title">
         <ion-col size="6">
-          <p >Lyrics</p>
+          <p>Lyrics</p>
         </ion-col>
-        <ion-col  size="6" class="icons-col">
+        <ion-col size="6" class="icons-col">
           <ion-icon name="expand" class="lyrics-icon"></ion-icon>
         </ion-col>
-
       </ion-row>
       <ion-row>
         <p>{{ currentLyric }}</p>
