@@ -2,7 +2,7 @@ ion-content {
   padding: 5%;
   .home-header {
       width: 100%; // Full width of the toolbar
-      height: 46px; // Height as per your design
+      height: 2.875rem; // Height as per your design
       display: flex;
       align-items: center; // Vertically align items
 
@@ -15,8 +15,8 @@ ion-content {
         }
 
         .logo {
-          width: 24px;
-          height: 24px;
+          width: 1.5rem;
+          height: 1.5rem;
           object-fit: contain; // Ensures the image fits within the avatar without distortion
         }
       }
@@ -29,8 +29,8 @@ ion-content {
   }
 
   .card {
-    width: 327px;
-    height: 170px;
+    width: 20.4375rem;
+    height: 10.625rem;
     background-image: url('/assets/home/default.svg');
     background-color: transparent;
     background-position: center;
@@ -43,7 +43,7 @@ ion-content {
     }
 
   .image_default {
-    border-bottom-right-radius: 10px !important;
+    border-bottom-right-radius: .625rem !important;
     overflow: hidden;
     object-fit: fill;
     position: absolute;
@@ -52,25 +52,25 @@ ion-content {
   }
 
   h1, h2, h3, h4, h5, h6 {
-    margin-top: px;
-    margin-bottom: 3px;
+    margin-top: 0s;
+    margin-bottom: .1875rem;
   }
 
   .img-style {
-    width: 127px;
-    height:170px;
-    padding-top: 0px;
-    margin-top:0px;
+    width: 7.9375rem;
+    height:10.625rem;
+    padding-top: 0rem;
+    margin-top:0rem;
     border-radius: 0;
   }
 
     ion-icon {
-      width: 24px;height:24px;
+      width: 1.5rem;height:1.5rem;
     }
 
     .no-padding {
-      padding-bottom: 0px;
-      padding-top: 0px;
+      padding-bottom: 0rem;
+      padding-top: 0rem;
     }
 
     .img-col {
@@ -79,10 +79,10 @@ ion-content {
     }
 
     .album-col {
-      padding-top: 10px;
-      padding-bottom: 0px;
+      padding-top: .625rem;
+      padding-bottom: 0rem;
       div {
-        width: 155px;
+        width: 9.6875rem;
         color:white
       }
     }
