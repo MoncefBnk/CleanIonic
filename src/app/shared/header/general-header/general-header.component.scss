@@ -5,11 +5,12 @@ ion-toolbar {
     box-shadow: none;
     --color: rgb(0, 0, 0);
     --background: transparent;
+    padding: 1rem 1rem;
   }
 
 
   .logo {
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
     object-fit: contain; // Ensures the image fits within the avatar without distortion
   }

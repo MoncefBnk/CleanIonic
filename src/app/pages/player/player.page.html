@@ -6,12 +6,13 @@
     <ion-img src="{{song.cover}}" alt="SpotyMike" ></ion-img>
   </div>
 
-<!-- Song title, subtitle and favorite and share buttons  -->
 <ion-row class="song-info">
+  <!-- Song title, subtitle -->
   <ion-col size="7">
     <p class="song-title">{{song.artist.artist}}</p>
     <p class="song-subtitle">{{song.title}}</p>
   </ion-col>
+  <!-- Share and favorite icons -->
   <ion-col size="5" class="icons-col">
     <ion-icon name="share-social-outline" class="share-icon"></ion-icon>
     <ion-icon
@@ -41,12 +42,15 @@
 
   <!-- Music controls -->
   <ion-row class="media-buttons">
+    <!-- Repeat Song -->
     <ion-col class="left" size="2">
       <ion-icon name="repeat" class="icon-sides"></ion-icon>
     </ion-col>
+    <!-- Skip back -->
     <ion-col class="right" size="2">
       <ion-icon (click)="skipBack()" name="play-skip-back-outline" class="icon"></ion-icon>
     </ion-col>
+    <!-- Play/Pause -->
     <ion-col class="center" size="4">
       <ion-icon
         name="{{ isPlaying ? 'pause-circle' : 'play-circle' }}"
@@ -54,9 +58,11 @@
         (click)="playMusic()"
       ></ion-icon>
     </ion-col>
+    <!-- Skip forward -->
     <ion-col class="left" size="2">
       <ion-icon (click)="skipForward()" name="play-skip-forward-outline" class="icon"></ion-icon>
     </ion-col>
+    <!-- Shuffle -->
     <ion-col class="right" size="2">
       <ion-icon name="shuffle" class="icon-sides"></ion-icon>
     </ion-col>
@@ -70,6 +76,7 @@
           <ion-col size="6">
             <p>Lyrics</p>
           </ion-col>
+          <!-- Expand/Collapse icon -->
           <ion-col size="6" class="icons-col">
             <ion-icon name="{{isExpanded ? 'chevron-collapse-outline' :  'chevron-expand-outline'}}" class="lyrics-icon" (click)="toggleExpand()"></ion-icon>
           </ion-col>
