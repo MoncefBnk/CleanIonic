@@ -28,7 +28,7 @@
       <ion-range
         class="range"
         [value]="progress"
-        (ionChange)="onIonChange($event)"
+        
       ></ion-range>
 
   </ion-row>
@@ -44,18 +44,18 @@
     <ion-col class="left" size="2">
       <ion-icon name="repeat" class="icon-sides"></ion-icon>
     </ion-col>
-    <ion-col class="right" size="2">
-      <ion-icon name="play-skip-back-outline" class="icon"></ion-icon>
+    <ion-col class="right" size="2" >
+      <ion-icon name="play-skip-back-outline" (click)="skipBackward()" class="icon"></ion-icon>
     </ion-col>
     <ion-col class="center" size="4">
       <ion-icon
         name="{{ isPlaying ? 'pause-circle' : 'play-circle' }}"
         class="icon-play"
-        (click)="playMusic()"
+        (click)="playMusic(song.fileUrl)"
       ></ion-icon>
     </ion-col>
     <ion-col class="left" size="2">
-      <ion-icon name="play-skip-forward-outline" class="icon"></ion-icon>
+      <ion-icon name="play-skip-forward-outline" (click)="skipForward()" class="icon"></ion-icon>
     </ion-col>
     <ion-col class="right" size="2">
       <ion-icon name="shuffle" class="icon-sides"></ion-icon>
