@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import {
   IonContent,
@@ -35,6 +36,7 @@ import {
   shareSocialOutline,
   shuffle,
 } from 'ionicons/icons';
+import { ISongWithDetails } from "src/app/core/interfaces/song";
 
 @Component({
   selector: 'app-player',
@@ -64,6 +66,9 @@ import {
 })
 export class PlayerPage implements OnInit {
   @ViewChild('audioPlayer', { static: false }) audioPlayer: any;
+  backbutton: string = "back";
+  end_icon: string = "ellipsis-horizontal";
+  song = {} as ISongWithDetails;
   audio!: HTMLAudioElement;
   isFavorite: boolean = false;
   isPlaying: boolean = true;
@@ -81,11 +86,10 @@ export class PlayerPage implements OnInit {
   ];
   currentLyric: string = '';
   start_icon: string = 'search';
-  end_icon: string = 'search';
   image: string = 'assets/icon/logo_mini.png';
   isExpanded: boolean = false;
 
-  constructor() {
+  constructor(private route: ActivatedRoute) {
     addIcons({
       repeat,
       shareOutline,
@@ -103,6 +107,12 @@ export class PlayerPage implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params && params['song']) {
+        this.song = JSON.parse(params['song']);
+        console.log(this.song);
+      }
+    });
     this.audio = new Audio('assets/songs/Wild_World.mp3');
     this.audio.addEventListener('timeupdate', this.updateProgress.bind(this));
     this.audio.addEventListener('loadedmetadata', () => {

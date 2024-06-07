@@ -1,37 +1,26 @@
+<app-general-header  [endIcon] ="end_icon" [backbutton] ="backbutton" [title]="song.title" ></app-general-header>
 <ion-content class="ion-content-player" [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar class="transparent-header">
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/"></ion-back-button>
-      </ion-buttons>
-      <ion-title> Olivia Lyrics </ion-title>
-      <ion-buttons slot="end">
-        <ion-button>
-          <ion-icon slot="icon-only" name="search"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
 
   <!-- Song image in the middle with rounded borders and paddings -->
   <div class="song-image">
-    <ion-img src="assets/test.jpg" alt="SpotyMike"></ion-img>
+    <ion-img src="{{song.cover}}" alt="SpotyMike" ></ion-img>
   </div>
 
-  <!-- Song title, subtitle and favorite and share buttons  -->
-  <ion-row class="song-info">
-    <ion-col size="7">
-      <p class="song-title">Olivia</p>
-      <p class="song-subtitle">One Direction</p>    </ion-col>
-    <ion-col size="5" class="icons-col">
-      <ion-icon name="share-social-outline" class="share-icon"></ion-icon>
-      <ion-icon
-        name="{{ isFavorite ? 'heart' : 'heart-outline' }}"
-        class="{{ isFavorite ? 'heart-icon-fav' : 'heart-icon' }}"
-        (click)="makeFavorite()"
-      ></ion-icon>
-    </ion-col>
-  </ion-row>
+<!-- Song title, subtitle and favorite and share buttons  -->
+<ion-row class="song-info">
+  <ion-col size="7">
+    <p class="song-title">{{song.artist.artist}}</p>
+    <p class="song-subtitle">{{song.title}}</p>
+  </ion-col>
+  <ion-col size="5" class="icons-col">
+    <ion-icon name="share-social-outline" class="share-icon"></ion-icon>
+    <ion-icon
+      name="{{ isFavorite ? 'heart' : 'heart-outline' }}"
+      class="{{ isFavorite ? 'heart-icon-fav' : 'heart-icon' }}"
+      (click)="makeFavorite()"
+    ></ion-icon>
+  </ion-col>
+</ion-row>
 
   <!-- Range slider -->
   <ion-row>
