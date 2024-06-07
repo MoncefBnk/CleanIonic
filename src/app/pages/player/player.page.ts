@@ -140,7 +140,7 @@ export class PlayerPage implements OnInit {
         this.isOnRepeat = isOnRepeat;
       })
     );
-    this.playMusic(this.currentTrack);
+    this.initPlayer();
   }
 
 
@@ -153,6 +153,10 @@ export class PlayerPage implements OnInit {
     } else {
       this.musicService.play('assets/songs/Wild_World.mp3');
     }
+  }
+
+  initPlayer() {
+    this.musicService.play('assets/songs/Wild_World.mp3');
   }
 
   ngOnDestroy(): void {
