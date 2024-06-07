@@ -18,7 +18,7 @@
     color: #404040;
   }
   .range {
-    padding-inline: 1.25rem;
+    padding-inline: 1rem;
   }
 
   .song-image {
@@ -42,12 +42,18 @@
     padding-inline: 1rem;
   }
 
+  .media-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 1rem;
+  }
   .song-info {
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
-    padding: 1.25rem;
+    padding: 1.5rem;
     padding-top: 0;
   }
 
@@ -119,6 +125,7 @@
   }
 
   .time {
+    padding-inline: 1rem;
     font-size: 1rem;
     font-weight: lighter;
     color: #404040;

@@ -151,7 +151,7 @@ export class PlayerPage implements OnInit {
       }
     }
 
-    return '';
+    return '[instruments playing]';
   }
 
   formatTime(seconds: number): string {
