@@ -13,7 +13,7 @@
     form.get('email')?.touched)){
     <div>
       @if(form.get('email')?.errors?.['required'] ){
-      <p class="error start">{{ 'authlogin.email_required'|translate }}</p>
+      <p class="error start">{{ 'auth.email_required'|translate }}</p>
       } @else if(form.get('email')?.errors?.['pattern'] ){
       <p class="error start">{{ 'auth.email_format'|translate }}</p>
       }
