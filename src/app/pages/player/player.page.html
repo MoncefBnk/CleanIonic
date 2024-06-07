@@ -44,7 +44,7 @@
   <ion-row class="media-buttons">
     <!-- Repeat Song -->
     <ion-col class="left" size="2">
-      <ion-icon name="repeat" class="icon-sides"></ion-icon>
+      <ion-icon name="repeat" class="{{isOnRepeat? 'repeat-active': 'repeat-inactive'}}" (click)="onRepeat()"></ion-icon>
     </ion-col>
     <ion-col class="right" size="2" >
       <ion-icon name="play-skip-back-outline" (click)="skipBackward()" class="icon"></ion-icon>

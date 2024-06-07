@@ -9,6 +9,7 @@ export class MusicService {
 
   private audio: HTMLAudioElement;
   private currentTrack: string = "";
+  private isOnRepeat: BehaviorSubject<boolean>;
   private isPlayingSubject: BehaviorSubject<boolean>;
   private currentTimeSubject: BehaviorSubject<string>;
   private progressSubject: BehaviorSubject<number>;
@@ -27,6 +28,7 @@ export class MusicService {
 
   constructor() {
     this.audio = new Audio();
+    this.isOnRepeat = new BehaviorSubject<boolean>(false);
     this.isPlayingSubject = new BehaviorSubject<boolean>(false);
     this.progressSubject = new BehaviorSubject<number>(0);
     this.currentTimeSubject = new BehaviorSubject<string>('0:00');
@@ -42,12 +44,20 @@ export class MusicService {
       this.isPlayingSubject.next(false);
     });
 
+    this.isOnRepeat.subscribe((isOnRepeat) => {
+      this.audio.loop = isOnRepeat;
+    });
+
+
     this.audio.addEventListener('ended', () => {
       this.isPlayingSubject.next(false);
       this.progressSubject.next(0);
       this.currentTimeSubject.next('0:00');
       this.currentLyricSubject.next('');
-      this.durationSubject.next('0:00');
+      if (this.isOnRepeat.value) {
+        this.audio.currentTime = 0;
+        this.audio.play();
+      }
     });
 
     this.audio.addEventListener('timeupdate', () => {
@@ -57,6 +67,10 @@ export class MusicService {
     this.audio.addEventListener('loadedmetadata', () => {
       this.durationSubject.next(this.formatTime(this.audio.duration));
     });
+  }
+
+  toggleRepeat() {
+    this.isOnRepeat.next(!this.isOnRepeat.value);
   }
 
   play(trackUrl: string) {
@@ -98,6 +112,10 @@ export class MusicService {
 
   getProgress(): Observable<number> {
     return this.progressSubject.asObservable();
+  }
+
+  getIsOnRepeat(): Observable<boolean> {
+    return this.isOnRepeat.asObservable();
   }
 
   getCurrentTime(): Observable<string> {

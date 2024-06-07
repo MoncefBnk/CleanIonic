@@ -87,6 +87,7 @@ export class PlayerPage implements OnInit {
   duration: string = '0:00';
   progress: number = 0;
   currentLyric: string = '';
+  isOnRepeat: boolean = false;
   allLyrics: string = '';
   start_icon: string = 'search';
   image: string = 'assets/icon/logo_mini.png';
@@ -135,8 +136,11 @@ export class PlayerPage implements OnInit {
       this.musicService.getCurrentLyric().subscribe(currentLyric =>{
         this.currentLyric = currentLyric;
       }),
+      this.musicService.getIsOnRepeat().subscribe(isOnRepeat =>{
+        this.isOnRepeat = isOnRepeat;
+      })
     );
-    this.playMusic(this.currentTrack);
+    this.initPlayer();
   }
 
 
@@ -151,6 +155,10 @@ export class PlayerPage implements OnInit {
     }
   }
 
+  initPlayer() {
+    this.musicService.play('assets/songs/Wild_World.mp3');
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
 
@@ -160,7 +168,9 @@ export class PlayerPage implements OnInit {
     this.musicService.onIonChange(event)
   }
 
-
+  onRepeat() {
+    this.musicService.toggleRepeat();
+  }
 
   makeFavorite() {
     this.isFavorite = !this.isFavorite;
