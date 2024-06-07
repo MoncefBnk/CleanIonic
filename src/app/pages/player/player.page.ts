@@ -35,10 +35,14 @@ import {
   shareOutline,
   shareSocialOutline,
   shuffle,
+  chevronExpandOutline,
+  chevronCollapseOutline
 } from 'ionicons/icons';
 import { ISongWithDetails } from "src/app/core/interfaces/song";
 import { MusicService } from 'src/app/core/services/music.service';
 import { Subscription } from 'rxjs';
+import { ModalController } from '@ionic/angular';
+import { ModalShareComponent } from 'src/app/shared/modal-share/modal-share.component';
 
 @Component({
   selector: 'app-player',
@@ -64,6 +68,7 @@ import { Subscription } from 'rxjs';
     CommonModule,
     FormsModule,
     GeneralHeaderComponent,
+    ModalShareComponent
   ],
 })
 export class PlayerPage implements OnInit {
@@ -82,11 +87,12 @@ export class PlayerPage implements OnInit {
   duration: string = '0:00';
   progress: number = 0;
   currentLyric: string = '';
+  allLyrics: string = '';
   start_icon: string = 'search';
   image: string = 'assets/icon/logo_mini.png';
   isExpanded: boolean = false;
 
-  constructor(private route: ActivatedRoute, private musicService: MusicService) {
+  constructor(private route: ActivatedRoute, private musicService: MusicService,private modalController: ModalController) {
     addIcons({
       repeat,
       shareOutline,
@@ -100,6 +106,8 @@ export class PlayerPage implements OnInit {
       shuffle,
       ellipsisHorizontal,
       expand,
+      chevronExpandOutline,
+      chevronCollapseOutline
     });
   }
 
@@ -153,12 +161,11 @@ export class PlayerPage implements OnInit {
     
   }
 
+  onIonChange(event: any) {
+    this.musicService.onIonChange(event)
+  }
 
-onIonChange(event: any) {
-  const value = event.detail.value;
-  const seekTime = (value / 100) * this.audio.duration;
-  this.audio.currentTime = seekTime;
-}
+
 
   makeFavorite() {
     this.isFavorite = !this.isFavorite;
@@ -172,6 +179,16 @@ onIonChange(event: any) {
   }
 
   toggleExpand() {
+    console.log(this.isExpanded);
+    if(!this.isExpanded) {
+      this.allLyrics = this.musicService.getAllLyrics();
+      
+    } else {
+      this.musicService.getCurrentLyric().subscribe(currentLyric =>{
+        this.currentLyric = currentLyric;
+      })
+    }
+
     this.isExpanded = !this.isExpanded;
   }
 
@@ -182,4 +199,12 @@ onIonChange(event: any) {
   skipBackward() {
     this.musicService.skipBackward(30); // Skip backward by 30 seconds
   }
+
+  async openModal(item: any) {
+    const modal = await this.modalController.create({
+      component: ModalShareComponent,
+    });
+    return await modal.present();
+  }
+
 }
