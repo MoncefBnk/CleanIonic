@@ -1,0 +1,29 @@
+{
+  "auth": {
+    "email_required": "Email is required",
+    "email_format": "Invalid email format",
+    "password_required": "Password is required",
+    "password_minSize": "Password must be at least 8 characters long",
+    "password_fromat": "The password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character",
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "reset_password": "Reset password",
+      "login": "Login",
+      "not_registered": "You don't have an account ? Register"
+    },
+    "register":{
+      "email": "Email *",
+      "password": "Password *",
+      "register": "Register",
+      "already_registered": "Already have an account ? Login",
+      "first_name": "First name *",
+      "last_name": "Last name *",
+      "phone_number": "Phone number",
+      "birth_date": "Birth date *"
+    }
+  },
+  "home": {
+    "See all" : "Voir plus"
+  }
+}

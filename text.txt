@@ -1,0 +1,760 @@
+1 //get user
+Explication :
+	Réquete de récupération du user. Elle est appelée si l'inscription afin de stocker toutes les info d'user est valid ou pour rafrechir la page profil user.
+  on put aussi utiliser les données recuperer pour savoir quel champs afficher sur la page settings (entre become artiste ou afficher profile artist, selon la proprietée isArtist)
+
+
+Route de la collection :
+	/user/{_id}
+
+Interfaces de mapping :
+
+  enum EType: {all, song, artist, album}
+
+  Interface ISearch: {
+    id : string;                          //l'id de la recherche effectuée par l'utilisateur
+    type : EType;                        //le type de recherche effectuée par l'utilisateur
+  }
+
+  Interface IUser : {
+	  _id : string;                           //userId auto-généré
+    email : string;                         //l'email de l'utilisateur
+	  firstname : string;                     //le prénom de l'utilisateur
+	  lastName : string;                      //le nom de l'utilisateur
+    dateBirth : timestamp;                  //la date de naissance de l'utilisateur
+	  phoneNumber : string;                   //le numéro de téléphone de l'utilisateur en string pour pouvoir preciser l'indicatif du pays par exemple +33 pour la france
+	  followers : number;                     //le nombre de followers de l'utilisateur
+	  isArtist : boolean;                     //true si l'utilisateur est un artiste, false sinon ce qui permet de gerer l'affichage de soit creation d'artist ou voir profile d'artiste dans l'interface settings
+	  createdAt : timestamp;                  //la date de creation du compte
+    updatedAt : timestamp;                  //la date de la derniere modification du compte
+    lastPlayed : string[]                   //un tableau des id des songs recement jouer
+	  searchHistory?: ISearch[]               //un tableau de recherche contenant clé valeur des spécifité des recherches effectuées par l'utilisateur
+  }
+
+
+
+2 //Recently searched sur la page recherche
+
+Explication :
+	Réquete de récupération des derniere recherche dans search searchHistory dans user. Elle est appelée sur la page search avec un parametre limit
+  et qui retourne les elements les plus rechercher en utilisant le id, et le type
+
+Route de la collection :
+  /user/{userId}  //route pour recuperer toutes les recherche
+  /{EType}/{id}   //route pour afficher les information de la recherche recente (a faire pour les n Derniere recherche celon la limit)
+
+Interfaces de mapping :
+
+  enum EType: {all, song, artist, album}
+
+  Interface ISearch: {
+    id : string;                          //l'id de la recherche effectuée par l'utilisateur
+    type : EType;                         //le type de recherche effectuée par l'utilisateur
+  }
+
+  Interface IUser : {
+	  _id : string;                           //userId auto-généré
+    email : string;                         //l'email de l'utilisateur
+	  firstname : string;                     //le prénom de l'utilisateur
+	  lastName : string;                      //le nom de l'utilisateur
+    dateBirth : timestamp;                  //la date de naissance de l'utilisateur
+	  phoneNumber : string;                   //le numéro de téléphone de l'utilisateur en string pour pouvoir preciser l'indicatif du pays par exemple +33 pour la france
+	  followers : number;                     //le nombre de followers de l'utilisateur
+	  isArtist : boolean;                     //true si l'utilisateur est un artiste, false sinon ce qui permet de gerer l'affichage de soit creation d'artist ou voir profile d'artiste dans l'interface settings
+	  createdAt : timestamp;                  //la date de creation du compte
+    updatedAt : timestamp;                  //la date de la derniere modification du compte
+    lastPlayed : string[]                   //un tableau des id des songs recement jouer
+	  searchHistory?: ISearch[]               //un tableau de recherche contenant clé valeur des spécifité des recherches effectuées par l'utilisateur
+  }
+
+
+  Interface IArtist {
+      _id : string;                           //artistId auto-généré
+      userId : string;                        //userId
+	    artist : string;                        //le nom de l'artiste
+	    label : string;                         //le label de l'artiste
+      description : string;                   //la description de l'artiste
+	    avatar : string;                        //l'url de l'avatar de l'artiste
+	    searchScore : number;                   //le score de recherche de l'artiste
+	    followers : number;                     //le nombre de followers de l'artiste
+	    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+	    createdAt : timestamp;                  //la date de creation de l'artiste
+      updatedAt : timestamp;                  //la date de la derniere modification de l'artist
+      albums: string[];                       //un tableau contenant les id des albums de l'artiste
+    }
+
+  enum ECateg {'rock', 'rap', 'jazz', 'r&b'}
+
+  Interface IAlbum {
+    _id : string;                           //albumId auto-généré
+    title : string;                         //le titre de l'album
+    artistId : string;                      //artistId
+    releaseDate : timestamp;                //la date de sortie de l'album
+	  cover : string;                         //l'url de la cover de l'album
+    searchScore : number;                   //le score de recherche de l'album
+	  category : ECateg;                      //la catégorie de l'album
+	  lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+	  createdAt : timestamp;                  //la date de creation de l'album
+    updatedAt : timestamp;                  //la date de la derniere modification de l'album
+	  song: string[];                         //un tableau contenant les id des songs de l'album
+  }
+
+
+  Interface ISong {
+    id : string;                           // idSong auto-généré
+    title : string;                         // titre du song
+    duration : number;                      // durée du song en seconde
+    cover : string;                         // url de la cover du song
+    fileUrl : string;                       // url du fichier audio du song
+    artistId : string;                      // artistId
+    albumId: string;                        // albumId
+    createdAt : timestamp;                  //la date de creation du song
+    updatedAt : timestamp;                  //la date de la derniere modification du song
+    searchScore: number;                    //le score de recherche du song
+    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+  }
+
+
+
+3 //lastplayed
+Explication :
+	Réquete de récupération l'id des dernier song dans lastPlayed du user. Elle est appelée sur la page home avec un parametre limit
+  et qui retourne une liste de song
+
+
+Route de la collection :
+	/user/{_id}
+  /song/{id}
+
+  Interface ISearch: {
+      id : string;                          //l'id de la recherche effectuée par l'utilisateur
+      type : EType;                         //le type de recherche effectuée par l'utilisateur
+    }
+
+  Interface IUser : {
+	  _id : string;                           //userId auto-généré
+    email : string;                         //l'email de l'utilisateur
+	  firstname : string;                     //le prénom de l'utilisateur
+	  lastName : string;                      //le nom de l'utilisateur
+    dateBirth : timestamp;                  //la date de naissance de l'utilisateur
+	  phoneNumber : string;                   //le numéro de téléphone de l'utilisateur en string pour pouvoir preciser l'indicatif du pays par exemple +33 pour la france
+	  followers : number;                     //le nombre de followers de l'utilisateur
+	  isArtist : boolean;                     //true si l'utilisateur est un artiste, false sinon ce qui permet de gerer l'affichage de soit creation d'artist ou voir profile d'artiste dans l'interface settings
+	  createdAt : timestamp;                  //la date de creation du compte
+    updatedAt : timestamp;                  //la date de la derniere modification du compte
+    lastPlayed : string[]                   //un tableau des id des songs recement jouer
+	  searchHistory?: ISearch[]               //un tableau de recherche contenant clé valeur des spécifité des recherches effectuées par l'utilisateur
+  }
+
+  Interface ISong {
+    id : string;                           // idSong auto-généré
+    title : string;                         // titre du song
+    duration : number;                      // durée du song en seconde
+    cover : string;                         // url de la cover du song
+    fileUrl : string;                       // url du fichier audio du song
+    artistId : string;                      // artistId
+    albumId: string;                        // albumId
+    createdAt : timestamp;                  //la date de creation du song
+    updatedAt : timestamp;                  //la date de la derniere modification du song
+    searchScore: number;                    //le score de recherche du song
+    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+  }
+
+
+4 //playlists d'un utilisateur
+
+Explication :
+	Réquete de récupération toutes les playlist d'un utilisateur elle est appeler sur la page playlist et profile d'utilisateur, elle prends en param le id du user et elle retournes toutes ses playlists
+
+Route de la collection :
+	/user/{_id}/playlist
+
+Interfaces de mapping :
+
+Interface IPlaylist: {
+		_id : string;                         //playlistId auto-généré
+		name : string;                        //le nom de la playlist
+		createdAt : timestamp;                //la date de creation de la playlist
+    updatedAt : timestamp;                //la date de la derniere modification de la playlist
+		song :  string[];                    //un tableau contenant les id des songs de la playlist
+}
+
+
+
+5 //toutes les songs d'une playlist
+
+Explication :
+  Requette pour recuperer toutes les songs a l'interieur d'une playliste, elle prends en parametre l'id de la playlist et retroune une liste d'id de song
+  qui est utiliser ensuite pour recuperer toutes les infos des songs la playlist
+
+Route de la collection :
+/playlist/{id}
+/song/{id}
+
+
+Interfaces de mapping :
+
+Interface IPlaylist: {                    //une sous collection playlist
+		_id : string;                         //playlistId auto-généré
+		name : string;                        //le nom de la playlist
+		createdAt : timestamp;                //la date de creation de la playlist
+    updatedAt : timestamp;                //la date de la derniere modification de la playlist
+		song :  string[];                    //un tableau contenant les id des songs de la playlist
+  }
+
+Interface ISong {
+    id : string;                           // idSong auto-généré
+    title : string;                         // titre du song
+    duration : number;                      // durée du song en seconde
+    cover : string;                         // url de la cover du song
+    fileUrl : string;                       // url du fichier audio du song
+    artistId : string;                      // artistId
+    albumId: string;                        // albumId
+    createdAt : timestamp;                  //la date de creation du song
+    updatedAt : timestamp;                  //la date de la derniere modification du song
+    searchScore: number;                    //le score de recherche du song
+    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+  }
+
+
+6 //song player
+
+Explication :
+	Réquete de récupération du song qui est jouer, prends comme parametre id du song et retourne toutes les infos relatifs a ce dernier.
+
+Route de la collection :
+	/song/{id}
+
+Interface ISong {
+    id : string;                           // idSong auto-généré
+    title : string;                         // titre du song
+    duration : number;                      // durée du song en seconde
+    cover : string;                         // url de la cover du song
+    fileUrl : string;                       // url du fichier audio du song
+    artistId : string;                      // artistId
+    albumId: string;                        // albumId
+    createdAt : timestamp;                  //la date de creation du song
+    updatedAt : timestamp;                  //la date de la derniere modification du song
+    searchScore: number;                    //le score de recherche du song
+    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+  }
+
+
+7 //all artists
+
+Explication :
+	Requette de récupération de tous les artists. Elle est appelée sur la page all artist.
+  elle est appeler avec un paramettre limit et start end afin de faire un scroll infini
+
+Route de la collection :
+	/artist?{limit}{start}{end}
+
+Interfaces de mapping :
+
+    Interface IArtist {
+      _id : string;                           //artistId auto-généré
+      userId : string;                        //userId
+	    artist : string;                        //le nom de l'artiste
+	    label : string;                         //le label de l'artiste
+      description : string;                   //la description de l'artiste
+	    avatar : string;                        //l'url de l'avatar de l'artiste
+	    searchScore : number;                   //le score de recherche de l'artiste
+	    followers : number;                     //le nombre de followers de l'artiste
+	    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+	    createdAt : timestamp;                  //la date de creation de l'artiste
+      updatedAt : timestamp;                  //la date de la derniere modification de l'artist
+      albums: string[];                       //un tableau contenant les id des albums de l'artiste
+    }
+
+
+8 //all albums d'un artist
+
+Explication :
+	Requette de récupération de tous les album d'un artist. Elle est appelée sur la profile artist.
+  Elle est appeler selon l'id de l'artist et un paramettre limit, start end afin de faire un scroll infini si on click sur see all
+
+Route de la collection :
+	/album/{idArtist}?{limit}{start}{end}
+
+Interfaces de mapping :
+
+    enum ECateg {'rock', 'rap', 'jazz', 'r&b'}
+
+    Interface IAlbum {
+      _id : string;                           //albumId auto-généré
+      title : string;                         //le titre de l'album
+      artistId : string;                      //artistId
+      releaseDate : timestamp;                //la date de sortie de l'album
+	    cover : string;                         //l'url de la cover de l'album
+      searchScore : number;                   //le score de recherche de l'album
+	    category : ECateg;                      //la catégorie de l'album
+	    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+	    createdAt : timestamp;                  //la date de creation de l'album
+      updatedAt : timestamp;                  //la date de la derniere modification de l'album
+	    song: string[];                         //un tableau contenant les id des songs de l'album
+
+    }
+
+
+9 //all albums
+
+Explication :
+	Requette de récupération de tous les album d'un artist. Elle est appeler en allant sur see all de top album ou en selectionnat album sans faire de recherche sur la search page .
+  Elle est appeler selon avec les paramettres limit, start end afin de faire un scroll infini
+
+Route de la collection :
+	/album?{limit}{start}{end}
+
+Interfaces de mapping :
+
+    enum ECateg {'rock', 'rap', 'jazz', 'r&b'}
+
+    Interface IAlbum {
+      _id : string;                           //albumId auto-généré
+      title : string;                         //le titre de l'album
+      artistId : string;                      //artistId
+      releaseDate : timestamp;                //la date de sortie de l'album
+	    cover : string;                         //l'url de la cover de l'album
+      searchScore : number;                   //le score de recherche de l'album
+	    category : ECateg;                      //la catégorie de l'album
+	    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+	    createdAt : timestamp;                  //la date de creation de l'album
+      updatedAt : timestamp;                  //la date de la derniere modification de l'album
+	    song: string[];                         //un tableau contenant les id des songs de l'album
+
+    }
+
+10 //all songs
+
+Explication :
+	Requette de récupération de tous les song. Elle est appeler en allant sur see all de top album ou en selectionnat album sans faire de recherche sur la search page .
+  Elle est appeler selon avec les paramettres limit, start end afin de faire un scroll infini
+
+Route de la collection :
+	/song
+
+Interface ISong {
+    id : string;                           // idSong auto-généré
+    title : string;                         // titre du song
+    duration : number;                      // durée du song en seconde
+    cover : string;                         // url de la cover du song
+    fileUrl : string;                       // url du fichier audio du song
+    artistId : string;                      // artistId
+    albumId: string;                        // albumId
+    createdAt : timestamp;                  //la date de creation du song
+    updatedAt : timestamp;                  //la date de la derniere modification du song
+    searchScore: number;                    //le score de recherche du song
+    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+  }
+
+
+11 //top artist
+
+Explication :
+	Réquete de récupération des top artists. Elle est appelée sur la page Home.
+  Elle prendra un paramètre limit et sera fait en fonction des champs lastUpdatedSearchScore
+  et searchScore. Par exemple on récupéra les artistes les plus recents recherchés par
+  les utilisateurs de l'application sur une période de 3 jours via le champ searchScore.
+
+Route de la collection :
+	/artist
+
+
+Interfaces de mapping :
+
+    Interface IArtist {
+      _id : string;                           //artistId auto-généré
+      userId : string;                        //userId
+	    artist : string;                        //le nom de l'artiste
+	    label : string;                         //le label de l'artiste
+      description : string;                   //la description de l'artiste
+	    avatar : string;                        //l'url de l'avatar de l'artiste
+	    searchScore : number;                   //le score de recherche de l'artiste
+	    followers : number;                     //le nombre de followers de l'artiste
+	    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+	    createdAt : timestamp;                  //la date de creation de l'artiste
+      updatedAt : timestamp;                  //la date de la derniere modification de l'artist
+      albums: string[];                       //un tableau contenant les id des albums de l'artiste
+    }
+
+
+
+12 //top album
+
+Explication :
+	Réquete de récupération des top albums. Elle est appelée sur la page Home.
+  Elle prendra un paramètre limit et sera fait en fonction des champs lastUpdatedSearchScore
+  et searchScore. Par exemple on récupéra les albums les plus recents recherchés par
+  les utilisateurs de l'application sur une période de 3 jours via le champ searchScore.
+
+Route de la collection :
+	/album
+
+
+Interfaces de mapping :
+
+    enum ECateg {'rock', 'rap', 'jazz', 'r&b'}
+
+    Interface IAlbum {
+      _id : string;                           //albumId auto-généré
+      title : string;                         //le titre de l'album
+      artistId : string;                      //artistId
+      releaseDate : timestamp;                //la date de sortie de l'album
+	    cover : string;                         //l'url de la cover de l'album
+      searchScore : number;                   //le score de recherche de l'album
+	    category : ECateg;                      //la catégorie de l'album
+	    lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+	    createdAt : timestamp;                  //la date de creation de l'album
+      updatedAt : timestamp;                  //la date de la derniere modification de l'album
+	    song: string[];                         //un tableau contenant les id des songs de l'album
+
+    }
+
+
+13 //top song
+
+Explication :
+	Réquete de récupération des top songs. Elle est appelée sur la page Home.
+  Elle prendra un paramètre limit et sera fait en fonction des champs lastUpdatedSearchScore
+  et searchScore. Par exemple on récupéra les songs les plus recents recherchés par
+  les utilisateurs de l'application sur une période de 3 jours via le champ searchScore.
+
+Route de la collection :
+	/song
+
+
+Interfaces de mapping :
+
+?????????????????????????????????????????????????????????????????????????????????????????????????????????
+
+
+
+
+Action : Bouton login
+
+Comportement: Ce bouton ne peut être utilisé qu'après avoir rentré des informations de connexion correct, une fois appuyé, Ce bouton permet de s'authentifier et soit retourne un token d'authentification et emmene vers la page d'accueil, soit retourne une erreur qui indique le problème arrivé lors de l'authentification
+
+
+
+//
+
+Action : Mot de passe oublié
+
+Comportement: ce bouton permet d'ouvrir une modale ou l'utilisateur peut entrer son e-mail, si ce mail existe dans la base de données, il recevra un code qui lui permettra ensuite de réinitialiser son mot de passe
+
+
+//
+
+Action : Vous n'avez pas de compte ? S'inscrire
+
+Comportement : Ce bouton permet aux utilisateurs qui n'ont pas encore de compte pour s'authentifier d'aller sur une page qui leur permet de rentrer les informations nécessaires à la création du compte
+
+
+//
+
+
+Action : Register
+
+Comportement: Une fois toutes les informations nécessaires rempli Ce bouton là exécute une fonction qui va créer un utilisateur dans la base de données. Et ce dernier pourra ensuite s'authentifier avec les informations qu'il a rempli auparavant.
+
+
+//
+
+
+Action : Vous avez déjà un compte ? Se connecter
+
+Comportement : Ce bouton permet aux utilisateurs qui ont déjà un compte d'aller sur la page d'authentification et de rentrer les informations nécessaires à la connexion
+
+
+//
+
+
+Action : Bouton recherche Page d'accueil
+
+Comportement : Ce bouton emmène directement sur la page de recherche sans paramètres et sans effectuer de requête vers la base de données.
+
+
+
+//
+
+
+Action : Button see all sur Top Songs :
+
+Comportement : Ce bouton Emmène sur la page de recherche Avec un paramètre Song, ainsi qu'un classement selon le nombre de recherches, ainsi que la date de la dernière recherche. Il y aura Toutes les chansons classées par ces critères-là.
+
+
+//
+
+Action : Top Song
+
+Comportement :  En cliquant sur un top Song, ça le lance directement sur le lecteur de musique, en faisant une requête à la base de données Firestore afin de récupérer les informations relatifs à la chanson ainsi que le stream a partir de son id
+
+//
+
+Action : see all sur last played
+
+Comportement : On appuyant sur ce bouton, on récupère tous les ID depuis la liste lastPlayed sur le user, et ça nous emmène sur une page qui nous affichera toutes les chansons avec ces id
+
+//
+
+Action : click on Last Played song
+
+Comportement :  En cliquant sur un last played Song, ça le lance directement sur le lecteur de musique, en faisant uen requête à la base de données Firestore afin de récupérer les informations relatifs à la chanson ainsi que le stream a partir de son id
+
+//
+
+Action : see all top album
+
+Comportement : Ce bouton Emmène sur la page de recherche Avec un paramètre Album, ainsi qu'un classement selon le nombre de recherches, ainsi que la date de la dernière recherche. Il y aura Tout les albums classées par ces critères-là.
+
+//
+
+
+Action : click on top album
+
+Comportement : Ce bouton Emmène sur la page De l'album avec toutes les chansons qui sont dedans qui sont récupérées à partir des id dans la liste Songs du document album
+
+//
+
+Action : see all top artist
+
+Comportement : Ce bouton Emmène sur la page de recherche Avec un paramètre artist, ainsi qu'un classement selon le nombre de recherches, ainsi que la date de la dernière recherche. Il y aura Tout les artists classées par ces critères-là.
+
+//
+Action : click top artist
+
+Comportement : Ce bouton Emmène sur la page De l'artiste avec tout les albums qui sont appartiennent a cet artist qui sont récupérées à partir des id dans la liste Albums du document album
+
+
+//
+
+Action : Bouton playlist sur la NavBar
+
+Comportement : Ce bouton permet de naviguer vers une page de toutes les playlists de l'utilisateur. Il les récupère à partir d'une sous-collection playlist propre à chaque utilisateur où on a les informations de la playlist ainsi qu'une liste d'Id, des chansons qui sont inclus dans celle-ci.
+
+//
+
+Action : Bouton profil sur la NavBar
+
+Comportement : Ce bouton permet de naviguer vers la page profil où il y aura toutes les informations de l'utilisateur ( ou de l'artiste, selon la sélection dans les paramètres de l'application )
+
+//
+
+Action : Bouton favori sur la NavBar (rajout d'une page favoris)
+
+Comportement: Ce bouton permet de naviguer vers la page de favoris où il y aura toutes les chansons favoris par l'utilisateur en cours, elles seront récupérées à partir des Id qui sont stockées dans une liste favoris propre à chaque utilisateur
+
+//
+
+
+Action : Les trois points sur la page playlist dans le header
+
+Comportement: Il permet d'afficher un menu avec un bouton rafraîchir qui permet de rafraîchir les playlists et de vérifier si on a des nouvelles
+
+
+//
+
+Action : Cliquer sur la playlist
+
+Comportement : En cliquant sur une playlist, ça nous permet de naviguer vers une page où il y aura une liste de toutes les chansons de cette playlist qui sont récupérées à partir des Id stockées dans cette dernière
+
+//
+
+Action: Le bouton Share sur une playlist
+
+Comportement : Ce bouton permet d'afficher un menu avec une option de partage sur les réseaux
+
+//
+
+
+Action : Les trois points propres à chaque playlist
+
+Comportement : En cliquant sur ce button la, on aura un menu avec un bouton suppression pour supprimer la playlist, en cliquant sur ce dernier, une modèle s'ouvre afin de confirmer ce choix ou de l'annuler
+
+
+//
+
+Action : Bouton paramètre sur la page de profil
+
+Comportement : Ce bouton, il permet de naviguer vers la page des paramètres
+
+//
+
+Action : Bouton Account (a supprimer ?)
+
+Comportement : Ce bouton permet d'aller sur une page pour modifier les informations du profil
+
+//
+
+Action: Bouton de vérification d'e-mail
+
+Comportement: Ce bouton permet d'ouvrir une modale ou l'utilisateur peut entrer son adresse mail, afin de recevoir un mail de vérification pour vérifier cette dernière
+
+//
+
+Action : Bouton de changement, de compte vers artiste ou utilisateur
+
+Comportement : Ce bouton permet de changer le paramètre du compte affiché en allant sur la page profil pour avoir soit le profil utilisateur, soit le profil artiste. Il est affiché seulement, si l'utilisateur est un artiste (la propriété isArtist est à true)
+
+//
+
+Action : Bouton de changement de langue
+
+Comportement : Ce bouton permet d'ouvrir une modale, afin de pouvoir choisir la langue De l'application
+
+//
+
+Action : Bouton devenir à artiste
+
+Comportement : Ce bouton permet d'ouvrir une modale afin de remplir les informations nécessaires pour être artiste, Il n'est affiché que si l'utilisateur n'est pas artiste (la propriété isArtist est à false)
+
+
+//
+
+Action : bouton Logout
+
+Comportement : Ce bouton permet de se déconnecter et de supprimer toutes les informations dans le local Storage
+
+//
+
+Action : Bouton delete account
+
+Comportement : Ce bouton permet de supprimer le compte (mettre la propriété isActive a false)
+
+//
+
+Action : see all albums sur le profile artist
+
+Comportement : Ce bouton permet de naviguer sur une page qui permet de voir tous les albums de cet artiste-là, à partir des id stocker dans la liste albums de cette artiste
+
+//
+
+Action : La barre de recherche
+
+Comportement : Cette barre de recherche permet d'effectuer une recherche sur un artiste ou un album ou un Song Par nom, Et en utilisant les filtres qui sont sélectionnés en bas, par défaut, ça fait une recherche sur All
+
+//
+
+Action : Les filtres sur la page recherche
+
+Comportement: Permet de spécifier type de la recherche dans quelle collection elle se fait
+
+//
+
+Action : Most seached
+
+Comportement : Permet d'afficher les éléments les plus recherchés que ce soit album, artiste ou Song par rapport à l'attribut searchScore et lastUpdatedSearchScore, En appuyant sur un élément Si c'est une chanson fait la lance directement sur le player. Si c'est un artiste, ça affiche une liste de tous ces albums. Si c'est un album ça affiche une liste de toutes les chansons qui sont dedans.
+
+
+//
+
+Action : Le bouton X (suppression d'éléments de l'historique)
+
+Comportement : Ce bouton permet de supprimer l'ID de l'élément de la liste d'historique
+
+//
+
+Action : recently searched
+
+Comportement : Affiche tous les éléments récemment recherché par l'utilisateur À partir d'une liste d'id et type qui permet de spécifier l'emplacement de la recherche Stockée dans Tableau d'éléments searchHistory
+
+//
+
+Action : Bouton Play
+
+Comportement: Ce bouton permet de mettre en pause ou de lancer la musique qui est en cours
+
+
+//
+Action : Bouton suivant
+
+Comportement : Ce bouton permet de lancer la musique suivante dans la liste des ID de musique que soit dans la playlist ou dans l'album
+
+//
+
+Action : Bouton retour
+
+Comportement : Ce bouton permet de lancer la musique précédente dans la liste des ID et des musiques, que soit dans playlist ou dans l'album
+
+
+//
+
+Action : Bouton rejouer
+
+Comportement: Si ce bouton est activé, la musique est en train de jouer se jouera en boucle dès qu'elle se termine
+
+//
+
+Action : Bouton shuffle
+
+Comportement : Quand ce bouton est activé, il joue les chansons dans un ordre différent de celui duquel les id sont stockées dans la liste, soit de playlist soit album
+
+
+
+
+// //Structure de la base de données
+
+// user [] : //Collection users
+// 	_id : string;                           //userId auto-généré
+//   email : string;                         //l'email de l'utilisateur
+// 	firstname : string;                     //le prénom de l'utilisateur
+// 	lastName : string;                      //le nom de l'utilisateur
+//   dateBirth : timestamp;                  //la date de naissance de l'utilisateur
+// 	phoneNumber : string;                   //le numéro de téléphone de l'utilisateur en string pour pouvoir preciser l'indicatif du pays par exemple +33 pour la france
+// 	followers : number;                     //le nombre de followers de l'utilisateur
+// 	isArtist : boolean;                     //true si l'utilisateur est un artiste, false sinon ce qui permet de gerer l'affichage de soit creation d'artist ou voir profile d'artiste dans l'interface settings
+// 	createdAt : timestamp;                  //la date de creation du compte
+//   updatedAt : timestamp;                  //la date de la derniere modification du compte
+//   lastPlayedSong : string[];                //l'id du dernier song joué par l'utilisateur
+// 	searchHistory []:                       //un tableau de recherche contenant clé valeur des spécifité des recherches effectuées par l'utilisateur
+//     id : string;                          //l'id de la recherche effectuée par l'utilisateur
+//     type : string;                        //le type de recherche effectuée par l'utilisateur
+// 	playlist []:                            //une sous collection playlist
+// 		_id : string;                         //playlistId auto-généré
+// 		name : string;                        //le nom de la playlist
+// 		createdAt : timestamp;                //la date de creation de la playlist
+//     updatedAt : timestamp;                //la date de la derniere modification de la playlist
+// 		song :  string[];                    //un tableau contenant les id des songs de la playlist
+
+// artist [] :                               //Collection artists
+// 	_id : string;                           //artistId auto-généré
+//   userId : string;                        //userId
+// 	artist : string;                        //le nom de l'artiste
+// 	label : string;                         //le label de l'artiste
+//   description : string;                   //la description de l'artiste
+// 	avatar : string;                        //l'url de l'avatar de l'artiste
+// 	searchScore : number;                   //le score de recherche de l'artiste
+// 	followers : number;                     //le nombre de followers de l'artiste
+// 	lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+// 	createdAt : timestamp;                  //la date de creation de l'artiste
+//   updatedAt : timestamp;                  //la date de la derniere modification de l'artiste
+//   albums: string[];                       //un tableau contenant les id des albums de l'artiste
+
+
+// album [] :                                //Collection albums
+// 	_id : string;                           //albumId auto-généré
+//   title : string;                         //le titre de l'album
+//   artistId : string;                      //artistId
+//   releaseDate : timestamp;                //la date de sortie de l'album
+// 	cover : string;                         //l'url de la cover de l'album
+//   searchScore : number;                   //le score de recherche de l'album
+// 	category : string;                      //la catégorie de l'album
+// 	lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche
+// 	createdAt : timestamp;                  //la date de creation de l'album
+//   updatedAt : timestamp;                  //la date de la derniere modification de l'album
+// 	song: string[];                        //un tableau contenant les id des songs de l'album
+
+
+
+// song [] :
+//   _id : string;                           // idSong auto-généré
+//   title : string;                         // titre du song
+//   duration : number;                      // durée du song en seconde
+//   cover : string;                         // url de la cover du song
+//   fileUrl : string;                       // url du fichier audio du song
+//   artistId : string;                      // artistId
+//   albumId: string;                        // albumId
+//   createdAt : timestamp;                  //la date de creation du song
+//   updatedAt : timestamp;                  //la date de la derniere modification du song
+//   searchScore: number;                    //le score de recherche du song
+//   lastUpdatedSearchScore : timestamp;     //la date de la derniere mise à jour du score de recherche

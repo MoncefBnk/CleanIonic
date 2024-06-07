@@ -1,0 +1,189 @@
+.ion-content-player {
+  --background: rgb(83, 113, 105);
+  --background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgb(83, 113, 105) 120%
+  );
+
+  .song-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #171621;
+  }
+  .song-subtitle {
+    font-size: 1.125rem;
+    display: block;
+    color: #404040;
+  }
+  .range {
+    padding-inline: 1rem;
+  }
+
+  .song-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 1.25rem;
+    height: 23.125rem;
+    width: 23.125rem;
+  }
+
+  .song-image ion-img {
+    border-radius: 1.8125rem;
+    overflow: hidden;
+  }
+
+  ion-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 1rem;
+  }
+
+  .media-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 1rem;
+  }
+  .song-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 1.5rem;
+    padding-top: 0;
+  }
+
+  .icons-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .share-icon,
+  .heart-icon-fav,
+  .heart-icon {
+    font-size: 2em;
+    margin-left: 0.5rem;
+  }
+
+  .heart-icon {
+    color: #171621;
+  }
+
+  .heart-icon-fav {
+    color: #ff0000;
+  }
+  .repeat-active {
+    color: #15ab90;
+    font-size: 2em;
+    margin-left: 0.5rem;
+  }
+  .repeat-inactive {
+    color: #a3a3a3;
+    font-size: 2em;
+    margin-left: 0.5rem;
+  }
+
+  .share-icon {
+    color: #404040;
+  }
+
+  ion-icon.icon {
+    font-size: 2em;
+    margin: 0 0.625rem;
+  }
+  ion-icon.icon-play {
+    font-size: 4em;
+    margin: 0 0.625rem;
+    color: #15ab90;
+  }
+
+  ion-icon.icon-sides {
+    font-size: 2em;
+    margin: 0 0.625rem;
+    color: #a3a3a3;
+  }
+
+  .lyrics-card {
+    padding: 0rem;
+    height: 21em;
+    background-color: #f4f4f4;
+    border-radius: 1rem;
+  }
+
+  .lyrics-card ion-card-content {
+    padding: 1.5rem;
+    font-size: 1rem !important;
+    color: #333;
+    max-height: 100%; /* Ensure it doesn't exceed the card height */
+    overflow: auto; /* Enable scrolling */
+  }
+
+  .lyrics-card ion-card-content p {
+    font-size: 1.0625rem;
+  }
+
+  .lyrics-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: bold !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .lyrics-icon {
+    font-size: 1.5rem;
+    color: #171621;
+    padding-bottom: 1rem !important;
+    cursor: pointer;
+  }
+
+  .expanded .lyrics-card {
+    height: 94vh;
+  }
+
+  .time {
+    padding-inline: 1rem;
+    font-size: 1rem;
+    font-weight: lighter;
+    color: #404040;
+    text-align: center;
+    width: 4rem;
+  }
+}
+
+ion-col {
+  padding: 0;
+  font-weight: bold;
+}
+
+.transparent-header {
+  --background: transparent;
+  --box-shadow: none;
+  --border-color: transparent;
+  padding: 1rem 1rem;
+
+  ion-toolbar {
+    --ion-color-base: transparent;
+  }
+
+  ion-title {
+    color: white;
+  }
+
+  ion-icon {
+    color: white;
+  }
+  ion-back-button {
+    color: white;
+  }
+
+  ion-back-button::part(icon) {
+    font-size: 1.5rem;
+  }
+}

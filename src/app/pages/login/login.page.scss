@@ -1,0 +1,63 @@
+app-login{
+  width: 100%;
+}
+ion-content::part(background) {
+  background: rgb(122,111,249);
+  background: linear-gradient(180deg, rgba(122,111,249,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%);
+}
+ion-grid {
+  height: 100%;
+
+  ion-row {
+    height: 7%;
+  }
+}
+.logo{
+  padding: 25% 0;
+}
+form{
+  padding: 5% 5%;
+  text-align: center;
+  ion-list{
+    padding: 5%;
+    .input-label{
+      color: #A3A3A3;
+      text-align: left;
+      font-size:  0.875rem;
+    }
+    ion-item{
+      --background: transparent;
+      border : 0.063rem solid #E5E5E5;
+      ion-input{
+        --placeholder-color: #A3A3A3;
+        border-color: transparent;
+        background-color: transparent;
+      }
+    }
+
+
+  }
+  ion-button{
+    --color: white;
+    --background: #15AB90;
+    padding: 5%;
+  }
+  a{
+    font-size: 0.875rem;
+    display: block;
+    color: #15AB90;
+    text-decoration:none
+  }
+  .bg-transparent {
+    background: transparent;
+  }
+
+}
+.password-modal{
+  --width: fit-content;
+  --min-width: 250px;
+  --height: fit-content;
+  --border-radius: 6px;
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+

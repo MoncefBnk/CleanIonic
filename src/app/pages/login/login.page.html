@@ -1,0 +1,61 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" style="padding-top: 35%">
+  <ion-list class="bg-transparent">
+    <p class="input-label">{{ 'auth.login.email'|translate }}</p>
+    <ion-item>
+      <ion-input
+        type="email"
+        formControlName="email"
+        name="email"
+        placeholder="exemple@exemple.com"
+      ></ion-input>
+    </ion-item>
+    @if(form.get('email')?.invalid && (form.get('email')?.dirty ||
+    form.get('email')?.touched)){
+    <div>
+      @if(form.get('email')?.errors?.['required'] ){
+      <p class="error start">{{ 'authlogin.email_required'|translate }}</p>
+      } @else if(form.get('email')?.errors?.['pattern'] ){
+      <p class="error start">{{ 'auth.email_format'|translate }}</p>
+      }
+    </div>
+    }
+    <p class="input-label">{{ 'auth.login.password'|translate }}</p>
+    <ion-item>
+      <ion-input
+        type="{{ showPassword ? 'text' : 'password' }}"
+        formControlName="password"
+        name="password"
+        placeholder="••••••••••••••"
+      ></ion-input>
+      <ion-icon
+        size="small"
+        name="{{ showPassword ? 'eye-off-outline' : 'eye-outline' }}"
+        slot="end"
+        (click)="togglePasswordVisibility()"
+      ></ion-icon>
+    </ion-item>
+    @if(form.get('password')?.invalid && (form.get('password')?.dirty ||
+    form.get('password')?.touched)){
+    <div>
+      @if(form.get('password')?.errors?.['required'] ){
+      <p class="error start">{{ 'auth.password_required'|translate }}</p>
+      } @else if(form.get('password')?.errors?.['pattern'] ){
+      <p class="error start">{{ 'auth.password_fromat'|translate }}</p>
+      } @else if(form.get('password')?.errors?.['minlength'] ){
+      <p class="error start">{{ 'auth.password_minSize'|translate }}</p>
+      }
+    </div>
+    }
+    <br />
+    <a class="start" (click)="onPasswordLostModal()"
+      >{{ 'auth.login.reset_password'|translate }}</a
+    >
+  </ion-list>
+  @if(error){
+  <p class="error">{{ error }}</p>
+  }
+  <ion-button type="submit" [disabled]="!form.valid && !submitForm"
+    >{{ 'auth.login.login'|translate }}</ion-button
+  >
+  <a href="/auth/register">{{ 'auth.login.not_registered'|translate }}</a>
+</form>

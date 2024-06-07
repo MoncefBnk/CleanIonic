@@ -1,0 +1,24 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button>
+      @if (image) {
+        <ion-img  class="logo" src="assets/icon/logo_mini.png" alt="SpotyMike"></ion-img>
+      }
+      @else{
+
+        @if(backbutton){
+          <ion-back-button defaultHref="/home" style="color:grey;"  icon="arrow-back"></ion-back-button>
+        }@else {
+          <ion-icon slot="icon-only" [name]="startIcon"></ion-icon>
+        }
+
+      }
+    </ion-button>
+  </ion-buttons>
+  <ion-buttons slot="end">
+    <ion-button>
+      <ion-icon slot="icon-only" style="color: grey;" [name]="endIcon"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-title style="color: grey;" class="text-base  font-bold">{{title}}</ion-title>
+</ion-toolbar>

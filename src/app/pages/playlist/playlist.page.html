@@ -1,0 +1,9 @@
+<app-general-header  [endIcon] ="end_icon" [title] ="title" ></app-general-header>
+
+<ion-content  class="ion-padding">
+  <ion-item>
+    <ion-label>Total : {{ playlists ? playlists.length : 0 }}</ion-label>
+  </ion-item>
+  <app-horizontal2-card [playlists] = "playlists"></app-horizontal2-card>
+  
+</ion-content>

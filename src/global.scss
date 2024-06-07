@@ -1,3 +1,8 @@
+@import 'tailwindcss/base';
+
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------
@@ -35,3 +40,65 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+
+/* Global CSS */
+.start {
+  text-align: start;
+}
+:root {
+  --tab-icon-color: #B7B7B7; /* Inactive color */
+  --tab-icon-color-selected: #15AB90; /* Active color */
+  --ion-color-primary: #15AB90;
+}
+
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+img {
+  max-width: 100%;
+}
+.text-white {
+  color: #ffffff; /* White color */
+}
+
+
+ion-tab-button {
+  color: var(--tab-icon-color);
+
+  &.tab-selected {
+    color: var(--tab-icon-color-selected);
+  }
+}
+
+ion-icon {
+  color: inherit;
+}
+
+
+ion-button {
+  text-transform: none;
+}
+.error {
+  color: red;
+  font-size: 0.75rem;
+}
+
+ion-modal {
+  --height:  50%;
+  --max-height : 90%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal::part(backdrop) {
+  background: rgba(209, 213, 219);
+  opacity: 1;
+}
+

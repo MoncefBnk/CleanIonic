@@ -1,0 +1,22 @@
+
+.ion-content-login {
+  --background: rgb(255,255,255);
+  --background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(122,111,249,1) 100%);
+
+  .logo {
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-top: 25%;
+  }
+}
+
+.ion-content-register {
+  --background: rgb(255,255,255);
+  --background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 75%, rgba(122,111,249,1) 100%);
+
+  .logo {
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-top: 25%;
+  }
+}
