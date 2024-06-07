@@ -146,7 +146,8 @@ export class PlayerPage implements OnInit {
   }
 
   getLyric(currentTime: number): string {
-    const timeIntervals = [
+    if(this.isExpanded==false ){
+      const timeIntervals = [
       { start: 0, end: 11, lyric: this.lyrics[0] },
       { start: 12, end: 39, lyric: this.lyrics[1] },
       { start: 40, end: 64, lyric: this.lyrics[2] },
@@ -163,7 +164,12 @@ export class PlayerPage implements OnInit {
     }
 
     return '[instruments playing]';
+  }else {
+    //return all the lyrics if the player is expanded
+    return this.lyrics.join('\n');
   }
+}
+
 
   formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
