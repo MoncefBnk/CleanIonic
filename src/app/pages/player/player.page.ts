@@ -37,8 +37,6 @@ import {
   shareOutline,
   shareSocialOutline,
   shuffle,
-  chevronExpandOutline,
-  chevronCollapseOutline
 } from 'ionicons/icons';
 import { ISongWithDetails } from "src/app/core/interfaces/song";
 import { MusicService } from 'src/app/core/services/music.service';
