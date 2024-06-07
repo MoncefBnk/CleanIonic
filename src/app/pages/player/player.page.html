@@ -45,7 +45,7 @@
       <ion-icon name="repeat" class="icon-sides"></ion-icon>
     </ion-col>
     <ion-col class="right" size="2">
-      <ion-icon name="play-skip-back-outline" class="icon"></ion-icon>
+      <ion-icon (click)="skipBack()" name="play-skip-back-outline" class="icon"></ion-icon>
     </ion-col>
     <ion-col class="center" size="4">
       <ion-icon
@@ -55,7 +55,7 @@
       ></ion-icon>
     </ion-col>
     <ion-col class="left" size="2">
-      <ion-icon name="play-skip-forward-outline" class="icon"></ion-icon>
+      <ion-icon (click)="skipForward()" name="play-skip-forward-outline" class="icon"></ion-icon>
     </ion-col>
     <ion-col class="right" size="2">
       <ion-icon name="shuffle" class="icon-sides"></ion-icon>

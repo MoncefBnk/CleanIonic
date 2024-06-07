@@ -133,6 +133,14 @@ export class PlayerPage implements OnInit {
     }
   }
 
+  skipBack() {
+    this.audio.currentTime = Math.max(0, this.audio.currentTime - 10);
+  }
+
+  skipForward() {
+    this.audio.currentTime = Math.min(this.audio.duration, this.audio.currentTime + 10);
+  }
+
   updateProgress() {
     this.progress = (this.audio.currentTime / this.audio.duration) * 100;
     this.currentTime = this.formatTime(this.audio.currentTime);
