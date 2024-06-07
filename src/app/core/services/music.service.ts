@@ -132,6 +132,10 @@ export class MusicService {
     return this.durationSubject.asObservable();
   }
 
+  getAllLyrics(): string {
+    return this.lyrics.join('\n\n');
+  }
+
   updateProgress() {
     const progress = (this.audio.currentTime / this.audio.duration) * 100;
     const currentTime = this.formatTime(this.audio.currentTime);
@@ -141,6 +145,13 @@ export class MusicService {
     this.currentTimeSubject.next(currentTime);
     this.currentLyricSubject.next(currentLyric);
   }
+
+  onIonChange(event: any) {
+    const value = event.detail.value;
+    const seekTime = (value / 100) * this.audio.duration;
+    this.audio.currentTime = seekTime;
+  }
+
 
   formatTime(seconds: number): string {
     const minutes: number = Math.floor(seconds / 60);

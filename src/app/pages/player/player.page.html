@@ -14,7 +14,7 @@
   </ion-col>
   <!-- Share and favorite icons -->
   <ion-col size="5" class="icons-col">
-    <ion-icon name="share-social-outline" class="share-icon"></ion-icon>
+    <ion-icon name="share-social-outline" class="share-icon" (click)="openModal(song)" ></ion-icon>
     <ion-icon
       name="{{ isFavorite ? 'heart' : 'heart-outline' }}"
       class="{{ isFavorite ? 'heart-icon-fav' : 'heart-icon' }}"
@@ -29,7 +29,7 @@
       <ion-range
         class="range"
         [value]="progress"
-
+        (ionChange) ="onIonChange($event)"
       ></ion-range>
 
   </ion-row>
@@ -81,7 +81,8 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <p>{{ currentLyric }}</p>
+          <p *ngIf="!isExpanded">{{ currentLyric }}</p>
+          <p *ngIf="isExpanded">{{ allLyrics }}</p>
         </ion-row>
       </ion-card-content>
     </ion-card>
