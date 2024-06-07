@@ -1,38 +1,27 @@
+<app-general-header  [endIcon] ="end_icon" [backbutton] ="backbutton" [title]="song.title" ></app-general-header>
 <ion-content class="ion-content-player" [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar class="transparent-header">
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/"></ion-back-button>
-      </ion-buttons>
-      <ion-title> Olivia Lyrics </ion-title>
-      <ion-buttons slot="end">
-        <ion-button>
-          <ion-icon slot="icon-only" name="search"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
 
   <!-- Song image in the middle with rounded borders and paddings -->
   <div class="song-image">
-    <ion-img src="assets/test.jpg" alt="SpotyMike"></ion-img>
+    <ion-img src="{{song.cover}}" alt="SpotyMike" ></ion-img>
   </div>
 
-  <!-- Song title, subtitle and favorite and share buttons  -->
-  <ion-row class="song-info">
-    <ion-col size="7">
-      <p class="song-title">Olivia</p>
-      <p class="song-subtitle">One Direction</p>
-    </ion-col>
-    <ion-col size="5" class="icons-col">
-      <ion-icon name="share-social-outline" class="share-icon"></ion-icon>
-      <ion-icon
-        name="{{ isFavorite ? 'heart' : 'heart-outline' }}"
-        class="{{ isFavorite ? 'heart-icon-fav' : 'heart-icon' }}"
-        (click)="makeFavorite()"
-      ></ion-icon>
-    </ion-col>
-  </ion-row>
+<ion-row class="song-info">
+  <!-- Song title, subtitle -->
+  <ion-col size="7">
+    <p class="song-title">{{song.artist.artist}}</p>
+    <p class="song-subtitle">{{song.title}}</p>
+  </ion-col>
+  <!-- Share and favorite icons -->
+  <ion-col size="5" class="icons-col">
+    <ion-icon name="share-social-outline" class="share-icon" (click)="openModal(song)" ></ion-icon>
+    <ion-icon
+      name="{{ isFavorite ? 'heart' : 'heart-outline' }}"
+      class="{{ isFavorite ? 'heart-icon-fav' : 'heart-icon' }}"
+      (click)="makeFavorite()"
+    ></ion-icon>
+  </ion-col>
+</ion-row>
 
   <!-- Range slider -->
   <ion-row>
@@ -40,7 +29,7 @@
       <ion-range
         class="range"
         [value]="progress"
-        (ionChange)="onIonChange($event)"
+        (ionChange) ="onIonChange($event)"
       ></ion-range>
 
   </ion-row>
@@ -53,22 +42,26 @@
 
   <!-- Music controls -->
   <ion-row class="media-buttons">
+    <!-- Repeat Song -->
     <ion-col class="left" size="2">
       <ion-icon name="repeat" class="icon-sides"></ion-icon>
     </ion-col>
-    <ion-col class="right" size="2">
-      <ion-icon name="play-skip-back-outline" class="icon"></ion-icon>
+    <ion-col class="right" size="2" >
+      <ion-icon name="play-skip-back-outline" (click)="skipBackward()" class="icon"></ion-icon>
     </ion-col>
+    <!-- Play/Pause -->
     <ion-col class="center" size="4">
       <ion-icon
         name="{{ isPlaying ? 'pause-circle' : 'play-circle' }}"
         class="icon-play"
-        (click)="playMusic()"
+        (click)="playMusic(song.fileUrl)"
       ></ion-icon>
     </ion-col>
+    <!-- Skip forward -->
     <ion-col class="left" size="2">
-      <ion-icon name="play-skip-forward-outline" class="icon"></ion-icon>
+      <ion-icon name="play-skip-forward-outline" (click)="skipForward()" class="icon"></ion-icon>
     </ion-col>
+    <!-- Shuffle -->
     <ion-col class="right" size="2">
       <ion-icon name="shuffle" class="icon-sides"></ion-icon>
     </ion-col>
@@ -82,12 +75,14 @@
           <ion-col size="6">
             <p>Lyrics</p>
           </ion-col>
+          <!-- Expand/Collapse icon -->
           <ion-col size="6" class="icons-col">
-            <ion-icon name="expand" class="lyrics-icon" (click)="toggleExpand()"></ion-icon>
+            <ion-icon name="{{isExpanded ? 'chevron-collapse-outline' :  'chevron-expand-outline'}}" class="lyrics-icon" (click)="toggleExpand()"></ion-icon>
           </ion-col>
         </ion-row>
         <ion-row>
-          <p>{{ currentLyric }}</p>
+          <p *ngIf="!isExpanded">{{ currentLyric }}</p>
+          <p *ngIf="isExpanded">{{ allLyrics }}</p>
         </ion-row>
       </ion-card-content>
     </ion-card>

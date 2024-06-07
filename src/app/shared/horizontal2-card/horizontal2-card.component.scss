@@ -6,6 +6,13 @@ ion-img::part(image) {
     border-radius : 8px!important;
 }
 
+.heart-icon {
+  color: #171621;
+}
+
+.heart-icon-fav {
+  color: #ff0000;
+}
 ion-item {
   --min-height:100px;
 }
@@ -29,8 +36,7 @@ ion-modal ion-toolbar {
   --background: rgb(14 116 144);
   --color: rgb(7, 7, 7);
 }
- 
+
 .top-right-icon {
   cursor: pointer;
 }
-  

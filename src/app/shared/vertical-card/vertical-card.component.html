@@ -10,9 +10,12 @@
     </ion-row>
     <ion-row  *ngIf="songs && songs.length > 0">
       <ion-col *ngFor="let song of songs;" >
-        <div class="flex justify-center py-2"><ion-img class="image_default"  src="{{song.cover}}" alt="songcover"></ion-img></div>
-        <ion-text class="flex justify-center  text-sm font-bold"><h4 >{{song.artist.artist}}</h4></ion-text>
-        <ion-text class="flex justify-center text-sm font-light text-slate-500">{{song.title}}</ion-text>
+        <div (click)="playmusic(song.id)">
+          <div class="flex justify-center py-2"><ion-img class="image_default"  src="{{song.cover}}" alt="songcover"></ion-img></div>
+          <ion-text class="flex justify-center  text-sm font-bold"><h4 >{{song.artist.artist}}</h4></ion-text>
+          <ion-text class="flex justify-center text-sm font-light text-slate-500">{{song.title}}</ion-text>
+        </div>
+        
       </ion-col>
     </ion-row>
     <ion-row *ngIf="artists && artists.length > 0">

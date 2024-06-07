@@ -19,7 +19,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class Horizontal2CardComponent  implements OnInit {
 
-  constructor(private modalController: ModalController) { 
+  constructor(private modalController: ModalController) {
     addIcons({ ellipsisVertical,heartCircleOutline,shareSocialOutline,heart});
   }
 
@@ -28,7 +28,7 @@ export class Horizontal2CardComponent  implements OnInit {
   @Input() playlists: IPlaylist[] = [];
   isIconDark: boolean = false;
   selectedItem: any;
-
+  isFavorite: boolean = false;
   ngOnInit() {}
 
   async openModal(item: any) {
@@ -38,8 +38,7 @@ export class Horizontal2CardComponent  implements OnInit {
     return await modal.present();
   }
 
-  
-  toggleIconColor() {
-    this.isIconDark = !this.isIconDark;
+  makeFavorite() {
+    this.isFavorite = !this.isFavorite;
   }
 }

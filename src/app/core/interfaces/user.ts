@@ -44,10 +44,6 @@ export interface ILastPlayed {
   updatedAt: Date;
 }
 
-export interface ILastPlayedWithDetails extends ILastPlayed {
-  song: ISongWithDetails;
-}
-
 interface IAccessToken {
   token: string;
   expire: string | Date;
@@ -56,4 +52,12 @@ interface IAccessToken {
 export interface IToken {
   access: IAccessToken;
   refresh: IAccessToken;
+}
+
+export interface ILastPlayedWithDetails extends ILastPlayed {
+  song: ISongWithDetails;
+}
+
+export interface IPlaylistWithDetails extends IPlaylist {
+  songs: ISongWithDetails;
 }

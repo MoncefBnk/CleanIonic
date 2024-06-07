@@ -7,13 +7,13 @@ ion-content {
       align-items: center; // Vertically align items
 
       .user_logo {
-        width: 48px;
-        height: 48px;
+        width: 3rem;
+        height: 3rem;
         ion-button {
-          width: 48px!important;
-          height: 48px!important;
+          width: 3rem!important;
+          height: 13rem!important;
         }
-    
+
         .logo {
           width: 24px;
           height: 24px;
@@ -22,7 +22,7 @@ ion-content {
       }
     }
 
-  
+
 
   ion-row {
     justify-content: center;
@@ -46,7 +46,7 @@ ion-content {
     border-bottom-right-radius: 10px !important;
     overflow: hidden;
     object-fit: fill;
-    position: absolute; 
+    position: absolute;
     width: 100%;
     height: 100%;
   }
@@ -57,7 +57,7 @@ ion-content {
   }
 
   .img-style {
-    width: 127px; 
+    width: 127px;
     height:170px;
     padding-top: 0px;
     margin-top:0px;
@@ -86,5 +86,5 @@ ion-content {
         color:white
       }
     }
-     
+
 }
