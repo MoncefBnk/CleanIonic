@@ -118,12 +118,6 @@ export class PlayerPage implements OnInit {
         console.log(this.song);
       }
     });
-   /* this.audio = new Audio('assets/songs/Wild_World.mp3');
-    this.audio.addEventListener('timeupdate', this.updateProgress.bind(this));
-    this.audio.addEventListener('loadedmetadata', () => {
-      this.duration = this.formatTime(this.audio.duration);
-    });*/
-
     this.subscriptions.push(
       this.musicService.isPlaying().subscribe(isPlaying => {
         this.isPlaying = isPlaying;
@@ -142,6 +136,7 @@ export class PlayerPage implements OnInit {
         this.currentLyric = currentLyric;
       }),
     );
+    this.playMusic(this.currentTrack);
   }
 
 
