@@ -26,16 +26,25 @@ export const routes: Routes = [
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
   },
-
-  ...tabroutes,
-  {
-    path: 'profile',
-    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
-  },
   {
     path: 'search',
     loadComponent: () => import('./pages/search/search.page').then( m => m.SearchPage)
-  }
+  },
+  {
+    path: 'player',
+    loadComponent: () => import('./pages/player/player.page').then( m => m.PlayerPage)
+  },
+  {
+    path: 'music-playlist',
+    loadComponent: () => import('./pages/musicplaylist/musicplaylist.page').then( m => m.MusicplaylistPage)
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'auth/login',
+  },
+  
+
 
 
 

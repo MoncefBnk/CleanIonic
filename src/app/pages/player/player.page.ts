@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RangeCustomEvent } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 import {
   IonContent,
   IonHeader,
@@ -39,6 +40,8 @@ import {
   shareSocialOutline,
   shuffle,
 } from 'ionicons/icons';
+import { ISongWithDetails } from 'src/app/core/interfaces/song';
+
 
 @Component({
   selector: 'app-player',
@@ -65,7 +68,7 @@ import {
   ],
 })
 export class PlayerPage implements OnInit {
-  constructor() {
+  constructor(private route: ActivatedRoute) {
     addIcons({
       repeat,
       shareOutline,
@@ -82,6 +85,10 @@ export class PlayerPage implements OnInit {
     });
   }
 
+ 
+  backbutton : string = "back";
+  end_icon : string = "ellipsis-horizontal";
+  song = {} as ISongWithDetails;
   isFavorite: boolean = false;
   isPlaying: boolean = true;
   lyrics: string[] = [
@@ -94,7 +101,7 @@ export class PlayerPage implements OnInit {
   ];
   currentLyric: string = 'No Lyrics Found';
   start_icon: string = 'search';
-  end_icon: string = 'search';
+ 
   image: string = 'assets/icon/logo_mini.png';
 
   playMusic() {
@@ -110,5 +117,14 @@ export class PlayerPage implements OnInit {
   makeFavorite() {
     this.isFavorite = !this.isFavorite;
   }
-  ngOnInit() {}
+
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params && params['song']) {
+        this.song = JSON.parse(params['song']);
+        console.log(this.song);
+      }
+    });
+  }
 }
