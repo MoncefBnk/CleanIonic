@@ -21,7 +21,7 @@
 <div *ngIf="playlists && playlists.length > 0">
   <ion-list class="margin" *ngFor="let item of playlists;">
     <ion-item [button]="true" detail="false" (click)="navigatetoPlaylist(item.id)">
-      
+
       <ion-label slot="start">
         <h2 class="text-sm font-bold">{{item.name}}</h2>
         <h3 class="text-sm font-light text-slate-500">{{ item.song ? item.song.length : 0 }} song(s)</h3>
