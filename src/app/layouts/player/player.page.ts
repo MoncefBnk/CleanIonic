@@ -15,7 +15,10 @@ import {
   IonBackButton,
   IonIcon,
   IonImg,
-  IonRange, IonCard, IonCardContent } from '@ionic/angular/standalone';
+  IonRange,
+  IonCard,
+  IonCardContent,
+} from '@ionic/angular/standalone';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { addIcons } from 'ionicons';
 import {
@@ -38,7 +41,9 @@ import {
   templateUrl: './player.page.html',
   styleUrls: ['./player.page.scss'],
   standalone: true,
-  imports: [IonCardContent, IonCard,
+  imports: [
+    IonCardContent,
+    IonCard,
     IonRange,
     IonImg,
     IonIcon,
@@ -66,7 +71,7 @@ export class PlayerPage implements OnInit {
   duration: string = '0:00';
   progress: number = 0;
   lyrics: string[] = [
-    "...la-la-la-la-la-la-la, la, la La-la-la-la-la-la-la-la la la-la",
+    '...la-la-la-la-la-la-la, la, la La-la-la-la-la-la-la-la la la-la',
     "Now that I've lost everything to you You say you wanna start something new And it's breakin' my heart you're leavin' Baby, I'm grievin' But if you wanna leave, take good care Hope you have a lot of nice things to wear But then a lot of nice things turn bad out there",
     "Oh, baby, baby, it's a wild world It's hard to get by just upon a smile Oh, baby, baby, it's a wild world I'll always remember you like a child, girl ",
     "You know I've seen a lot of what the world can do And it's breakin' my heart in two Because I never wanna see you sad, girl Don't be a bad girl But if you wanna leave, take good care Hope you make a lot of nice friends out there But just remember there's a lot of bad and beware",
@@ -74,7 +79,7 @@ export class PlayerPage implements OnInit {
     " ...la-la-la-la-la-la-la, la, la La-la-la-la-la-la-la-la la la-la, la Baby, I love you But if you wanna leave, take good care Hope you make a lot of nice friends out there But just remember there's a lot of bad and beware Beware",
     "Oh, baby, baby, it's a wild world It's hard to get by just upon a smile Oh, baby, baby, it's a wild world And I'll always remember you like a child, girl Oh, baby, baby, it's a wild world And it's hard to get by just upon a smile Oh, baby, baby, it's a wild world And I'll always remember you like a child, girl",
   ];
-  currentLyric: string = 'No Lyrics Found';
+  currentLyric: string = '';
   start_icon: string = 'search';
   end_icon: string = 'search';
   image: string = 'assets/icon/logo_mini.png';
@@ -116,7 +121,7 @@ export class PlayerPage implements OnInit {
   updateProgress() {
     this.progress = (this.audio.currentTime / this.audio.duration) * 100;
     this.currentTime = this.formatTime(this.audio.currentTime);
-    this.currentLyric = this.getLyric(this.progress);
+    this.currentLyric = this.getLyric(this.audio.currentTime);
   }
 
   onIonChange(event: any) {
@@ -129,9 +134,24 @@ export class PlayerPage implements OnInit {
     this.isFavorite = !this.isFavorite;
   }
 
-  getLyric(progress: number): string {
-    const lyricIndex = Math.floor((progress / 100) * this.lyrics.length);
-    return this.lyrics[lyricIndex] || 'No Lyrics Found';
+  getLyric(currentTime: number): string {
+    const timeIntervals = [
+      { start: 0, end: 11, lyric: this.lyrics[0] },
+      { start: 12, end: 39, lyric: this.lyrics[1] },
+      { start: 40, end: 64, lyric: this.lyrics[2] },
+      { start: 65, end: 91, lyric: this.lyrics[3] },
+      { start: 92, end: 118, lyric: this.lyrics[4] },
+      { start: 121, end: 145, lyric: this.lyrics[5] },
+      { start: 146, end: this.audio.duration, lyric: this.lyrics[6] },
+    ];
+
+    for (let interval of timeIntervals) {
+      if (currentTime >= interval.start && currentTime <= interval.end) {
+        return interval.lyric;
+      }
+    }
+
+    return '';
   }
 
   formatTime(seconds: number): string {

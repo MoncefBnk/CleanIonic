@@ -34,17 +34,21 @@
     </ion-col>
   </ion-row>
 
-  <!-- Range slider with time -->
+  <!-- Range slider -->
   <ion-row>
-    <ion-col size="auto" class="time">{{ currentTime }}</ion-col>
-    <ion-col>
+
       <ion-range
         class="range"
         [value]="progress"
         (ionChange)="onIonChange($event)"
       ></ion-range>
-    </ion-col>
-    <ion-col size="auto" class="time">{{ duration }}</ion-col>
+
+  </ion-row>
+
+  <!-- Time and duration -->
+  <ion-row>
+    <ion-col size="6" style="text-align: left;" class="time">{{ currentTime }}</ion-col>
+    <ion-col size="6"   style="text-align: right;" class="time">{{ duration }}</ion-col>
   </ion-row>
 
   <!-- Music controls -->
