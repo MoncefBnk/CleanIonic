@@ -1,6 +1,6 @@
 import { ISongWithDetails } from "./song";
 
-type ERole = 'user' | 'artist';
+export type ERole = 'user' | 'artist';
 
 export interface IUser {
   role: ERole;

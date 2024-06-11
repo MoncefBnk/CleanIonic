@@ -16,7 +16,7 @@ export class GeneralHeaderComponent  implements OnInit {
   @Input() startIcon: string|null = "";
   @Input() endIcon: string|null = "";
   @Input() title: string|null = "";
-  @Input() image: string|null = "";
+  @Input() initial: string|null = "";
   @Input() backbutton: string|null = "";
 
   constructor() { 

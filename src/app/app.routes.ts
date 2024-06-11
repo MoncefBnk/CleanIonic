@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { tabroutes } from './layouts/tabs/tabs.routes';
+import { authGuard } from 'src/app/core/guard/auth.guard';
 
 
 export const routes: Routes = [
@@ -24,19 +25,23 @@ export const routes: Routes = [
   ...tabroutes,
   {
     path: 'profile',
-    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
+    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage),
+    canActivate: [authGuard]
   },
   {
     path: 'search',
-    loadComponent: () => import('./pages/search/search.page').then( m => m.SearchPage)
+    loadComponent: () => import('./pages/search/search.page').then( m => m.SearchPage),
+    canActivate: [authGuard]
   },
   {
     path: 'player',
-    loadComponent: () => import('./pages/player/player.page').then( m => m.PlayerPage)
+    loadComponent: () => import('./pages/player/player.page').then( m => m.PlayerPage),
+    canActivate: [authGuard]
   },
   {
     path: 'music-playlist',
-    loadComponent: () => import('./pages/musicplaylist/musicplaylist.page').then( m => m.MusicplaylistPage)
+    loadComponent: () => import('./pages/musicplaylist/musicplaylist.page').then( m => m.MusicplaylistPage),
+    canActivate: [authGuard]
   },
   {
     path: '',

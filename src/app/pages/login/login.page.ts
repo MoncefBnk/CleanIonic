@@ -86,35 +86,29 @@ export class LoginPage {
 
   // ngOnInit() {}
 
-  onSubmit() {
+  async  onSubmit() {
     this.error = '';
     if (this.form.valid) {
       this.submitForm = true;
-      const data = this.serviceAuth.login(
-        this.form.value.email,
-        this.form.value.password
-      );
-      if (data.error) {
-        const error = data as LoginRequestError;
-        this.error = error?.message ?? '';
-      } else {
-        const success = data as LoginRequestSuccess;
-        this.localStore.setItem('user', success.user);
-        this.localStore.setItem('token', success.token);
-        this.router.navigateByUrl('/home');
-      }
-      console.log(data);
+      try {
+        const data = await this.serviceAuth.login(
+          this.form.value.email,
+          this.form.value.password
+        );
 
-      //       .subscribe((data:any ) => {
-      //         if (data.error) {
-      //           // this.error = data?.message ?? '';
-      //         } else {
-      //           this.localStore.setItem('user', data.user);
-      //           this.localStore.setItem('token', data.token);
-      //           this.router.navigateByUrl('/home');
-      //         }
-      //         console.log(data);
-      //       });
+        if (data.error) {
+          const error = data as LoginRequestError;
+          this.error = error?.message ?? '';
+        } else {
+          const success = data as LoginRequestSuccess;
+          this.localStore.setItem('user', success.user);
+          this.localStore.setItem('token', success.token);
+          this.router.navigateByUrl('/home');
+        }
+      } catch(err) {
+        console.log(err);
+        this.error = 'An error occurred. Please try again.';
+      }
     }
   }
   async onPasswordLostModal() {
