@@ -10,12 +10,14 @@ import {
   query,
   where,
   orderBy,
-  doc
+  doc,
+  addDoc,
+  setDoc
 } from 'firebase/firestore/lite';
 import { environment } from 'src/environments/environment';
 import { ISong, ISongWithDetails } from '../interfaces/song';
 import { IAlbum, IAlbumsWithDetails } from '../interfaces/album';
-import { ILastPlayed, ILastPlayedWithDetails, IPlaylist } from '../interfaces/user';
+import { ERole, ILastPlayed, ILastPlayedWithDetails, IPlaylist, IUser } from '../interfaces/user';
 import { IArtist } from '../interfaces/artist';
 
 
@@ -28,6 +30,42 @@ export class FirestoreService {
   private db = getFirestore(this.app);
 
   constructor() {}
+
+  /** Start User */
+  async createUser(id: string,email: string, password: string , phoneNumber: string , firstName: string , lastName: string,dateBirth:Date,isArtist:boolean,followers:number,isEmailVerified:boolean,role:ERole) {
+    const userRef = doc(this.db, 'user',id);
+    const data = { email: email,password: password, phoneNumber: phoneNumber , firstName: firstName , lastName: lastName,isArtist:isArtist,followers:followers,isEmailVerified:isEmailVerified,role:role,createdAt: new Date(),updatedAt: new Date()};
+    return await setDoc(userRef,data);
+  }
+
+  async getUser(id: string) : Promise<IUser | null> {
+    const userRef = doc(this.db, 'user',id);
+    const userSnapshot = await getDoc(userRef);
+    if (userSnapshot.exists()) {
+      const data = userSnapshot.data();
+      return {
+        id: userSnapshot.id,
+        firstname: data['firstname'],
+        lastname: data['lastname'],
+        email: data['email'],
+        role: data['role'],
+        isEmailVerified: data['isEmailVerified'],
+        dateBirth: new Date(data['dateBirth']),
+        phoneNumber: data['phoneNumber'],
+        followers: data['followers'],
+        isArtist: data['isArtist'],
+        createdAt: new Date(data['createdAt']),
+        updatedAt: new Date(data['updatedAt']),
+      } as IUser;
+    }
+    else {
+      // Handle the case where the document does not exist
+      console.log(`No such user with id ${id}!`);
+      return null;
+    }
+  }
+
+  /** fin user */
 
   /** start album */
 

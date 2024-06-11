@@ -88,11 +88,20 @@ export class RegisterPage implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.error = '';
     if (this.form.valid) {
       this.submitForm = true;
-      const data = this.serviceAuth.register(this.form.value.email, this.form.value.password, this.form.value.phoneNumber, this.form.value.firstName, this.form.value.lastName)
+      try {
+        const data = await this.serviceAuth.register(
+          this.form.value.email, 
+          this.form.value.password, 
+          this.form.value.phoneNumber, 
+          this.form.value.firstName, 
+          this.form.value.lastName,
+          this.form.value.dateBirth
+        )
+
         if (data.error) {
           const error = data as LoginRequestError;
           this.error = error?.message ?? '';
@@ -102,17 +111,10 @@ export class RegisterPage implements OnInit {
           this.localStore.setItem('token', success.token);
           this.router.navigateByUrl('/home');
         }
-        console.log(data);
-
-        // .subscribe((data: any) => {
-        //   if (data.error) {
-        //     this.error = data?.message ?? '';
-        //   } else {
-        //     this.localStore.setItem('user', data.user);
-        //     this.localStore.setItem('token', data.token);
-        //     this.router.navigateByUrl('/home');
-        //   }
-        // });
+      } catch(err) {
+        console.log(err);
+        this.error = 'An error occurred. Please try again.';
+      }
     }
   }
 }

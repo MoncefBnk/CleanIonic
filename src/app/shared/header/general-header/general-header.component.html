@@ -1,8 +1,10 @@
 <ion-toolbar>
   <ion-buttons slot="start">
-    <ion-button>
-      @if (image) {
-        <ion-img  class="logo" src="assets/icon/logo_mini.png" alt="SpotyMike"></ion-img>
+    <ion-button class="w-9 h-9">
+      @if (initial) {
+        <div class="avatar">
+          <span>{{ initial }}</span>
+        </div>
       }
       @else{
 

@@ -3,11 +3,13 @@ import { Component, inject } from '@angular/core';
 import { IonRouterLinkWithHref,IonRouterLink,IonText,IonItem,IonList,IonCard,IonCardContent,IonAvatar,IonImg, IonRow, IonCol, IonGrid, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,IonButtons,IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowForward,search,arrowForwardOutline } from 'ionicons/icons';
+import { BehaviorSubject } from 'rxjs';
 import { IAlbum, IAlbumsWithDetails } from 'src/app/core/interfaces/album';
 import { IArtist } from 'src/app/core/interfaces/artist';
 import { ISong, ISongWithDetails } from 'src/app/core/interfaces/song';
-import { ILastPlayedWithDetails, IPlaylist } from 'src/app/core/interfaces/user';
+import { ILastPlayedWithDetails, IPlaylist, IUser } from 'src/app/core/interfaces/user';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
+import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { SeeAllComponent } from 'src/app/shared/header/see-all/see-all.component';
 import { Horizontal1CardComponent } from 'src/app/shared/horizontal1-card/horizontal1-card.component';
@@ -61,10 +63,11 @@ export class HomePage {
   }
 
   private serviceFirestore = inject(FirestoreService);
+  private localStore = inject(LocalStorageService);
 
   start_icon : string = "search";
   end_icon : string = "search";
-  image : string = "assets/icon/logo_mini.png";
+  initial : string = this.getInitials();
 
   musiccateg : string[] = ["All","R&B","Pop","Rock"];
   elementTitles: LinkItem[] = [
@@ -126,6 +129,21 @@ export class HomePage {
     });
 console.log(this.playlists);
     console.log(this.songs);
+  }
+
+  getInitials() {
+
+    const userSubject: BehaviorSubject<IUser>= this.localStore.getItem<IUser>('user');
+    const user = userSubject.getValue();
+    if (user) {
+      // Parse the JSON string back into an object
+      //const user = JSON.parse(user);
+      if (user.firstname && user.lastname) {
+        console.log(user);
+        return user.firstname[0].toUpperCase() + user.lastname[0].toUpperCase();
+      }
+    }
+    return '';
   }
 
 }
