@@ -1,13 +1,32 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-general-header  [endIcon] ="end_icon" [title] ="title" ></app-general-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="flex justify-center">
+    <div class="avatar flex justify-center items-center">
+      <span>{{ getInitials() }}</span>
+    </div>
+  </div>
+  <ion-text class="flex justify-center py-1.5">
+    <h1>{{ user.lastname}} {{ user.firstname}}</h1>
+  </ion-text>
+  <ion-grid [fixed]="true">
+    <ion-row>
+      <ion-col size="6" size-md="4" size-lg="2" class="flex justify-center">
+        <div class=" h-90 py-5 ">
+          <p class="flex justify-center">{{ playlists ? playlists.length : 0 }}</p>
+          <p>PLAYLISTS</p>
+        </div>
+      </ion-col>
+      <ion-col size="6" size-md="4" size-lg="2" class="flex justify-center">
+        <div class=" h-90 py-5 ">
+          <p class="flex justify-center">{{ user.followers}}</p>
+          <p>FOLLOWERS</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <app-see-all [elementTitle] = "elementTitles[0].title" [link]="elementTitles[0].link"></app-see-all>
+  <app-horizontal1-card [playlists] = "playlists"></app-horizontal1-card>
+  
 </ion-content>

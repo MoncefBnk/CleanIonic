@@ -45,8 +45,8 @@ export class FirestoreService {
       const data = userSnapshot.data();
       return {
         id: userSnapshot.id,
-        firstname: data['firstname'],
-        lastname: data['lastname'],
+        firstname: data['firstName'],
+        lastname: data['lastName'],
         email: data['email'],
         role: data['role'],
         isEmailVerified: data['isEmailVerified'],
