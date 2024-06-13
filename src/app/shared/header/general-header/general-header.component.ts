@@ -15,9 +15,11 @@ export class GeneralHeaderComponent  implements OnInit {
 
   @Input() startIcon: string|null = "";
   @Input() endIcon: string|null = "";
+  @Input() endLink: string|null = "";
   @Input() title: string|null = "";
   @Input() initial: string|null = "";
   @Input() backbutton: string|null = "";
+
 
   constructor() { 
     addIcons({ search,ellipsisHorizontal,settings,arrowBack });

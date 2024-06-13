@@ -6,7 +6,7 @@ import { addIcons } from 'ionicons';
 import { IonModal,IonLabel,IonText,IonItem,IonList,IonCard,IonCardContent,IonAvatar,IonImg, IonRow, IonCol, IonGrid, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,IonButtons,IonButton } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { IPlaylist } from 'src/app/core/interfaces/user';
-import { ModalShareComponent } from '../modal-share/modal-share.component';
+import { ModalShareComponent } from '../modal/modal-share/modal-share.component';
 import { ModalController } from '@ionic/angular';
 
 
