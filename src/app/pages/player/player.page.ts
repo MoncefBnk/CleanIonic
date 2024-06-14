@@ -42,7 +42,7 @@ import { ISongWithDetails } from "src/app/core/interfaces/song";
 import { MusicService } from 'src/app/core/services/music.service';
 import { Subscription } from 'rxjs';
 import { ModalController } from '@ionic/angular';
-import { ModalShareComponent } from 'src/app/shared/modal-share/modal-share.component';
+import { ModalShareComponent } from 'src/app/shared/modal/modal-share/modal-share.component';
 
 @Component({
   selector: 'app-player',

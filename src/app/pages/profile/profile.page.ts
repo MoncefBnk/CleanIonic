@@ -23,6 +23,7 @@ export class ProfilePage implements OnInit {
   private firebaseservice = inject(FirestoreService);
   title : string = "Profile"
   end_icon : string = "settings";
+  endLink : string = "/setting";
   user = {} as IUser;
   playlists : IPlaylist[] = [];
   elementTitles: LinkItem[] = [

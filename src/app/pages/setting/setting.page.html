@@ -1,0 +1,185 @@
+<app-general-header  endIcon ="ellipsis-horizontal" backbutton ="back" title="Settings" ></app-general-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Account</ion-label>
+    </ion-item-divider>
+  
+    <ion-item [button]="true" detail="true">
+      <ion-icon  slot="start" name="person-outline"></ion-icon>
+      <ion-label>Account</ion-label>
+    </ion-item>
+    <ion-item [button]="true" detail="true" id="verify-modal">
+      <ion-icon  slot="start" name="key-outline"></ion-icon>
+      <ion-label>Email verification</ion-label>
+    </ion-item>
+    <ion-item [button]="true" detail="true">
+      <ion-icon  slot="start" name="person-outline"></ion-icon>
+      <ion-label>Switch to artist account</ion-label>
+    </ion-item>
+  </ion-item-group>
+  
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Content</ion-label>
+    </ion-item-divider>
+  
+    <ion-item [button]="true" detail="true" id="language-modal">
+      <ion-icon  slot="start" name="language-outline"></ion-icon>
+      <ion-label>Language</ion-label>
+    </ion-item>
+  </ion-item-group>
+
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Connexion</ion-label>
+    </ion-item-divider>
+  
+    <ion-item [button]="true" detail="true" id="artist-modal">
+      <ion-icon  slot="start" name="person-outline"></ion-icon>
+      <ion-label>Become artist</ion-label>
+    </ion-item>
+    <ion-item [button]="true" detail="true" id="logout-modal">
+      <ion-icon  slot="start" name="log-out-outline"></ion-icon>
+      <ion-label>Logout</ion-label>
+    </ion-item>
+    <ion-item [button]="true" detail="true" lines="none" id="delete-modal">
+      <ion-icon  slot="start" name="trash-bin-outline" color="danger"></ion-icon>
+      <ion-label color="danger">Delete account</ion-label>
+    </ion-item>
+  </ion-item-group>
+
+
+  <ion-modal #languagemodal trigger="language-modal" class="language-modal my-48">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-toolbar>
+          <ion-title class="ion-text-center"><ion-icon name="language-outline" size="large"></ion-icon></ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="languagemodal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <ion-text>
+          <div class=" h-90 py-5 ">
+            <h1 class="flex justify-center font-bold">Change Language</h1>
+            <p class="flex justify-center">Choose the language you want to use</p>
+          </div>
+        </ion-text>
+        <ion-toggle labelPlacement="end">English</ion-toggle><br /><br />
+        <ion-toggle labelPlacement="end">French</ion-toggle><br /><br />
+        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
+          <ion-button class="flex-1" expand="block" color="light" (click)="languagemodal.dismiss()">Cancel</ion-button> <ion-button class="flex-1" expand="block">Confirm</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  <ion-modal #logoutmodal trigger="logout-modal" class="logout-modal my-48">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-toolbar>
+          <ion-title class="ion-text-center"><ion-icon name="log-out-outline" size="large" color="danger"></ion-icon></ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="logoutmodal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <ion-text>
+          <div class=" h-90 py-5 ">
+            <h1 class="flex justify-center font-bold">Logout</h1>
+            <p class="flex justify-center">Do you really want to logout?</p>
+          </div>
+        </ion-text>
+        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
+          <ion-button class="flex-1" expand="block" color="light" (click)="logoutmodal.dismiss()">Cancel</ion-button> <ion-button class="flex-1" expand="block" color="danger">Confirm</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal #deletemodal trigger="delete-modal" class="logout-modal my-48">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-toolbar>
+          <ion-title class="ion-text-center"><ion-icon name="trash-bin-outline" size="large" color="danger"></ion-icon></ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="deletemodal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <ion-text>
+          <div class=" h-90 py-5 ">
+            <h1 class="flex justify-center font-bold">Delete Account</h1>
+            <p class="flex justify-center text-center">Are you sure you want to delete this account? This action cannot be undone.</p>
+          </div>
+        </ion-text>
+        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
+          <ion-button class="flex-1" expand="block" color="light" (click)="deletemodal.dismiss()">Cancel</ion-button> <ion-button class="flex-1" expand="block" color="danger">Confirm</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal #verifymodal trigger="verify-modal" class="logout-modal my-48">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-toolbar>
+          <ion-title class="ion-text-center"><ion-icon name="mail-outline" size="large"></ion-icon></ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="verifymodal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <ion-text>
+          <div class=" h-90 py-5 ">
+            <h1 class="flex justify-center font-bold">Verify email</h1>
+            <p class="flex justify-center text-center">We’ll email you a verification code to your email that you used to register on this account</p>
+          </div>
+        </ion-text>
+        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
+          <ion-button class="flex-1" expand="block">Send</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal #artistmodal trigger="artist-modal" class="artist-modal my-48">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-toolbar>
+          <ion-title class="ion-text-center">Create your artist account</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="artistmodal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <!--<form [formGroup]="form" style="padding-top: 5%">
+          <ion-list class="bg-transparent">
+            <p class="input-label">Fullname</p>
+            <ion-item>
+              <ion-input
+                type="text"
+                formControlName="fullname"
+                name="fullname" required
+              ></ion-input>
+            </ion-item>
+            <p class="input-label">Label</p>
+            <ion-item>
+              <ion-input
+                type="text"
+                formControlName="label"
+                name="label" required
+              ></ion-input>
+            </ion-item>
+            <p class="input-label">Description</p>
+              <ion-item style="display: flex">
+                  <ion-textarea
+                    name="description"
+                    formControlName="description"
+                  ></ion-textarea>
+              </ion-item>
+          </ion-list>
+        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
+          <ion-button class="flex-1" expand="block">Send</ion-button>
+        </div>
+      </form>-->
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

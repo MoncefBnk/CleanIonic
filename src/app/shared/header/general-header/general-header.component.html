@@ -17,10 +17,10 @@
       }
     </ion-button>
   </ion-buttons>
-  <ion-buttons slot="end">
-    <ion-button>
-      <ion-icon slot="icon-only" style="color: grey;" [name]="endIcon"></ion-icon>
+  <ion-buttons slot="end" >
+    <ion-button [href]="endLink">
+      <ion-icon slot="icon-only" style="color: grey;" [name]="endIcon" ></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-title style="color: grey;" class="text-base  font-bold">{{title}}</ion-title>
+  <ion-title style="color: grey;" class="text-base  font-bold ion-text-center">{{title}}</ion-title>
 </ion-toolbar>
