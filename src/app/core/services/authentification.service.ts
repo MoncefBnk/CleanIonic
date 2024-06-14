@@ -4,7 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginRequestError, LoginRequestSuccess } from '../interfaces/login';
-import { Auth,signInWithEmailAndPassword,createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,deleteUser,getAuth} from '@angular/fire/auth';
 import { FirestoreService } from './firestore.service';
 
 @Injectable({
@@ -33,40 +33,6 @@ export class AuthentificationService {
           access: {
             token: idTokenResult.token,
             expire: expirationTime,
-          },
-          refresh: {
-            token: '',
-            expire: '',
-          },
-        },
-        user: user,
-      } as LoginRequestSuccess; 
-    }catch (err) {
-      console.log(this.getErrorMessage(err));
-      return {
-        code: 401,
-        error: true,
-        message: this.getErrorMessage(err),
-      } as LoginRequestError;
-    }
-  }
-
-  async loginWithEmail(email: string, password: string) : Promise<LoginRequestSuccess | LoginRequestError> {
-    try {
-      const res = await signInWithEmailAndPassword(this.auth,email,password);
-      const  connectedUser = res.user;
-      var idTokenResult = await connectedUser.getIdTokenResult(true);
-      const user = await this.serviceFirestore.getUser(connectedUser.uid);
-
-      const expirationTime = idTokenResult.expirationTime; 
-      console.log(idTokenResult);
-      return {
-        code: 201,
-        error: false,
-        token: {
-          access: {
-            token: idTokenResult.token,
-            expire: expirationTime.toString(),
           },
           refresh: {
             token: '',
@@ -140,6 +106,22 @@ export class AuthentificationService {
       } as LoginRequestError;
     }
   }
+
+  async logOut() {
+    await signOut(this.auth);
+  }
+
+  async deleteAccount() {
+    const connectedUser = this.auth.currentUser;
+    if(connectedUser) {
+      await deleteUser(connectedUser).then(() => {
+        this.serviceFirestore.deleteUser(connectedUser.uid);
+      });
+      
+    }
+  }
+
+
 
 
   errorRequest(httpError: HttpErrorResponse): Observable<LoginRequestError> {

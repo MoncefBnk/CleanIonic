@@ -2,6 +2,7 @@ import { ExploreContainerComponent } from './../../explore-container/explore-con
 import { Component, inject } from '@angular/core';
 
 import { IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { IPlaylist, IUser } from 'src/app/core/interfaces/user';
@@ -17,7 +18,7 @@ import { Horizontal2CardComponent } from 'src/app/shared/horizontal2-card/horizo
   styleUrls: ['playlist.page.scss'],
   standalone: true,
 
-  imports: [IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent,Horizontal2CardComponent,GeneralHeaderComponent],
+  imports: [IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent,Horizontal2CardComponent,GeneralHeaderComponent,TranslateModule],
 
 })
 export class PlaylistPage {

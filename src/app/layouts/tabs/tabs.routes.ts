@@ -37,5 +37,6 @@ export const tabroutes: Routes = [
         pathMatch: 'full',
       },
     ],
+    canActivate: [authGuard],
   },
 ];

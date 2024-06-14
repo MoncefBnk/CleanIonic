@@ -23,7 +23,43 @@
       "birth_date": "Birth date *"
     }
   },
-  "home": {
-    "See all" : "Voir plus"
-  }
+  "See all" : "See all",
+  "New Album": "New Album",
+  "songs": "songs",
+  "Music Genres": "Music Genres",
+  "Top Songs": "Top Songs",
+  "Last Played": "Last Played",
+  "Top Albums": "Top Albums",
+  "Top Artists": "Top Artists",
+  "Top Playlist": "Top Playlist",
+  "Discover": "Discover",
+  "Music Playlist": "Music Playlist",
+  "Playlists": "Playlists",
+  "Followers": "Followers",
+  
+  "Account": "Account",
+  "Email verification": "Email verification",
+  "Switch to artist account": "Switch to artist account",
+  "Content": "Content",
+  "Language": "Language",
+  "Connexion": "Connexion",
+  "Become artist": "Become artist",
+  "Logout": "Logout",
+  "Delete account": "Delete account",
+  "Change Language": "Change Language",
+  "Choose the language you want to use": "Choose the language you want to use",
+  "English":"English",
+  "French": "French",
+  "Cancel": "Cancel",
+  "Confirm": "Confirm",
+  "Do you really want to logout?": "Do you really want to logout?",
+  "Are you sure you want to delete this account? This action cannot be undone.": "Are you sure you want to delete this account? This action cannot be undone.",
+  "Verify email": "Vérifier l'email",
+  "We’ll email you a verification code to your email that you used to register on this account": "We’ll email you a verification code to your email that you used to register on this account",
+  "Send": "Send",
+  "Create your artist account": "Create your artist account",
+  "Fullname": "Fullname",
+  "Label": "Label",
+  "Description": "Description"
+  
 }
