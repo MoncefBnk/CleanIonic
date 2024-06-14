@@ -1,19 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators,ReactiveFormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonItemDivider,IonItemGroup,IonLabel,IonIcon,IonList,IonModal,IonButton,IonButtons,IonText,IonToggle, IonTextarea } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonItemDivider,IonItemGroup,IonLabel,IonIcon,IonList,IonModal,IonButton,IonButtons,IonText,IonToggle, IonTextarea,IonAvatar } from '@ionic/angular/standalone';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { addIcons } from 'ionicons';
 import { personOutline,keyOutline,languageOutline,logOutOutline,trashBinOutline,closeOutline, mailOutline} from 'ionicons/icons';
+import { LocalStorageService } from 'src/app/core/services/local-storage.service';
+import { BehaviorSubject } from 'rxjs';
+import { IUser } from 'src/app/core/interfaces/user';
 
 @Component({
   selector: 'app-setting',
   templateUrl: './setting.page.html',
   styleUrls: ['./setting.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonItemDivider,IonItemGroup,IonLabel,IonIcon,IonList,IonModal,IonButton,IonButtons,IonText,IonToggle,IonTextarea,CommonModule, FormsModule,GeneralHeaderComponent,ReactiveFormsModule]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonItemDivider,IonItemGroup,IonLabel,IonIcon,IonList,IonModal,IonButton,IonButtons,IonText,IonToggle,IonTextarea,IonAvatar,CommonModule, FormsModule,GeneralHeaderComponent,ReactiveFormsModule]
 })
 export class SettingPage implements OnInit {
+
+  private localStore = inject(LocalStorageService);
+  user = {} as IUser;
 
   form: FormGroup = new FormGroup({
     fullname: new FormControl('', [
@@ -27,9 +33,18 @@ export class SettingPage implements OnInit {
 
   constructor() {
     addIcons({ personOutline,keyOutline,languageOutline,logOutOutline,trashBinOutline,closeOutline,mailOutline });
+    this.getUser();
    }
 
   ngOnInit() {
+  }
+
+  getUser() {
+    const userSubject: BehaviorSubject<IUser>= this.localStore.getItem<IUser>('user');
+    const userdata = userSubject.getValue();
+    if(userdata) {
+      this.user = userdata;
+    }
   }
 
   /**

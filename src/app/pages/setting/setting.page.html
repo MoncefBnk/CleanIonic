@@ -14,10 +14,13 @@
       <ion-icon  slot="start" name="key-outline"></ion-icon>
       <ion-label>Email verification</ion-label>
     </ion-item>
-    <ion-item [button]="true" detail="true">
-      <ion-icon  slot="start" name="person-outline"></ion-icon>
-      <ion-label>Switch to artist account</ion-label>
-    </ion-item>
+    @if (user.isArtist) {
+      <ion-item [button]="true" detail="true">
+        <ion-icon  slot="start" name="person-outline"></ion-icon>
+        <ion-label>Switch to artist account</ion-label>
+      </ion-item>
+    }
+    
   </ion-item-group>
   
   <ion-item-group>
@@ -35,11 +38,13 @@
     <ion-item-divider>
       <ion-label>Connexion</ion-label>
     </ion-item-divider>
-  
-    <ion-item [button]="true" detail="true" id="artist-modal">
-      <ion-icon  slot="start" name="person-outline"></ion-icon>
-      <ion-label>Become artist</ion-label>
-    </ion-item>
+    @if (!user.isArtist) {
+      <ion-item [button]="true" detail="true" id="artist-modal">
+        <ion-icon  slot="start" name="person-outline"></ion-icon>
+        <ion-label>Become artist</ion-label>
+      </ion-item>
+    }
+    
     <ion-item [button]="true" detail="true" id="logout-modal">
       <ion-icon  slot="start" name="log-out-outline"></ion-icon>
       <ion-label>Logout</ion-label>
@@ -140,7 +145,7 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #artistmodal trigger="artist-modal" class="artist-modal my-48">
+  <ion-modal #artistmodal trigger="artist-modal" class="artist-modal">
     <ng-template>
       <ion-content class="ion-padding">
         <ion-toolbar>
@@ -149,36 +154,46 @@
             <ion-button (click)="artistmodal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
           </ion-buttons>
         </ion-toolbar>
-        <!--<form [formGroup]="form" style="padding-top: 5%">
+       <form [formGroup]="form" style="padding-top: 5%">
           <ion-list class="bg-transparent">
+            <ion-item class="py-5">
+              <ion-avatar aria-hidden="true" slot="start">
+                <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
+              <input type="file" />
+            </ion-item>
             <p class="input-label">Fullname</p>
-            <ion-item>
+            <ion-item class="pb-5">
               <ion-input
                 type="text"
                 formControlName="fullname"
+                ngDefaultControl
                 name="fullname" required
               ></ion-input>
             </ion-item>
             <p class="input-label">Label</p>
-            <ion-item>
+            <ion-item class="pb-5">
               <ion-input
                 type="text"
                 formControlName="label"
+                ngDefaultControl
                 name="label" required
               ></ion-input>
             </ion-item>
             <p class="input-label">Description</p>
-              <ion-item style="display: flex">
+              <ion-item style="display: flex" >
                   <ion-textarea
                     name="description"
                     formControlName="description"
+                    fill="solid"
                   ></ion-textarea>
               </ion-item>
           </ion-list>
-        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
-          <ion-button class="flex-1" expand="block">Send</ion-button>
+        <div class="absolute inset-x-0 bottom-0 h-28  px-8 py-4 ">
+          <ion-button class="flex-1" expand="block">Confirm</ion-button>
+          <ion-button class="flex-1" expand="block">Cancel</ion-button>
         </div>
-      </form>-->
+      </form>
       </ion-content>
     </ng-template>
   </ion-modal>
