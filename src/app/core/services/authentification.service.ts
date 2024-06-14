@@ -23,7 +23,7 @@ export class AuthentificationService {
       const  connectedUser = res.user;
       var idTokenResult = await connectedUser.getIdTokenResult(true);
       const user = await this.serviceFirestore.getUser(connectedUser.uid);
-
+      console.log(user);
       const expirationTime = idTokenResult.expirationTime; 
       console.log(idTokenResult);
       return {

@@ -6,6 +6,7 @@ import { arrowForward,search,arrowForwardOutline } from 'ionicons/icons';
 import { BehaviorSubject } from 'rxjs';
 import { IAlbum, IAlbumsWithDetails } from 'src/app/core/interfaces/album';
 import { IArtist } from 'src/app/core/interfaces/artist';
+import { LinkItem } from 'src/app/core/interfaces/item';
 import { ISong, ISongWithDetails } from 'src/app/core/interfaces/song';
 import { ILastPlayedWithDetails, IPlaylist, IUser } from 'src/app/core/interfaces/user';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
@@ -17,10 +18,6 @@ import { SwitchableButtonsComponent } from 'src/app/shared/switchable-buttons/sw
 import { VerticalCardComponent } from 'src/app/shared/vertical-card/vertical-card.component';
 
 
-interface LinkItem {
-  title: string;
-  link: string;
-}
 
 @Component({
   selector: 'app-home',
@@ -67,7 +64,7 @@ export class HomePage {
 
   start_icon : string = "search";
   end_icon : string = "search";
-  initial : string = this.getInitials();
+  initial : string =  "";
 
   musiccateg : string[] = ["All","R&B","Pop","Rock"];
   elementTitles: LinkItem[] = [
@@ -102,8 +99,12 @@ export class HomePage {
   artists : IArtist[] =[];
   playlists : IPlaylist[] =[];
   latestAlbum = {} as IAlbum;
+  user = {} as IUser;
 
   ngOnInit() {
+
+    this.getUser();
+
     this.serviceFirestore.getTopSongsWithDetails(5).then(songs => {
       this.songs = songs;
     });
@@ -111,7 +112,7 @@ export class HomePage {
       if(albums)
         this.albums = albums;
     });
-    this.serviceFirestore.getLastPlayed('qfxEo314Ql3IhTZfvGBU',5).then(lastsongs => {
+    this.serviceFirestore.getLastPlayed(this.user.id,5).then(lastsongs => {
       if(lastsongs)
         this.lastPlayeds = lastsongs;
     });
@@ -119,7 +120,7 @@ export class HomePage {
       if(artists)
         this.artists = artists;
     });
-    this.serviceFirestore.getTopPlaylist('qfxEo314Ql3IhTZfvGBU',5).then(playlists => {
+    this.serviceFirestore.getTopPlaylist(this.user.id,5).then(playlists => {
       if(playlists)
         this.playlists = playlists;
     });
@@ -127,23 +128,20 @@ export class HomePage {
       if(latest)
         this.latestAlbum = latest;
     });
-console.log(this.playlists);
-    console.log(this.songs);
+
+    this.initial = this.getInitials();
+  }
+
+  getUser() {
+    const userSubject: BehaviorSubject<IUser>= this.localStore.getItem<IUser>('user');
+    const userdata = userSubject.getValue();
+    if(userdata) {
+      this.user = userdata;
+    }
   }
 
   getInitials() {
-
-    const userSubject: BehaviorSubject<IUser>= this.localStore.getItem<IUser>('user');
-    const user = userSubject.getValue();
-    if (user) {
-      // Parse the JSON string back into an object
-      //const user = JSON.parse(user);
-      if (user.firstname && user.lastname) {
-        console.log(user);
-        return user.firstname[0].toUpperCase() + user.lastname[0].toUpperCase();
-      }
-    }
-    return '';
+    return this.user.firstname[0].toUpperCase() + this.user.lastname[0].toUpperCase();
   }
 
 }
