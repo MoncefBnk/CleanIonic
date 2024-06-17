@@ -45,10 +45,16 @@ export const routes: Routes = [
   },
   {
     path: 'setting',
-    loadComponent: () => import('./pages/setting/setting.page').then( m => m.SettingPage)
+    loadComponent: () => import('./pages/setting/setting.page').then( m => m.SettingPage),
+    canActivate: [authGuard]
   },
   {
     path: '',
+    pathMatch: 'full',
+    redirectTo: 'auth/login',
+  },
+  {
+    path: '**',
     pathMatch: 'full',
     redirectTo: 'auth/login',
   },

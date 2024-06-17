@@ -1,6 +1,7 @@
 import { ExploreContainerComponent } from '../../explore-container/explore-container.component';
 import { Component, inject } from '@angular/core';
 import { IonRouterLinkWithHref,IonRouterLink,IonText,IonItem,IonList,IonCard,IonCardContent,IonAvatar,IonImg, IonRow, IonCol, IonGrid, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,IonButtons,IonButton } from '@ionic/angular/standalone';
+import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
 import { arrowForward,search,arrowForwardOutline } from 'ionicons/icons';
 import { BehaviorSubject } from 'rxjs';
@@ -49,7 +50,8 @@ import { VerticalCardComponent } from 'src/app/shared/vertical-card/vertical-car
     IonIcon,
     IonButtons,
     IonButton,
-    IonRouterLink
+    IonRouterLink,
+    TranslateModule
 
   ],
 
@@ -67,32 +69,6 @@ export class HomePage {
   initial : string =  "";
 
   musiccateg : string[] = ["All","R&B","Pop","Rock"];
-  elementTitles: LinkItem[] = [
-    {
-      title: 'Music Genres',
-      link: 'search'
-    },
-    {
-      title: 'Top Songs',
-      link: '/search'
-    },
-    {
-      title: 'Last Played',
-      link: '/search'
-    },
-    {
-      title: 'Top Albums',
-      link: '/search'
-    },
-    {
-      title: 'Top Artists',
-      link: '/search'
-    },
-    {
-      title: 'Top Playlist',
-      link: '/search'
-    }
-  ];
   songs : ISongWithDetails[]=[];
   lastPlayeds: ILastPlayedWithDetails[]=[];
   albums : IAlbumsWithDetails[] = [];

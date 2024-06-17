@@ -18,6 +18,7 @@ export interface IUser {
   searchHistory?: ISearchHistory[];
   playlist?: IPlaylist[];
   lastPlayed?: ILastPlayed[];
+  isActive?:boolean;
 }
 
 interface ISearchHistory {

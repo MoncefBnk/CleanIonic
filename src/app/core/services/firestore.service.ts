@@ -11,7 +11,7 @@ import {
   where,
   orderBy,
   doc,
-  addDoc,
+  updateDoc,
   setDoc
 } from 'firebase/firestore/lite';
 import { environment } from 'src/environments/environment';
@@ -34,7 +34,7 @@ export class FirestoreService {
   /** Start User */
   async createUser(id: string,email: string, password: string , phoneNumber: string , firstName: string , lastName: string,dateBirth:Date,isArtist:boolean,followers:number,isEmailVerified:boolean,role:ERole) {
     const userRef = doc(this.db, 'user',id);
-    const data = { email: email,password: password, phoneNumber: phoneNumber , firstName: firstName , lastName: lastName,isArtist:isArtist,followers:followers,isEmailVerified:isEmailVerified,role:role,createdAt: new Date(),updatedAt: new Date()};
+    const data = { email: email,password: password, phoneNumber: phoneNumber , firstName: firstName , lastName: lastName,isArtist:isArtist,followers:followers,isEmailVerified:isEmailVerified,role:role,createdAt: new Date(),updatedAt: new Date(),isActive:true};
     return await setDoc(userRef,data);
   }
 
@@ -62,6 +62,16 @@ export class FirestoreService {
       // Handle the case where the document does not exist
       console.log(`No such user with id ${id}!`);
       return null;
+    }
+  }
+
+  async deleteUser(id:string) : Promise<void> {
+    const userRef = doc(this.db, 'user');
+    try {
+      updateDoc(userRef,{isActive: false})
+    } catch (error) {
+      console.error('Error deleting document:', error);
+      throw error;
     }
   }
 

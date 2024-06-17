@@ -1,52 +1,57 @@
-<app-general-header  endIcon ="ellipsis-horizontal" backbutton ="back" title="Settings" ></app-general-header>
+<app-general-header  endIcon ="ellipsis-horizontal" backbutton ="back" title="{{'Settings'|translate}}" ></app-general-header>
 
 <ion-content [fullscreen]="true">
   <ion-item-group>
     <ion-item-divider>
-      <ion-label>Account</ion-label>
+      <ion-label>{{ 'Account'|translate }}</ion-label>
     </ion-item-divider>
   
     <ion-item [button]="true" detail="true">
       <ion-icon  slot="start" name="person-outline"></ion-icon>
-      <ion-label>Account</ion-label>
+      <ion-label>{{ 'Account'|translate }}</ion-label>
     </ion-item>
     <ion-item [button]="true" detail="true" id="verify-modal">
       <ion-icon  slot="start" name="key-outline"></ion-icon>
-      <ion-label>Email verification</ion-label>
+      <ion-label>{{ 'Email verification'|translate }}</ion-label>
     </ion-item>
-    <ion-item [button]="true" detail="true">
-      <ion-icon  slot="start" name="person-outline"></ion-icon>
-      <ion-label>Switch to artist account</ion-label>
-    </ion-item>
+    @if (user.isArtist) {
+      <ion-item [button]="true" detail="true">
+        <ion-icon  slot="start" name="person-outline"></ion-icon>
+        <ion-label>{{ 'Switch to artist account'|translate }}</ion-label>
+      </ion-item>
+    }
+    
   </ion-item-group>
   
   <ion-item-group>
     <ion-item-divider>
-      <ion-label>Content</ion-label>
+      <ion-label>{{ 'Content'|translate }}</ion-label>
     </ion-item-divider>
   
     <ion-item [button]="true" detail="true" id="language-modal">
       <ion-icon  slot="start" name="language-outline"></ion-icon>
-      <ion-label>Language</ion-label>
+      <ion-label>{{ 'Language'|translate }}</ion-label>
     </ion-item>
   </ion-item-group>
 
   <ion-item-group>
     <ion-item-divider>
-      <ion-label>Connexion</ion-label>
+      <ion-label>{{ 'Connexion'|translate }}</ion-label>
     </ion-item-divider>
-  
-    <ion-item [button]="true" detail="true" id="artist-modal">
-      <ion-icon  slot="start" name="person-outline"></ion-icon>
-      <ion-label>Become artist</ion-label>
-    </ion-item>
+    @if (!user.isArtist) {
+      <ion-item [button]="true" detail="true" id="artist-modal">
+        <ion-icon  slot="start" name="person-outline"></ion-icon>
+        <ion-label>{{'Become artist'|translate }}</ion-label>
+      </ion-item>
+    }
+    
     <ion-item [button]="true" detail="true" id="logout-modal">
       <ion-icon  slot="start" name="log-out-outline"></ion-icon>
-      <ion-label>Logout</ion-label>
+      <ion-label>{{'Logout'|translate }}</ion-label>
     </ion-item>
     <ion-item [button]="true" detail="true" lines="none" id="delete-modal">
       <ion-icon  slot="start" name="trash-bin-outline" color="danger"></ion-icon>
-      <ion-label color="danger">Delete account</ion-label>
+      <ion-label color="danger">{{'Delete account'|translate }}</ion-label>
     </ion-item>
   </ion-item-group>
 
@@ -62,14 +67,14 @@
         </ion-toolbar>
         <ion-text>
           <div class=" h-90 py-5 ">
-            <h1 class="flex justify-center font-bold">Change Language</h1>
-            <p class="flex justify-center">Choose the language you want to use</p>
+            <h1 class="flex justify-center font-bold">{{'Change Language'|translate }}</h1>
+            <p class="flex justify-center">{{'Choose the language you want to use'|translate }}</p>
           </div>
         </ion-text>
-        <ion-toggle labelPlacement="end">English</ion-toggle><br /><br />
-        <ion-toggle labelPlacement="end">French</ion-toggle><br /><br />
+        <ion-toggle [(ngModel)]="isEnglishSelected" [disabled]="isFrenchSelected" labelPlacement="end">{{'English'|translate }}</ion-toggle><br /><br />
+        <ion-toggle [(ngModel)]="isFrenchSelected" [disabled]="isEnglishSelected" labelPlacement="end">{{'French'|translate }}</ion-toggle><br /><br />
         <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
-          <ion-button class="flex-1" expand="block" color="light" (click)="languagemodal.dismiss()">Cancel</ion-button> <ion-button class="flex-1" expand="block">Confirm</ion-button>
+          <ion-button class="flex-1" expand="block" color="light" (click)="languagemodal.dismiss()">{{'Cancel'|translate }}</ion-button> <ion-button class="flex-1" expand="block" (click)="changeLanguage(languagemodal)">{{'Confirm'|translate }}</ion-button>
         </div>
       </ion-content>
     </ng-template>
@@ -85,12 +90,12 @@
         </ion-toolbar>
         <ion-text>
           <div class=" h-90 py-5 ">
-            <h1 class="flex justify-center font-bold">Logout</h1>
-            <p class="flex justify-center">Do you really want to logout?</p>
+            <h1 class="flex justify-center font-bold">{{'Logout'|translate }}</h1>
+            <p class="flex justify-center">{{'Do you really want to logout?'|translate }}</p>
           </div>
         </ion-text>
         <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
-          <ion-button class="flex-1" expand="block" color="light" (click)="logoutmodal.dismiss()">Cancel</ion-button> <ion-button class="flex-1" expand="block" color="danger">Confirm</ion-button>
+          <ion-button class="flex-1" expand="block" color="light" (click)="logoutmodal.dismiss()">{{'Cancel'|translate }}</ion-button> <ion-button class="flex-1" expand="block" color="danger" (click)="logout(logoutmodal)">{{'Confirm'|translate }}</ion-button>
         </div>
       </ion-content>
     </ng-template>
@@ -107,12 +112,12 @@
         </ion-toolbar>
         <ion-text>
           <div class=" h-90 py-5 ">
-            <h1 class="flex justify-center font-bold">Delete Account</h1>
-            <p class="flex justify-center text-center">Are you sure you want to delete this account? This action cannot be undone.</p>
+            <h1 class="flex justify-center font-bold">{{'Delete Account'|translate }}</h1>
+            <p class="flex justify-center text-center">{{'Are you sure you want to delete this account? This action cannot be undone.'|translate }}</p>
           </div>
         </ion-text>
         <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
-          <ion-button class="flex-1" expand="block" color="light" (click)="deletemodal.dismiss()">Cancel</ion-button> <ion-button class="flex-1" expand="block" color="danger">Confirm</ion-button>
+          <ion-button class="flex-1" expand="block" color="light" (click)="deletemodal.dismiss()">{{'Cancel'|translate }}</ion-button> <ion-button class="flex-1" expand="block" color="danger" (click)="deleteAccount(deletemodal)">{{'Confirm'|translate }}</ion-button>
         </div>
       </ion-content>
     </ng-template>
@@ -129,56 +134,66 @@
         </ion-toolbar>
         <ion-text>
           <div class=" h-90 py-5 ">
-            <h1 class="flex justify-center font-bold">Verify email</h1>
-            <p class="flex justify-center text-center">We’ll email you a verification code to your email that you used to register on this account</p>
+            <h1 class="flex justify-center font-bold">{{'Verify email'|translate }}</h1>
+            <p class="flex justify-center text-center">{{"We’ll email you a verification code to your email that you used to register on this account"|translate }}</p>
           </div>
         </ion-text>
         <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
-          <ion-button class="flex-1" expand="block">Send</ion-button>
+          <ion-button class="flex-1" expand="block">{{'Send'|translate }}</ion-button>
         </div>
       </ion-content>
     </ng-template>
   </ion-modal>
 
-  <ion-modal #artistmodal trigger="artist-modal" class="artist-modal my-48">
+  <ion-modal #artistmodal trigger="artist-modal" class="artist-modal">
     <ng-template>
       <ion-content class="ion-padding">
         <ion-toolbar>
-          <ion-title class="ion-text-center">Create your artist account</ion-title>
+          <ion-title class="ion-text-center">{{'Create your artist account'|translate }}</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="artistmodal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
           </ion-buttons>
         </ion-toolbar>
-        <!--<form [formGroup]="form" style="padding-top: 5%">
+       <form [formGroup]="form" style="padding-top: 5%">
           <ion-list class="bg-transparent">
-            <p class="input-label">Fullname</p>
-            <ion-item>
+            <ion-item class="py-5">
+              <ion-avatar aria-hidden="true" slot="start">
+                <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
+              <input type="file" />
+            </ion-item>
+            <p class="input-label">{{'Fullname'|translate }}</p>
+            <ion-item class="pb-5">
               <ion-input
                 type="text"
                 formControlName="fullname"
+                ngDefaultControl
                 name="fullname" required
               ></ion-input>
             </ion-item>
-            <p class="input-label">Label</p>
-            <ion-item>
+            <p class="input-label">{{'Label'|translate }}</p>
+            <ion-item class="pb-5">
               <ion-input
                 type="text"
                 formControlName="label"
+                ngDefaultControl
                 name="label" required
               ></ion-input>
             </ion-item>
-            <p class="input-label">Description</p>
-              <ion-item style="display: flex">
+            <p class="input-label">{{'Description'|translate }}</p>
+              <ion-item style="display: flex" >
                   <ion-textarea
                     name="description"
                     formControlName="description"
+                    fill="solid"
                   ></ion-textarea>
               </ion-item>
           </ion-list>
-        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
-          <ion-button class="flex-1" expand="block">Send</ion-button>
+        <div class="absolute inset-x-0 bottom-0 h-28  px-8 py-4 ">
+          <ion-button class="flex-1" expand="block">{{'Confirm'|translate }}</ion-button>
+          <ion-button class="flex-1" expand="block">{{'Cancel'|translate }}</ion-button>
         </div>
-      </form>-->
+      </form>
       </ion-content>
     </ng-template>
   </ion-modal>
