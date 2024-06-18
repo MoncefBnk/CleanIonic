@@ -92,7 +92,7 @@ export class MusicService {
 
   stop() {
     if (this.audio) {
-      this.audio.pause();
+      this.pause();
       this.audio.currentTime = 0;
       this.isPlayingSubject.next(false);
       this.progressSubject.next(0);
@@ -183,5 +183,10 @@ export class MusicService {
 
   skipBackward(seconds: number) {
     this.audio.currentTime = Math.max(this.audio.currentTime - seconds, 0);
+  }
+
+  load(id:string = '') {
+    this.audio = new Audio('url/${id}');
+    this.audio.load();
   }
 }

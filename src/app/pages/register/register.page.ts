@@ -75,14 +75,16 @@ export class RegisterPage implements OnInit {
   });
 
   constructor() {
+   
+  }
+
+  ngOnInit() {
     addIcons({
       'alert-circle-outline': alertOutline,
       'eye-off-outline': eyeOffOutline,
       'eye-outline': eyeOutline,
     });
   }
-
-  ngOnInit() {}
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;

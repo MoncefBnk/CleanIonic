@@ -160,6 +160,10 @@
               <ion-avatar aria-hidden="true" slot="start">
                 <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
               </ion-avatar>
+              <ion-button (click)="selectImage()">
+                <ion-icon  slot="start" name="cloud-download-outline"></ion-icon>
+                {{"Upload photo"|translate}}
+              </ion-button>
               <input type="file" />
             </ion-item>
             <p class="input-label">{{'Fullname'|translate }}</p>
@@ -190,7 +194,7 @@
               </ion-item>
           </ion-list>
         <div class="absolute inset-x-0 bottom-0 h-28  px-8 py-4 ">
-          <ion-button class="flex-1" expand="block">{{'Confirm'|translate }}</ion-button>
+          <ion-button class="flex-1" expand="block" (click)="onSubmitArtist()">{{'Confirm'|translate }}</ion-button>
           <ion-button class="flex-1" expand="block">{{'Cancel'|translate }}</ion-button>
         </div>
       </form>

@@ -1,0 +1,32 @@
+ion-toolbar {
+    --border-color: transparent;
+    --ion-toolbar-border-width: 0;
+    border: none;
+    box-shadow: none;
+    --color: rgb(0, 0, 0);
+    --background: transparent;
+    padding: 1rem 1rem;
+  }
+
+  ion-searchbar.custom {
+    --border-radius: 15px;
+    width: 17rem;
+  }
+
+  ion-item {
+    .item-inner {
+        border-bottom-width: 0px;
+    }
+}
+
+
+
+.item-style {
+    //border-bottom-width: 0px;
+    --padding-start: 0;
+  --inner-padding-end: 0;
+  ion-text {
+    padding: 8px 16px;
+  }
+  
+}

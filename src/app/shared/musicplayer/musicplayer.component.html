@@ -1,0 +1,33 @@
+<ion-card class="card-css">
+  <ion-card-header>
+    <ion-card-title>Card Title</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-row class="media-buttons">
+      <!-- Repeat Song -->
+      <ion-col class="left" size="2">
+        <ion-icon name="repeat" class="{{isOnRepeat? 'repeat-active': 'repeat-inactive'}}" (click)="onRepeat()"></ion-icon>
+      </ion-col>
+      <ion-col class="right" size="2" >
+        <ion-icon name="play-skip-back-outline" (click)="skipBackward()" class="icon"></ion-icon>
+      </ion-col>
+      <!-- Play/Pause -->
+      <ion-col class="center" size="4">
+        <ion-icon
+          name="{{ isPlaying ? 'pause-circle' : 'play-circle' }}"
+          class="icon-play"
+          (click)="playMusic()"
+        ></ion-icon>
+      </ion-col>
+      <!-- Skip forward -->
+      <ion-col class="left" size="2">
+        <ion-icon name="play-skip-forward-outline" (click)="skipForward()"  class="icon"></ion-icon>
+      </ion-col>
+      <!-- Shuffle -->
+      <ion-col class="right" size="2">
+        <ion-icon name="shuffle" class="icon-sides"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card-content>
+</ion-card>

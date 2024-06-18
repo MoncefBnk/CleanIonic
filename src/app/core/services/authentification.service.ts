@@ -23,9 +23,7 @@ export class AuthentificationService {
       const  connectedUser = res.user;
       var idTokenResult = await connectedUser.getIdTokenResult(true);
       const user = await this.serviceFirestore.getUser(connectedUser.uid);
-      console.log(user);
       const expirationTime = idTokenResult.expirationTime; 
-      console.log(idTokenResult);
       return {
         code: 201,
         error: false,
@@ -42,7 +40,6 @@ export class AuthentificationService {
         user: user,
       } as LoginRequestSuccess; 
     }catch (err) {
-      console.log(this.getErrorMessage(err));
       return {
         code: 401,
         error: true,
@@ -98,7 +95,6 @@ export class AuthentificationService {
         },
       } as LoginRequestSuccess; 
     } catch (error) {
-      console.log(error);
       return {
         code: 401,
         error: true,

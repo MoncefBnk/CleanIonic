@@ -1,3 +1,5 @@
+import { IAlbum } from "./album";
+
 export interface IArtist {
     id: string;
     userId: string;
@@ -14,5 +16,5 @@ export interface IArtist {
   }
 
   export interface IArtistWithDetails extends IArtist {
-    artistDetail: IArtist;
+    artistDetail: IAlbum;
   }

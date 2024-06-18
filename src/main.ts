@@ -16,6 +16,7 @@ import { LocalStorageService } from './app/core/services/local-storage.service';
 import { FirestoreService } from './app/core/services/firestore.service';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { MusicService } from './app/core/services/music.service';
 
 if (environment.production) {
   enableProdMode();
@@ -25,6 +26,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     FirestoreService,
     LocalStorageService,
+    MusicService,
     i18nProviders,
     provideHttpClient(),
     provideIonicAngular(),
