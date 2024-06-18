@@ -94,6 +94,10 @@ export class PlayerPage implements OnInit {
   isExpanded: boolean = false;
 
   constructor(private route: ActivatedRoute, private musicService: MusicService,private modalController: ModalController) {
+    
+  }
+
+  ngOnInit() {
     addIcons({
       repeat,
       shareOutline,
@@ -110,9 +114,7 @@ export class PlayerPage implements OnInit {
       chevronExpandOutline,
       chevronCollapseOutline
     });
-  }
-
-  ngOnInit() {
+    
     this.route.queryParams.subscribe(params => {
       if (params && params['song']) {
         this.song = JSON.parse(params['song']);

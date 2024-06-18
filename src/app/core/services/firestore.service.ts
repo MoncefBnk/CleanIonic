@@ -12,13 +12,16 @@ import {
   orderBy,
   doc,
   updateDoc,
-  setDoc
+  setDoc,
+  addDoc
 } from 'firebase/firestore/lite';
 import { environment } from 'src/environments/environment';
 import { ISong, ISongWithDetails } from '../interfaces/song';
 import { IAlbum, IAlbumsWithDetails } from '../interfaces/album';
 import { ERole, ILastPlayed, ILastPlayedWithDetails, IPlaylist, IUser } from '../interfaces/user';
-import { IArtist } from '../interfaces/artist';
+import { IArtist, IArtistWithDetails } from '../interfaces/artist';
+import { RequestResponse } from '../interfaces/response';
+import { IElement } from '../interfaces/element';
 
 
 
@@ -65,8 +68,110 @@ export class FirestoreService {
     }
   }
 
+
+  async getRecentSearched(id:string,limitCount:number): Promise<IElement[] |null> {
+    const historySongRef = collection(this.db, 'user/'+id+'/searchHistory');
+    const q = query(historySongRef, orderBy('createdAt', 'desc'), limit(limitCount));
+    const recentSearchedSnapshot = await getDocs(q);
+    if (!recentSearchedSnapshot.empty) {
+      const elements: IElement[] = [];
+      for (const doc of recentSearchedSnapshot.docs) {
+        const data = doc.data();
+        switch(data['type']) { 
+          case 'artist': { 
+              const artist = await this.getOneArtist(data['id']);
+              if(artist) {
+                const elt = {
+                  id: doc.id,
+                  type: 'artist',
+                  artistName: data['artist'],
+                  nbrAlbum : data['albums']?data['albums'].length : 0,
+                  image:data['cover'],
+                }
+                elements.push({...elt});
+              }
+              break; 
+          } 
+          case 'album': { 
+              const album = await this.getOneAlbum(data['id']);
+              if(album) {
+                const elt = {
+                  id: doc.id,
+                  type: 'album',
+                  albumName: album['title'],
+                  artistName: album['artist']['artist'],
+                  year: album['year'] ,
+                  image:album['cover'],
+                }
+                elements.push({...elt});
+              }
+              break; 
+          } 
+          case 'song': { 
+              const song = await this.getOneSong(data['id']);
+              if(song) {
+                const elt = {
+                  id: doc.id,
+                  type: 'song',
+                  songtitle: song['title'],
+                 // artistName: data['artist']['artist'],
+                  image:song['cover'],
+                }
+                elements.push({...elt});
+              }
+              break; 
+          } 
+          default: { 
+            const artist = await this.getOneArtist(data['id']);
+            const album = await this.getOneAlbum(data['id']);
+            const song = await this.getOneSong(data['id']);
+
+            if (artist) {
+              const artistElt = {
+                id: doc.id,
+                type: 'artist',
+                artistName: artist['artist'],
+                nbrAlbum: artist['albums'] ? artist['albums'].length : 0,
+                image: data['cover'],
+              };
+              elements.push({ ...artistElt });
+            }
+
+            if (album) {
+              const albumElt = {
+                id: doc.id,
+                type: 'album',
+                albumName: album['title'],
+                artistName: album['artist']['artist'],
+                year: album['year'],
+                image: album['cover'],
+              };
+              elements.push({ ...albumElt });
+            }
+
+            if (song) {
+              const songElt = {
+                id: doc.id,
+                type: 'song',
+                songTitle: song['title'],
+                // artistName: data['artist']['artist'],
+                image: song['cover'],
+              };
+              elements.push({ ...songElt });
+            }
+            
+            break;
+          } 
+        } 
+      }
+      return elements;
+    } else
+      return null;
+  }
+
+
   async deleteUser(id:string) : Promise<void> {
-    const userRef = doc(this.db, 'user');
+    const userRef = doc(this.db, 'user',id);
     try {
       updateDoc(userRef,{isActive: false})
     } catch (error) {
@@ -106,8 +211,6 @@ export class FirestoreService {
       return null;
     }
   }
-
-
 
   async getOneAlbum(id:string) : Promise<IAlbumsWithDetails | null> {
     const q = doc(this.db, 'album',id);
@@ -188,7 +291,7 @@ export class FirestoreService {
     
   }
 
-  // Get a list of cities from your database
+  // Get all albums
   async getAlbums() {
     const albumsCol = collection(this.db, 'albums');
     const albumsSnapshot = await getDocs(albumsCol);
@@ -196,21 +299,54 @@ export class FirestoreService {
     return albumsList;
   }
 
+  //
   async getAlbums2() {
     const albumsCol = collection(this.db, 'albums');
     const q = query(albumsCol, where('artist.name', '==', 'Mike'), limit(3));
+    const albumsSnapshot = await getDocs(q);
+    const albumsList = albumsSnapshot.docs.map((doc) => doc.data());
+    return albumsList;
+  }
+
+  //Search Album
+ /* async searchAlbum(data:string) {
+    const albumsCol = collection(this.db, 'albums');
+    const q = query(albumsCol, where('artist.name', '==', 'data'), limit(3));
     const albumsSnapshot = await getDocs(q);
     const albumsList = albumsSnapshot.docs.map((doc) => doc.data());
     console.log('albumsCol',albumsCol);
     console.log('q',q);
     console.log('albumsList',albumsList);
     return albumsList;
-  }
+  }*/
 
 
   /** end album */
 
   /** start artist */
+
+  async createArtist(userId:string,artistName:string,label:string,description:string,avatar:string) : Promise<RequestResponse>{
+    try {
+    const data = { userId: userId,artist: artistName, label: label , description: description , avatar: avatar,followers:0,searchScore:0,lastUpdatedSearchScore: new Date(),createdAt: new Date(),updatedAt: new Date()};
+    const result = await addDoc(collection(this.db, "artist"), data);
+    if (result) {
+      const userRef = doc(this.db, 'user',userId);
+      updateDoc(userRef,{isArtist: true});
+    }
+    return {
+      code: 201,
+      error: false,
+      message : "Artist account created successfully!"
+    } as RequestResponse; 
+  } catch (error) {
+    console.log(error);
+    return {
+      code: 401,
+      error: true,
+      message: "Something went wrong, please try again later!",
+    } as RequestResponse;
+  }
+  }
 
   async  getTopArtists(limitCount: number): Promise<IArtist[] | null> {
     const artistsRef = collection(this.db, 'artist');
@@ -270,7 +406,38 @@ export class FirestoreService {
       return null;
     }
   }
+/*
+  async getOneArtistWithDetails(id:string): Promise<IArtistWithDetails | null> {
+    const q = doc(this.db, 'artist',id);
+    const artistSnapshot = await getDoc(q);
 
+    if (artistSnapshot.exists()) {
+      const data = artistSnapshot.data();
+      const artist={} as IArtistWithDetails;
+      const album = await this.getOneArtist(data['artistId']);
+      return {
+        id: artistSnapshot.id,
+        userId: data['userId'],
+        artist: data['artist'],
+        label: data['label'],
+        description: data['description'],
+        avatar: data['avatar'],
+        followers: data['followers'],
+        albums: data['albums'],
+        createdAt: data['createdAt'].toDate(),
+        updatedAt: data['updatedAt'].toDate(),
+        searchScore: data['searchScore'],
+        lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+      };
+       
+
+      return albums;
+    } else {
+      console.log('No such album!');
+      return null;
+    }
+  }
+*/
   /** end artist */
 
   /** start song */
@@ -391,7 +558,6 @@ export class FirestoreService {
           album
   
         };
-        console.log(song);
         return song;
       }
       else {
@@ -439,7 +605,7 @@ export class FirestoreService {
 
   /** end playlist */
 
-
+ 
   
   
 }

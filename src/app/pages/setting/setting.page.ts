@@ -4,13 +4,16 @@ import { FormControl, FormGroup, FormsModule, Validators,ReactiveFormsModule } f
 import { IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonItemDivider,IonItemGroup,IonLabel,IonIcon,IonList,IonModal,IonButton,IonButtons,IonText,IonToggle, IonTextarea,IonAvatar } from '@ionic/angular/standalone';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { addIcons } from 'ionicons';
-import { personOutline,keyOutline,languageOutline,logOutOutline,trashBinOutline,closeOutline, mailOutline} from 'ionicons/icons';
+import { personOutline,keyOutline,languageOutline,logOutOutline,trashBinOutline,closeOutline, mailOutline,cloudDownloadOutline} from 'ionicons/icons';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { BehaviorSubject } from 'rxjs';
 import { IUser } from 'src/app/core/interfaces/user';
 import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { FirestoreService } from 'src/app/core/services/firestore.service';
+import { RequestResponse } from 'src/app/core/interfaces/response';
+//import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 
 @Component({
@@ -26,10 +29,12 @@ export class SettingPage implements OnInit {
   private authService = inject(AuthentificationService);
   private router = inject(Router);
   private translate = inject(TranslateService);
+  private firestore = inject(FirestoreService);
 
   isEnglishSelected: boolean = false;
   isFrenchSelected: boolean = false;
-
+  error: string = '';
+  submitForm: boolean = false;
   user = {} as IUser;
 
   form: FormGroup = new FormGroup({
@@ -43,7 +48,7 @@ export class SettingPage implements OnInit {
   });
 
   constructor() {
-    addIcons({ personOutline,keyOutline,languageOutline,logOutOutline,trashBinOutline,closeOutline,mailOutline });
+    addIcons({ personOutline,keyOutline,languageOutline,logOutOutline,trashBinOutline,closeOutline,mailOutline,cloudDownloadOutline });
     this.getUser();
 
     if (this.translate.currentLang == 'en_US') {
@@ -64,29 +69,24 @@ export class SettingPage implements OnInit {
     }
   }
 
-  /**
-   * async onSubmit() {
+  async onSubmitArtist() {
     this.error = '';
     if (this.form.valid) {
       this.submitForm = true;
       try {
-        const data = await this.serviceAuth.register(
-          this.form.value.email, 
-          this.form.value.password, 
-          this.form.value.phoneNumber, 
-          this.form.value.firstName, 
-          this.form.value.lastName,
-          this.form.value.dateBirth
+        const data = await this.firestore.createArtist(
+          this.user.id, 
+          this.form.value.fullname, 
+          this.form.value.label, 
+          this.form.value.description, 
+          this.form.value.avatar
         )
-
         if (data.error) {
-          const error = data as LoginRequestError;
+          const error = data as RequestResponse;
           this.error = error?.message ?? '';
         } else {
-          const success = data as LoginRequestSuccess;
-          this.localStore.setItem('user', success.user);
-          this.localStore.setItem('token', success.token);
-          this.router.navigateByUrl('/home');
+          const success = data as RequestResponse;
+          console.log(success.message);
         }
       } catch(err) {
         console.log(err);
@@ -94,7 +94,6 @@ export class SettingPage implements OnInit {
       }
     }
   }
-   */
 
   logout(modal: any) {
     modal.dismiss();
@@ -120,6 +119,24 @@ export class SettingPage implements OnInit {
    modal.dismiss();
   }
 
+  selectImage() {
+   /* const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+    };
+
+    this.camera.getPicture(options).then(
+      (imageData) => {
+        this.image = 'data:image/jpeg;base64,' + imageData;
+        this.uploadImage();
+      },
+      (err) => {
+        console.log('Camera issue: ' + err);
+      }
+    );*/
+  }
 
 
 }

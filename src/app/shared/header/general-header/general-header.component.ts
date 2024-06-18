@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { addIcons } from 'ionicons';
 import { arrowBack, ellipsisHorizontal,search,settings } from 'ionicons/icons';
 import { IonImg,IonTitle,IonToolbar,IonButtons,IonButton,IonIcon,IonBackButton} from '@ionic/angular/standalone';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -19,12 +20,22 @@ export class GeneralHeaderComponent  implements OnInit {
   @Input() title: string|null = "";
   @Input() initial: string|null = "";
   @Input() backbutton: string|null = "";
+  @Input() searchType: string|null = "";
+  @Input() searchId: string|null = "";
 
+  constructor(private navCtrl: NavController) { 
+    
+  }
 
-  constructor() { 
+  ngOnInit() {
     addIcons({ search,ellipsisHorizontal,settings,arrowBack });
   }
 
-  ngOnInit() {}
+  onSearchClick() {
+    this.navCtrl.navigateForward(['/search', {
+      type: this.searchType,
+      id: this.searchId
+    }]);
+  }
 
 }
