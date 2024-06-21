@@ -500,45 +500,6 @@ export class FirestoreService {
 
     return topSongs;
   }
-  async searchSongWithTitle(searchTerm: string,limitCount: number): Promise<ISongWithDetails[]> {
-    const songsRef = collection(this.db, 'song');
-
-    // Modify the query to search by song title
-    const start = searchTerm;
-    const end = searchTerm + '\uf8ff'; // Unicode character to ensure the query returns all matches starting with the searchTerm
-
-    const q = query(songsRef, orderBy('title'), startAt(start), endAt(end), limit(limitCount));
-    const songSnapshot = await getDocs(q);
-
-    const songs: ISongWithDetails[] = [];
-
-    for (const doc of songSnapshot.docs) {
-      const data = doc.data();
-      const song: ISong = {
-        id: doc.id,
-        title: data['title'],
-        duration: data['duration'],
-        cover: data['cover'],
-        fileUrl: data['fileUrl'],
-        artistId: data['artistId'],
-        albumId: data['albumId'],
-        createdAt: data['createdAt'].toDate(),
-        updatedAt: data['updatedAt'].toDate(),
-        searchScore: data['searchScore'],
-        lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
-      };
-
-      const artist = await this.getOneArtist(song.artistId);
-      const album = await this.getOneAlbum(song.albumId);
-
-      if (artist && album) {
-        songs.push({ ...song, artist, album });
-      }
-    }
-
-    console.log(songs);
-    return songs;
-  }
 
   async getTopSongsWithDetails(limitCount: number): Promise<ISongWithDetails[]> {
     const songsRef = collection(this.db, 'song');
@@ -647,6 +608,151 @@ export class FirestoreService {
 
   /** end playlist */
 
+  /** start search */
+
+  // Search with title and filter by artist or album or song or all
+  private async searchSongs(searchTerm: string | null, limitCount: number): Promise<ISongWithDetails[]> {
+    const collectionRef = collection(this.db, 'song');
+    let q;
+
+    if (searchTerm && searchTerm.trim() !== '') {
+      const start = searchTerm;
+      const end = searchTerm + '\uf8ff';
+      q = query(collectionRef, orderBy('title'), startAt(start), endAt(end), limit(limitCount));
+    } else {
+      q = query(collectionRef, orderBy('title'), limit(limitCount));
+    }
+
+    const songSnapshot = await getDocs(q);
+    const songs: ISongWithDetails[] = [];
+
+    for (const doc of songSnapshot.docs) {
+      const data = doc.data();
+      const song: ISong = {
+        id: doc.id,
+        title: data['title'],
+        duration: data['duration'],
+        cover: data['cover'],
+        fileUrl: data['fileUrl'],
+        artistId: data['artistId'],
+        albumId: data['albumId'],
+        createdAt: data['createdAt'].toDate(),
+        updatedAt: data['updatedAt'].toDate(),
+        searchScore: data['searchScore'],
+        lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+      };
+
+      const artist = await this.getOneArtist(song.artistId);
+      const album = await this.getOneAlbum(song.albumId);
+
+      if (artist && album) {
+        songs.push({ ...song, artist, album });
+      }
+    }
+
+    return songs;
+  }
+
+  private async searchArtists(searchTerm: string | null, limitCount: number): Promise<IArtist[]> {
+    const collectionRef = collection(this.db, 'artist');
+    let q;
+
+    if (searchTerm && searchTerm.trim() !== '') {
+      const start = searchTerm;
+      const end = searchTerm + '\uf8ff';
+      q = query(collectionRef, orderBy('artist'), startAt(start), endAt(end), limit(limitCount));
+    } else {
+      q = query(collectionRef, orderBy('artist'), limit(limitCount));
+    }
+
+    const artistSnapshot = await getDocs(q);
+    const artists: IArtist[] = [];
+
+    for (const doc of artistSnapshot.docs) {
+      const data = doc.data();
+      const artist: IArtist = {
+        id: doc.id,
+        userId: data['userId'],
+        artist: data['artist'],
+        label: data['label'],
+        description: data['description'],
+        avatar: data['avatar'],
+        followers: data['followers'],
+        albums: data['albums'],
+        createdAt: data['createdAt'].toDate(),
+        updatedAt: data['updatedAt'].toDate(),
+        searchScore: data['searchScore'],
+        lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+      };
+
+      artists.push(artist);
+    }
+
+    return artists;
+  }
+
+  private async searchAlbums(searchTerm: string | null, limitCount: number): Promise<IAlbum[]> {
+    const collectionRef = collection(this.db, 'album');
+    let q;
+
+    if (searchTerm && searchTerm.trim() !== '') {
+      const start = searchTerm;
+      const end = searchTerm + '\uf8ff';
+      q = query(collectionRef, orderBy('title'), startAt(start), endAt(end), limit(limitCount));
+    } else {
+      q = query(collectionRef, orderBy('title'), limit(limitCount));
+    }
+
+    const albumSnapshot = await getDocs(q);
+    const albums: IAlbum[] = [];
+
+    for (const doc of albumSnapshot.docs) {
+      const data = doc.data();
+      const artist = await this.getOneArtist(data['artistId']);
+
+      if (artist) {
+        const album = {
+          id: doc.id,
+          title: data['title'],
+          cover: data['cover'],
+          artistId: data['artistId'],
+          releaseDate: data['releaseDate'].toDate(),
+          createdAt: data['createdAt'].toDate(),
+          updatedAt: data['updatedAt'].toDate(),
+          searchScore: data['searchScore'],
+          lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+          category: data['category'],
+          year: data['year'],
+          song: data['song'],
+          artist,
+        };
+
+        albums.push(album);
+      }
+    }
+
+    return albums;
+  }
+
+  async searchWithTitle(searchTerm: string | null, limitCount: number, searchFilter: string): Promise<ISongWithDetails[] | IArtist[] | IAlbum[] | any> {
+    if (searchFilter === 'song') {
+      return this.searchSongs(searchTerm, limitCount);
+    } else if (searchFilter === 'artist') {
+      return this.searchArtists(searchTerm, limitCount);
+    } else if (searchFilter === 'album') {
+      return this.searchAlbums(searchTerm, limitCount);
+    } else if (searchFilter === 'all') {
+      const [songs, artists, albums] = await Promise.all([
+        this.searchSongs(searchTerm, limitCount),
+        this.searchArtists(searchTerm, limitCount),
+        this.searchAlbums(searchTerm, limitCount),
+      ]);
+      return { artists, songs, albums };
+    } else {
+      throw new Error('Invalid search filter');
+    }
+  }
+/** end search */
 
 
 
