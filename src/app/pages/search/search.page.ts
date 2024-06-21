@@ -22,11 +22,11 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./search.page.scss'],
   standalone: true,
   imports: [
-    IonContent, 
-    IonHeader, 
-    IonTitle, 
-    IonToolbar, 
-    CommonModule, 
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    CommonModule,
     FormsModule,
     IonBackButton,
     IonButtons,
@@ -120,7 +120,7 @@ export class SearchPage implements OnInit {
       if(recents)
         this.recentsearchs = recents;
     });
-  
+
     this.searchType = this.route.snapshot.paramMap.get('type');
     this.searchId = this.route.snapshot.paramMap.get('id');
     console.log(this.searchType,this.searchId)
@@ -134,7 +134,7 @@ export class SearchPage implements OnInit {
       case 'song' :
         this.selectedButton = 3;
         break;
-      default : 
+      default :
         this.selectedButton = 0;
         break;
     }

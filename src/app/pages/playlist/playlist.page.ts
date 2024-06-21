@@ -1,7 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { ExploreContainerComponent } from './../../explore-container/explore-container.component';
 import { Component, inject } from '@angular/core';
 
-import { IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import {
+  IonItem,
+  IonLabel,
+  IonText,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonList,
+} from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -10,6 +20,7 @@ import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { Horizontal2CardComponent } from 'src/app/shared/horizontal2-card/horizontal2-card.component';
+import { IElement } from 'src/app/core/interfaces/element';
 
 
 @Component({
@@ -18,34 +29,48 @@ import { Horizontal2CardComponent } from 'src/app/shared/horizontal2-card/horizo
   styleUrls: ['playlist.page.scss'],
   standalone: true,
 
-  imports: [IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent,Horizontal2CardComponent,GeneralHeaderComponent,TranslateModule],
+  imports: [
+    IonList,
+    IonItem,
+    IonLabel,
+    IonText,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    ExploreContainerComponent,
+    Horizontal2CardComponent,
+    GeneralHeaderComponent,
+    TranslateModule,
+    CommonModule,
 
+  ],
 })
 export class PlaylistPage {
   constructor() {}
 
   private serviceFirestore = inject(FirestoreService);
   private localStore = inject(LocalStorageService);
-  
-  title : string = "Music Playlist"
-  end_icon : string = "ellipsis-horizontal";
 
-  playlists : IPlaylist[] = [];
+  title: string = 'Music Playlist';
+  end_icon: string = 'ellipsis-horizontal';
+
+  playlists: IPlaylist[] = [];
   user = {} as IUser;
 
   ngOnInit() {
     this.getUser();
-    this.serviceFirestore.getTopPlaylist(this.user.id,5).then(playlists => {
-      if(playlists)
-        this.playlists = playlists;
+    this.serviceFirestore.getTopPlaylist(this.user.id, 5).then((playlists) => {
+      if (playlists) this.playlists = playlists;
     });
     console.log(this.playlists);
   }
 
   getUser() {
-    const userSubject: BehaviorSubject<IUser>= this.localStore.getItem<IUser>('user');
+    const userSubject: BehaviorSubject<IUser> =
+      this.localStore.getItem<IUser>('user');
     const userdata = userSubject.getValue();
-    if(userdata) {
+    if (userdata) {
       this.user = userdata;
     }
   }

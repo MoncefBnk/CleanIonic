@@ -4,6 +4,7 @@
   <ion-item>
     <ion-label>Total : {{ playlists ? playlists.length : 0 }}</ion-label>
   </ion-item>
-  <app-horizontal2-card [playlists] = "playlists"></app-horizontal2-card>
-  
+  <ion-list *ngFor="let item of playlists;">
+    <app-horizontal2-card [element]="item"></app-horizontal2-card>
+  </ion-list>
 </ion-content>

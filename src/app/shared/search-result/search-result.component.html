@@ -12,7 +12,7 @@
       @else if(element.type === 'artist') { {{element.nbrAlbum}} album(s)  }
       @else if(element.type === 'album') { {{element.artistName}} }</h3>
   </ion-text>
-  <ion-button shape="round" color="light" (click)="removeElement(element.id)" slot="end">
+  <ion-button shape="round" color="light" (click)="null" slot="end">
     <ion-icon name="close"  class="absolute"></ion-icon>
   </ion-button>
 </ion-item>
