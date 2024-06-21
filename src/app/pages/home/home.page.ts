@@ -81,22 +81,22 @@ export class HomePage {
 
     this.getUser();
 
-    this.serviceFirestore.getTopSongsWithDetails(5).then(songs => {
+    this.serviceFirestore.getTopSongsWithDetails(3).then(songs => {
       this.songs = songs;
     });
-    this.serviceFirestore.getTopAlbums(5).then(albums => {
+    this.serviceFirestore.getTopAlbums(3).then(albums => {
       if(albums)
         this.albums = albums;
     });
-    this.serviceFirestore.getLastPlayed(this.user.id,5).then(lastsongs => {
+    this.serviceFirestore.getLastPlayed(this.user.id,3).then(lastsongs => {
       if(lastsongs)
         this.lastPlayeds = lastsongs;
     });
-    this.serviceFirestore.getTopArtists(5).then(artists => {
+    this.serviceFirestore.getTopArtists(3).then(artists => {
       if(artists)
         this.artists = artists;
     });
-    this.serviceFirestore.getTopPlaylist(this.user.id,5).then(playlists => {
+    this.serviceFirestore.getTopPlaylist(this.user.id,3).then(playlists => {
       if(playlists)
         this.playlists = playlists;
     });

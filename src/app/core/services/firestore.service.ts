@@ -1,3 +1,4 @@
+import { search } from 'ionicons/icons';
 import { Injectable } from '@angular/core';
 
 import { initializeApp } from 'firebase/app';
@@ -13,7 +14,9 @@ import {
   doc,
   updateDoc,
   setDoc,
-  addDoc
+  addDoc,
+  startAt,
+  endAt
 } from 'firebase/firestore/lite';
 import { environment } from 'src/environments/environment';
 import { ISong, ISongWithDetails } from '../interfaces/song';
@@ -77,8 +80,8 @@ export class FirestoreService {
       const elements: IElement[] = [];
       for (const doc of recentSearchedSnapshot.docs) {
         const data = doc.data();
-        switch(data['type']) { 
-          case 'artist': { 
+        switch(data['type']) {
+          case 'artist': {
               const artist = await this.getOneArtist(data['id']);
               if(artist) {
                 const elt = {
@@ -90,9 +93,9 @@ export class FirestoreService {
                 }
                 elements.push({...elt});
               }
-              break; 
-          } 
-          case 'album': { 
+              break;
+          }
+          case 'album': {
               const album = await this.getOneAlbum(data['id']);
               if(album) {
                 const elt = {
@@ -105,9 +108,9 @@ export class FirestoreService {
                 }
                 elements.push({...elt});
               }
-              break; 
-          } 
-          case 'song': { 
+              break;
+          }
+          case 'song': {
               const song = await this.getOneSong(data['id']);
               if(song) {
                 const elt = {
@@ -119,9 +122,9 @@ export class FirestoreService {
                 }
                 elements.push({...elt});
               }
-              break; 
-          } 
-          default: { 
+              break;
+          }
+          default: {
             const artist = await this.getOneArtist(data['id']);
             const album = await this.getOneAlbum(data['id']);
             const song = await this.getOneSong(data['id']);
@@ -159,10 +162,10 @@ export class FirestoreService {
               };
               elements.push({ ...songElt });
             }
-            
+
             break;
-          } 
-        } 
+          }
+        }
       }
       return elements;
     } else
@@ -235,7 +238,7 @@ export class FirestoreService {
           year: data['year'],
           song: data['song'],
           artist,
-  
+
         };
 
         return album;
@@ -263,7 +266,7 @@ export class FirestoreService {
       for (const doc of albumSnapshot.docs) {
         const data = doc.data();
         const artist = await this.getOneArtist(data['artistId']);
-        
+
         if(artist) {
           const album = {
             id: doc.id,
@@ -280,7 +283,7 @@ export class FirestoreService {
             song: data['song'],
           }
           albums.push({...album,artist});
-        } 
+        }
       }
 
       return albums;
@@ -288,7 +291,7 @@ export class FirestoreService {
     } else {
       return null;
     }
-    
+
   }
 
   // Get all albums
@@ -337,7 +340,7 @@ export class FirestoreService {
       code: 201,
       error: false,
       message : "Artist account created successfully!"
-    } as RequestResponse; 
+    } as RequestResponse;
   } catch (error) {
     console.log(error);
     return {
@@ -429,7 +432,7 @@ export class FirestoreService {
         searchScore: data['searchScore'],
         lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
       };
-       
+
 
       return albums;
     } else {
@@ -462,7 +465,7 @@ export class FirestoreService {
           const lastPlayedWithDetails : ILastPlayedWithDetails = { ...lastplayed, song};
 
           lastPlayeds.push(lastPlayedWithDetails);
-        } 
+        }
       }
 
       return lastPlayeds;
@@ -471,7 +474,7 @@ export class FirestoreService {
       return null;
     }
   }
-  
+
   async  getTopSongs(limitCount: number): Promise<ISong[]> {
     const songsRef = collection(this.db, 'song');
     const q = query(songsRef, orderBy('searchScore', 'desc'), limit(limitCount));
@@ -496,6 +499,45 @@ export class FirestoreService {
     });
 
     return topSongs;
+  }
+  async searchSongWithTitle(searchTerm: string,limitCount: number): Promise<ISongWithDetails[]> {
+    const songsRef = collection(this.db, 'song');
+
+    // Modify the query to search by song title
+    const start = searchTerm;
+    const end = searchTerm + '\uf8ff'; // Unicode character to ensure the query returns all matches starting with the searchTerm
+
+    const q = query(songsRef, orderBy('title'), startAt(start), endAt(end), limit(limitCount));
+    const songSnapshot = await getDocs(q);
+
+    const songs: ISongWithDetails[] = [];
+
+    for (const doc of songSnapshot.docs) {
+      const data = doc.data();
+      const song: ISong = {
+        id: doc.id,
+        title: data['title'],
+        duration: data['duration'],
+        cover: data['cover'],
+        fileUrl: data['fileUrl'],
+        artistId: data['artistId'],
+        albumId: data['albumId'],
+        createdAt: data['createdAt'].toDate(),
+        updatedAt: data['updatedAt'].toDate(),
+        searchScore: data['searchScore'],
+        lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+      };
+
+      const artist = await this.getOneArtist(song.artistId);
+      const album = await this.getOneAlbum(song.albumId);
+
+      if (artist && album) {
+        songs.push({ ...song, artist, album });
+      }
+    }
+
+    console.log(songs);
+    return songs;
   }
 
   async getTopSongsWithDetails(limitCount: number): Promise<ISongWithDetails[]> {
@@ -556,7 +598,7 @@ export class FirestoreService {
           lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
           artist,
           album
-  
+
         };
         return song;
       }
@@ -574,10 +616,10 @@ export class FirestoreService {
   /** end song */
 
   /** start playlist */
-  
+
   async  getTopPlaylist(userId : string,limitCount: number): Promise<IPlaylist[]|null> {
     // Récupérer l'utilisateur connecté
-    
+
     const playlistRef = collection(this.db, 'user/'+userId+'/playlist');
     const q = query(playlistRef, orderBy('lastUpdatedPlayedScore', 'desc'), orderBy('playedScore', 'desc'), limit(limitCount));
     const playlistSnapshot = await getDocs(q);
@@ -597,15 +639,15 @@ export class FirestoreService {
      });
       console.log(playlists);
       return playlists;
-    }else 
+    }else
       return null;
-    
+
   }
-  
+
 
   /** end playlist */
 
- 
-  
-  
+
+
+
 }
