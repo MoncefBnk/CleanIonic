@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ISongWithDetails } from '../interfaces/song';
+import { ApiService } from './api.service';
 
 
 @Injectable({
@@ -8,13 +10,15 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class MusicService {
 
   private audio: HTMLAudioElement;
-  private currentTrack: string = "";
+  private currentTrack: ISongWithDetails | null = null;
   private isOnRepeat: BehaviorSubject<boolean>;
   private isPlayingSubject: BehaviorSubject<boolean>;
   private currentTimeSubject: BehaviorSubject<string>;
   private progressSubject: BehaviorSubject<number>;
   private currentLyricSubject: BehaviorSubject<string>;
   private durationSubject: BehaviorSubject<string>;
+
+  private apiservice = inject(ApiService);
 
   lyrics: string[] = [
     '...la-la-la-la-la-la-la, la, la La-la-la-la-la-la-la-la la la-la',
@@ -73,14 +77,17 @@ export class MusicService {
     this.isOnRepeat.next(!this.isOnRepeat.value);
   }
 
-  play(trackUrl: string) {
-    if (this.currentTrack !== trackUrl) {
-      this.audio.src = trackUrl;
-      this.audio.load();
+  async play(track: ISongWithDetails) {
+    if (!this.currentTrack || this.currentTrack.id !== track.id) {
+      this.stop();
+      await this.load(track.id);
+      console.log(this.audio);
       this.audio.play();
-      this.currentTrack = trackUrl;
+      this.currentTrack = track;
+      this.isPlayingSubject.next(true);
     } else if (this.audio.paused) {
       this.audio.play();
+      this.isPlayingSubject.next(true);
     }
   }
 
@@ -93,12 +100,16 @@ export class MusicService {
   stop() {
     if (this.audio) {
       this.pause();
+
       this.audio.currentTime = 0;
+      this.currentTrack = null;
       this.isPlayingSubject.next(false);
       this.progressSubject.next(0);
       this.currentTimeSubject.next('0:00');
       this.currentLyricSubject.next('');
       this.durationSubject.next('0:00');
+      //this.audio = new Audio();
+      
     }
   }
 
@@ -106,7 +117,8 @@ export class MusicService {
     return this.isPlayingSubject.asObservable();
   }
 
-  getCurrentTrack() {
+
+  getCurrentTrack(): ISongWithDetails | null {
     return this.currentTrack;
   }
 
@@ -185,8 +197,27 @@ export class MusicService {
     this.audio.currentTime = Math.max(this.audio.currentTime - seconds, 0);
   }
 
-  load(id:string = '') {
-    this.audio = new Audio('url/${id}');
-    this.audio.load();
+  load(id:string = ''): Promise<void> {
+   // this.audio = new Audio(this.apiservice.getSongById(id));
+
+   return new Promise<void>((resolve, reject) => {
+    this.apiservice.getSongById(id).subscribe(
+      blob => {
+        const url = window.URL.createObjectURL(blob);
+        this.audio.src = url;
+        this.audio.load(); // Ensure the audio is loaded and ready to play
+        resolve();
+      }
+    );
+  });
+
+
+   /*this.apiservice.getSongById(id).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      console.log(url);
+      this.audio.src = url;
+    });*/
+   
   }
+
 }

@@ -1,21 +1,27 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { TranslateService } from '@ngx-translate/core';
-import { MusicplayerComponent } from './shared/musicplayer/musicplayer.component';
 import { Router, NavigationEnd } from '@angular/router';
+
+import { register } from 'swiper/element/bundle';
+import { SmallplayerComponent } from './shared/smallplayer/smallplayer.component';
+import { MusicService } from './core/services/music.service';
+register();
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   standalone: true,
-  imports: [IonApp, IonRouterOutlet,MusicplayerComponent],
+  imports: [IonApp, IonRouterOutlet,SmallplayerComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent implements OnInit {
   private translate = inject(TranslateService);
+
   displayplayer: boolean = false;
   
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private musicService: MusicService,private cdr: ChangeDetectorRef) {}
   ngOnInit(): void {
     this.translate.use('en_US');
     this.translate.setDefaultLang('en_US');
@@ -30,5 +36,15 @@ export class AppComponent implements OnInit {
         }
       }
     });*/
+
+    this.musicService.isPlaying().subscribe(isPlaying => {
+      this.displayplayer = isPlaying;
+      //this.currentTrack = this.musicService.getCurrentTrack();
+      this.cdr.detectChanges();
+    })
+    /*const token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['login']);
+    }*/
   }
 }
