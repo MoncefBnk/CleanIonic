@@ -1,25 +1,4 @@
-<ion-toolbar>
-    <ion-buttons slot="start">
-        <ion-button class="w-9 h-9">
-            <ion-back-button defaultHref="/home" style="color:grey;"  icon="arrow-back"></ion-back-button>
-        </ion-button>
-    </ion-buttons>
-    <ion-searchbar class="custom"></ion-searchbar>
-</ion-toolbar>
-<ion-content class="ion-padding">
-    <ion-list class="flex justify-center gap-3">
-        <ion-item lines="none" class="item-style" *ngFor="let button of buttons; let i = index">
-           <ion-button
-                [color]="selectedButton === i ? 'primary' : 'light'"
-                (click)="toggleButton(i)"
-                shape="round"
-              >
-               <ion-text class="font-medium">{{ button }}</ion-text>
-           </ion-button>
-        </ion-item>
-    </ion-list>
-
-    <ion-item><ion-text>{{"Recently Searched"|translate}}</ion-text></ion-item>
+<ion-item><ion-text>{{"Recently Searched"|translate}}</ion-text></ion-item>
     @if(recentsearchs) {
         <ion-list *ngFor="let item of recentsearchs;" >
             <app-search-result [element]="item"></app-search-result>
@@ -41,6 +20,3 @@
             <app-horizontal-card [element]="item"></app-horizontal-card>
         </ion-list>
     }
-    
-    
-</ion-content>

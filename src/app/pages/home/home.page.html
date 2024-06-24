@@ -1,6 +1,6 @@
 
 
-<app-general-header  [endIcon] ="end_icon" [initial] ="initial" endLink="/search"  searchType="all" ></app-general-header>
+<app-general-header  [endIcon] ="end_icon" [initial] ="initial" endLink="/search/default"  searchType="all" ></app-general-header>
 
 <ion-content class="ion-padding">
   <ion-grid>
@@ -31,16 +31,18 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <app-see-all elementTitle = "{{'Music Genres'|translate}}" link="search"></app-see-all>
-  <app-switchable-buttons></app-switchable-buttons>
-  <app-see-all elementTitle = "{{'Top Songs'|translate}}" link="search"></app-see-all>
-  <app-vertical-card [songs] = "songs"></app-vertical-card>
-  <app-see-all elementTitle = "{{'Last Played'|translate}}" link="search"></app-see-all>
-  <app-horizontal1-card [lastPlayeds] = "lastPlayeds"></app-horizontal1-card>
-  <app-see-all elementTitle = "{{'Top Albums'|translate}}" link="search"></app-see-all>
-  <app-vertical-card [albums] = "albums"></app-vertical-card>
-  <app-see-all elementTitle = "{{'Top Artists'|translate}}" link="search"></app-see-all>
-  <app-vertical-card [artists] = "artists"></app-vertical-card>
-  <app-see-all elementTitle = "{{'Top Playlist'|translate}}" link="search"></app-see-all>
-  <app-horizontal1-card [playlists] = "playlists"></app-horizontal1-card>
+  <div class="pb-16">
+    <app-see-all elementTitle = "{{'Music Genres'|translate}}" link="search"></app-see-all>
+    <app-switchable-buttons></app-switchable-buttons>
+    <app-see-all elementTitle = "{{'Top Songs'|translate}}" link="search/song"></app-see-all>
+    <app-vertical-card [songs] = "songs" (songClick)="playMusic($event)"></app-vertical-card>
+    <app-see-all elementTitle = "{{'Last Played'|translate}}" link="search"></app-see-all>
+    <app-horizontal1-card [lastPlayeds] = "lastPlayeds"></app-horizontal1-card>
+    <app-see-all elementTitle = "{{'Top Albums'|translate}}" link="search/album"></app-see-all>
+    <app-vertical-card [albums] = "albums"></app-vertical-card>
+    <app-see-all elementTitle = "{{'Top Artists'|translate}}" link="search"></app-see-all>
+    <app-vertical-card [artists] = "artists"></app-vertical-card>
+    <app-see-all elementTitle = "{{'Top Playlist'|translate}}" link="search"></app-see-all>
+    <app-horizontal1-card [playlists] = "playlists"></app-horizontal1-card>
+  </div>
 </ion-content>

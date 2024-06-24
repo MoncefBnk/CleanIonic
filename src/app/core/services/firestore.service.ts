@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { initializeApp } from 'firebase/app';
 import {
@@ -9,6 +9,8 @@ import {
   limit,
   query,
   where,
+  and,
+  or,
   orderBy,
   doc,
   updateDoc,
@@ -22,6 +24,8 @@ import { ERole, ILastPlayed, ILastPlayedWithDetails, IPlaylist, IUser } from '..
 import { IArtist, IArtistWithDetails } from '../interfaces/artist';
 import { RequestResponse } from '../interfaces/response';
 import { IElement } from '../interfaces/element';
+import { Observable, from, map, tap } from 'rxjs';
+import { ApiService } from './api.service';
 
 
 
@@ -31,6 +35,7 @@ import { IElement } from '../interfaces/element';
 export class FirestoreService {
   private app = initializeApp(environment.firebase);
   private db = getFirestore(this.app);
+  private apiservice = inject(ApiService);
 
   constructor() {}
 
@@ -262,8 +267,8 @@ export class FirestoreService {
 
       for (const doc of albumSnapshot.docs) {
         const data = doc.data();
+
         const artist = await this.getOneArtist(data['artistId']);
-        
         if(artist) {
           const album = {
             id: doc.id,
@@ -292,11 +297,67 @@ export class FirestoreService {
   }
 
   // Get all albums
-  async getAlbums() {
-    const albumsCol = collection(this.db, 'albums');
-    const albumsSnapshot = await getDocs(albumsCol);
-    const albumsList = albumsSnapshot.docs.map((doc) => doc.data());
-    return albumsList;
+    getAlbums(): Observable<IAlbum[]> {
+    const albumsCol = collection(this.db, 'album');
+    
+    const albumsSnapshot = from(getDocs(albumsCol));
+    
+    return albumsSnapshot.pipe(
+      map(
+        (snapshot) =>
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })) as IAlbum[]
+      )
+    );
+  }
+
+ 
+
+  //search album
+  async getSearchAlbum(name: string, search: string): Promise<IAlbum[] | null> {
+    const searchCollection = collection(this.db, name);
+    const searchQuery = query(
+      searchCollection,
+      and(
+        or(
+          where('title', '>=', search.trim()), // Filtre pour les noms qui commencent par la valeur de recherche
+          where('title', '<=', search.trim() + '\uf8ff'),
+          where('year', '==', search),
+          where('category', '==', search)
+        )
+      )
+    );
+
+    const albumsSnapshot = await getDocs(searchQuery);
+    if (!albumsSnapshot.empty) {
+      const albums: IAlbum[] = [];
+
+      for (const doc of albumsSnapshot.docs) {
+        const data = doc.data();
+        const album = {
+          id: doc.id,
+          title: data['title'],
+          cover: data['cover'],
+          artistId: data['artistId'],
+          releaseDate: data['releaseDate'].toDate(),
+          createdAt: data['createdAt'].toDate(),
+          updatedAt: data['updatedAt'].toDate(),
+          searchScore: data['searchScore'],
+          lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+          category: data['category'],
+          year: data['year'],
+          song: data['song'],
+        }
+        albums.push(album);
+      }
+
+      return albums;
+
+    } else {
+      return null;
+    }
   }
 
   //
@@ -307,19 +368,6 @@ export class FirestoreService {
     const albumsList = albumsSnapshot.docs.map((doc) => doc.data());
     return albumsList;
   }
-
-  //Search Album
- /* async searchAlbum(data:string) {
-    const albumsCol = collection(this.db, 'albums');
-    const q = query(albumsCol, where('artist.name', '==', 'data'), limit(3));
-    const albumsSnapshot = await getDocs(q);
-    const albumsList = albumsSnapshot.docs.map((doc) => doc.data());
-    console.log('albumsCol',albumsCol);
-    console.log('q',q);
-    console.log('albumsList',albumsList);
-    return albumsList;
-  }*/
-
 
   /** end album */
 
@@ -406,38 +454,7 @@ export class FirestoreService {
       return null;
     }
   }
-/*
-  async getOneArtistWithDetails(id:string): Promise<IArtistWithDetails | null> {
-    const q = doc(this.db, 'artist',id);
-    const artistSnapshot = await getDoc(q);
 
-    if (artistSnapshot.exists()) {
-      const data = artistSnapshot.data();
-      const artist={} as IArtistWithDetails;
-      const album = await this.getOneArtist(data['artistId']);
-      return {
-        id: artistSnapshot.id,
-        userId: data['userId'],
-        artist: data['artist'],
-        label: data['label'],
-        description: data['description'],
-        avatar: data['avatar'],
-        followers: data['followers'],
-        albums: data['albums'],
-        createdAt: data['createdAt'].toDate(),
-        updatedAt: data['updatedAt'].toDate(),
-        searchScore: data['searchScore'],
-        lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
-      };
-       
-
-      return albums;
-    } else {
-      console.log('No such album!');
-      return null;
-    }
-  }
-*/
   /** end artist */
 
   /** start song */
@@ -471,7 +488,7 @@ export class FirestoreService {
       return null;
     }
   }
-  
+    
   async  getTopSongs(limitCount: number): Promise<ISong[]> {
     const songsRef = collection(this.db, 'song');
     const q = query(songsRef, orderBy('searchScore', 'desc'), limit(limitCount));
@@ -528,8 +545,6 @@ export class FirestoreService {
         songs.push({ ...song, artist, album });
       }
     }
-
-    console.log(songs);
     return songs;
   }
 
@@ -571,6 +586,23 @@ export class FirestoreService {
     }
   }
 
+  // Get all albums
+  getSongs(): Observable<ISong[]> {
+    const songsCol = collection(this.db, 'song');
+    
+    const songsSnapshot = from(getDocs(songsCol));
+    
+    return songsSnapshot.pipe(
+      map(
+        (snapshot) =>
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })) as ISong[]
+      )
+    );
+  }
+
   /** end song */
 
   /** start playlist */
@@ -601,11 +633,38 @@ export class FirestoreService {
       return null;
     
   }
+
+
+  async  getPlaylistMusic(userId:string,playlistId : string,limitCount: number): Promise<ISongWithDetails[]|null> {
+    // Récupérer l'utilisateur connecté
+    const q = doc(this.db, 'user/'+userId+'/playlist',playlistId);
+    const playlistSnapshot = await getDoc(q);
+    console.log(userId,playlistId);
+    if(playlistSnapshot.exists()){
+      const songs: ISongWithDetails[] = [];
+      const data = playlistSnapshot.data();
+      console.log(data)
+      if (data && data['song']) {
+        for (const id of data['song']) {
+          const song = await this.getOneSong(id);
+          
+          if (song) {
+            songs.push(song);
+          }
+          if (songs.length >= limitCount) break;
+        }
+      }
+      
+      return songs;
+    }else 
+      return null;
+    
+  }
   
 
   /** end playlist */
 
- 
+
   
   
 }

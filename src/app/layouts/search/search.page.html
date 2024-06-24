@@ -1,0 +1,23 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+      <ion-button class="w-9 h-9">
+          <ion-back-button defaultHref="/home" style="color:grey;"  icon="arrow-back"></ion-back-button>
+      </ion-button>
+  </ion-buttons>
+  <ion-searchbar class="custom" (ionInput)="onSearchChange($event)"></ion-searchbar>
+</ion-toolbar>
+
+<ion-content>
+  <ion-list class="flex justify-center gap-3">
+    <ion-item lines="none" class="item-style" *ngFor="let button of buttons; let i = index">
+       <ion-button
+            [color]="selectedButton === i ? 'primary' : 'light'"
+            (click)="toggleButton(i)"
+            shape="round"
+          >
+           <ion-text class="font-medium">{{ button }}</ion-text>
+       </ion-button>
+    </ion-item>
+  </ion-list> 
+  <router-outlet ></router-outlet>
+</ion-content>

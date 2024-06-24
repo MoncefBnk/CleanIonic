@@ -1,6 +1,24 @@
 import { ExploreContainerComponent } from '../../explore-container/explore-container.component';
-import { Component, inject } from '@angular/core';
-import { IonRouterLinkWithHref,IonRouterLink,IonText,IonItem,IonList,IonCard,IonCardContent,IonAvatar,IonImg, IonRow, IonCol, IonGrid, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,IonButtons,IonButton } from '@ionic/angular/standalone';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { IonRouterLinkWithHref,
+  IonRouterLink,
+  IonText,
+  IonItem,
+  IonList,
+  IonCard,
+  IonCardContent,
+  IonAvatar,
+  IonImg, 
+  IonRow, 
+  IonCol, 
+  IonGrid, 
+  IonHeader, 
+  IonToolbar, 
+  IonTitle, 
+  IonContent, 
+  IonIcon,
+  IonButtons,
+  IonButton } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
 import { arrowForward,search,arrowForwardOutline } from 'ionicons/icons';
@@ -15,8 +33,12 @@ import { LocalStorageService } from 'src/app/core/services/local-storage.service
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { SeeAllComponent } from 'src/app/shared/header/see-all/see-all.component';
 import { Horizontal1CardComponent } from 'src/app/shared/horizontal1-card/horizontal1-card.component';
+import { SmallplayerComponent } from 'src/app/shared/smallplayer/smallplayer.component';
 import { SwitchableButtonsComponent } from 'src/app/shared/switchable-buttons/switchable-buttons.component';
 import { VerticalCardComponent } from 'src/app/shared/vertical-card/vertical-card.component';
+import { ModalController } from '@ionic/angular';
+import { MusicplayerComponent } from 'src/app/shared/musicplayer/musicplayer.component';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -51,13 +73,14 @@ import { VerticalCardComponent } from 'src/app/shared/vertical-card/vertical-car
     IonButtons,
     IonButton,
     IonRouterLink,
-    TranslateModule
-
+    TranslateModule,
+    SmallplayerComponent,
+    CommonModule
   ],
 
 })
 export class HomePage {
-  constructor() {
+  constructor(private modalController: ModalController,private cdr: ChangeDetectorRef) {
     addIcons({ search,arrowForward,arrowForwardOutline });
   }
 
@@ -76,6 +99,8 @@ export class HomePage {
   playlists : IPlaylist[] =[];
   latestAlbum = {} as IAlbum;
   user = {} as IUser;
+
+  smallPlayerVisible = false;
 
   ngOnInit() {
 
@@ -118,6 +143,23 @@ export class HomePage {
 
   getInitials() {
     return this.user.firstname[0].toUpperCase() + this.user.lastname[0].toUpperCase();
+  }
+
+  async playMusic(song:ISongWithDetails) {
+    const modal = await this.modalController.create({
+      component: MusicplayerComponent,
+      componentProps: {
+        song: song
+      }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data && data.data.minimized) {
+        this.smallPlayerVisible = true;
+      }
+    });
+    this.cdr.detectChanges();
+    return await modal.present();
   }
 
 }

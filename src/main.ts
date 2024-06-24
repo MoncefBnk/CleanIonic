@@ -17,6 +17,14 @@ import { FirestoreService } from './app/core/services/firestore.service';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { MusicService } from './app/core/services/music.service';
+import { provideStore } from '@ngrx/store';
+import { albumReducer } from './app/core/store/reducer/album.reducer';
+import { AlbumEffects } from './app/core/store/effect/album.effects';
+import {StoreDevtools,StoreDevtoolsModule} from '@ngrx/store-devtools';
+import { reducers } from './app/core/store/app.state';
+import { provideEffects } from '@ngrx/effects';
+import { appEffects } from './app/core/store/effect';
+import { SearchService } from './app/core/services/search.service';
 
 if (environment.production) {
   enableProdMode();
@@ -27,11 +35,18 @@ bootstrapApplication(AppComponent, {
     FirestoreService,
     LocalStorageService,
     MusicService,
+    SearchService,
     i18nProviders,
     provideHttpClient(),
     provideIonicAngular(),
     importProvidersFrom(IonicModule.forRoot()),
     provideRouter(routes),
+    provideStore(reducers),
+    provideEffects(appEffects),
+    importProvidersFrom(StoreDevtoolsModule.instrument({
+      maxAge:50,
+      logOnly: environment.production
+    })),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy, }, 
     provideFirebaseApp(() => initializeApp(environment.firebase)), 
     provideAuth(() => getAuth()),

@@ -79,7 +79,7 @@ export class Horizontal1CardComponent  implements OnInit {
         song: JSON.stringify(this.song)  // The object you want to send
       }
     };*/
-    this.router.navigate(['music-playlist']);
+    this.router.navigate(['music-playlist'], { queryParams: {id:id}});
   }
 
 }

@@ -72,7 +72,7 @@ import { ModalShareComponent } from 'src/app/shared/modal/modal-share/modal-shar
   ],
 })
 export class PlayerPage implements OnInit {
-  currentTrack: string = "";
+  currentTrack: ISongWithDetails | null = null;
   private subscriptions: Subscription[] = [];
 
 
@@ -146,19 +146,19 @@ export class PlayerPage implements OnInit {
   }
 
 
-  playMusic(trackUrl: string) {
+  playMusic(song:ISongWithDetails) {
     //this.musicService.play(trackUrl);
    console.log(this.isPlaying);
     if (this.isPlaying) {
       this.musicService.pause();
 
     } else {
-      this.musicService.play('assets/songs/Wild_World.mp3');
+      this.musicService.play(song);
     }
   }
 
   initPlayer() {
-    this.musicService.play('assets/songs/Wild_World.mp3');
+    this.musicService.play(this.song);
   }
 
   ngOnDestroy(): void {
