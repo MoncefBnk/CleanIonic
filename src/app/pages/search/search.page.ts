@@ -51,6 +51,7 @@ export class SearchPage implements OnInit {
   buttons : string[] = ["All","Artist","Album","Song"];
   selectedButton: number= 0;
   recentsearchs: IElement[] = [];
+  searchResults: any[] = [];
   /*recentsearchs: IElement[] = [
     {
       id: 'string',
@@ -138,6 +139,15 @@ export class SearchPage implements OnInit {
         this.selectedButton = 0;
         break;
     }
+    this.search('search', 2, 'song'); // TEMPORARY FOR TESTING
+  }
+
+
+  search(searchText: string, limit: number,  type: string) {
+    //  IMPLEMENT SEARCH FUNCTION CORRECTLY (HARD CODED FOR TESTING)
+    this.serviceFirestore.searchWithTitle(searchText,limit,type).then(results => {
+      this.searchResults = results;
+    });
   }
 
   getUser() {
