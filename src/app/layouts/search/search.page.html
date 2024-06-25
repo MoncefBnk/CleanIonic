@@ -7,8 +7,9 @@
   <ion-searchbar class="custom" (ionInput)="onSearchChange($event)"></ion-searchbar>
 </ion-toolbar>
 
-<ion-content>
-  <ion-list class="flex justify-center gap-3">
+<ion-content >
+  <div class="pb-16">
+    <ion-list class="flex justify-center gap-3">
     <ion-item lines="none" class="item-style" *ngFor="let button of buttons; let i = index">
        <ion-button
             [color]="selectedButton === i ? 'primary' : 'light'"
@@ -20,4 +21,6 @@
     </ion-item>
   </ion-list> 
   <router-outlet ></router-outlet>
+  </div>
+  
 </ion-content>

@@ -59,11 +59,6 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
-    path: 'player',
-    loadComponent: () => import('./pages/player/player.page').then( m => m.PlayerPage),
-    canActivate: [authGuard]
-  },
-  {
     path: 'music-playlist',
     loadComponent: () => import('./pages/musicplaylist/musicplaylist.page').then( m => m.MusicplaylistPage),
     canActivate: [authGuard]

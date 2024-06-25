@@ -24,7 +24,7 @@
       </ion-button>
     }
     @else {
-      <ion-button [href]="endLink">
+      <ion-button (click) = "onlinkClick()">
         <ion-icon slot="icon-only" style="color: grey;" [name]="endIcon" ></ion-icon>
       </ion-button>
     }

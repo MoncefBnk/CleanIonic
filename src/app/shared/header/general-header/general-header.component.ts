@@ -36,4 +36,8 @@ export class GeneralHeaderComponent  implements OnInit {
     this.router.navigate(['/search/default']);
   }
 
+  onlinkClick() {
+    this.router.navigate([this.endLink]);
+  }
+
 }

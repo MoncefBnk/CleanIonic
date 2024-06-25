@@ -40,4 +40,10 @@ h2 {
   
     display: flex;
     align-items: center;
+}
+
+ion-button {
+    --box-shadow: none;
+    --background: #ffffff;
   }
+

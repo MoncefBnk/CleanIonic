@@ -203,12 +203,18 @@ export class MusicplayerComponent  implements OnInit {
     this.isExpanded = !this.isExpanded;
   }
 
- /* async openModal(item: any) {
+  async openModal(item: any) {
     const modal = await this.modalController.create({
       component: ModalShareComponent,
+      initialBreakpoint: 1,
+        breakpoints: [0, 1],
+      componentProps: {
+        item: item // if you also need to pass the item to the modal
+      }
     });
+    
     return await modal.present();
-  }*/
+  }
 
     minimize() {
       this.modalController.dismiss({
