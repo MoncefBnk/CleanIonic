@@ -536,6 +536,7 @@ export class FirestoreService {
         updatedAt: data['updatedAt'].toDate(),
         searchScore: data['searchScore'],
         lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+        lyrics: data['lyrics'],
       };
 
       const artist = await this.getOneArtist(song.artistId);
@@ -556,7 +557,7 @@ export class FirestoreService {
       const artist = await this.getOneArtist(data['artistId']);
       const album = await this.getOneAlbum(data['albumId']);
 
-      if(artist && album) {
+      if(artist && album) {console.log(data);
         const song: ISongWithDetails = {
           id: songSnapshot.id,
           title: data['title'],
@@ -568,6 +569,7 @@ export class FirestoreService {
           createdAt: data['createdAt'].toDate(),
           updatedAt: data['updatedAt'].toDate(),
           searchScore: data['searchScore'],
+          lyrics: data['lyrics'],
           lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
           artist,
           album

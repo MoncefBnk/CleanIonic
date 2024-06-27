@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
 import { ModalShareComponent } from '../modal/modal-share/modal-share.component';
 import { ModalController } from '@ionic/angular';
 import { IElement } from 'src/app/core/interfaces/element';
@@ -10,6 +10,7 @@ import { IPlaylist } from 'src/app/core/interfaces/user';
 import { ISong } from 'src/app/core/interfaces/song';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { Router } from '@angular/router';
+import { MusicplayerComponent } from '../musicplayer/musicplayer.component';
 
 
 @Component({
@@ -30,15 +31,24 @@ export class HorizontalCardComponent  implements OnInit {
   isIconDark: boolean = false;
   selectedItem: any;
   isFavorite: boolean = false;
+  smallPlayerVisible = false;
   private serviceFirestore = inject(FirestoreService);
 
-  constructor(private modalController: ModalController,private router: Router) { }
+  constructor(private modalController: ModalController,private router: Router,private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     addIcons({ shareSocialOutline,heart,heartOutline,ellipsisVertical });
-    console.log(this.album);
-    if(this.playlist)
-      this.element = {...this.playlist,type:'playlist'}
+    
+    if(this.album.id) {
+      this.updateElementFromAlbum();
+    } else if(this.song.id) {
+      this.updateElementFromSong();
+    } else if(this.playlist.id){
+      this.element = {...this.playlist,type:'playlist'};
+      this.data = this.element;
+    } else {
+      this.data = this.element;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -59,6 +69,7 @@ export class HorizontalCardComponent  implements OnInit {
       year: this.album.year,
       cover: this.album.cover
     };
+    console.log(this.album);
   }
 
   updateElementFromSong() {
@@ -88,11 +99,19 @@ export class HorizontalCardComponent  implements OnInit {
           this.song = music;
       });
 
-    const navigationExtras = {
-      queryParams: {
-        song: JSON.stringify(this.song)  // The object you want to send
+    const modal = await this.modalController.create({
+      component: MusicplayerComponent,
+      componentProps: {
+        song: this.song
       }
-    };
-    this.router.navigate(['player'], navigationExtras);
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data && data.data.minimized) {
+        this.smallPlayerVisible = true;
+      }
+    });
+    this.cdr.detectChanges();
+    return await modal.present();
   }
 }

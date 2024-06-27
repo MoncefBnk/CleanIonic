@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { ISong,ISongWithDetails } from 'src/app/core/interfaces/song';
 import { IonLabel,IonNote,IonText,IonButton,IonButtons,IonIcon,IonItem,IonList,IonImg, IonRow, IonCol, IonGrid } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { ILastPlayedWithDetails, IPlaylist } from 'src/app/core/interfaces/user';
 import { Router } from '@angular/router';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
+import { ModalController } from '@ionic/angular';
+import { MusicplayerComponent } from '../musicplayer/musicplayer.component';
 
 @Component({
   standalone: true,
@@ -35,8 +37,9 @@ export class Horizontal1CardComponent  implements OnInit {
   @Input() playlists: IPlaylist[] =[];
   private serviceFirestore = inject(FirestoreService);
   song = {} as ISongWithDetails;
+  smallPlayerVisible = false;
   
-  constructor(private router: Router ) {
+  constructor(private router: Router,private modalController: ModalController,private cdr: ChangeDetectorRef ) {
     addIcons({ ellipsisHorizontal });
    }
 
@@ -60,12 +63,20 @@ export class Horizontal1CardComponent  implements OnInit {
           this.song = music;
       });
 
-    const navigationExtras = {
-      queryParams: {
-        song: JSON.stringify(this.song)  // The object you want to send
-      }
-    };
-    this.router.navigate(['player'], navigationExtras);
+      const modal = await this.modalController.create({
+        component: MusicplayerComponent,
+        componentProps: {
+          song: this.song
+        }
+      });
+  
+      modal.onDidDismiss().then((data) => {
+        if (data.data && data.data.minimized) {
+          this.smallPlayerVisible = true;
+        }
+      });
+      this.cdr.detectChanges();
+      return await modal.present();
   }
 
    navigatetoPlaylist(id:string) {

@@ -1,6 +1,6 @@
-<ion-item [button]="true" detail="false" class="relative ">
+<ion-item [button]="true" detail="false" class="relative pt-2" lines="full">
   <div class="unread-indicator-wrapper size-[80px] " slot="start">
-    <ion-img src="assets/test.jpg" alt="albumcover"></ion-img>
+    <ion-img src="{{data.cover}}" alt="albumcover" class=" size-[70px] object-cover" ></ion-img>
   </div>
   <ion-text class="text-left h-20">
       @if (data.type == 'song') { <h1 class="text-base font-bold"> {{data.songtitle}}</h1>} 

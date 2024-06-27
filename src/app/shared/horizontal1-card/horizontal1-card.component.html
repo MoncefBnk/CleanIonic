@@ -1,6 +1,6 @@
 <div class="" *ngIf="lastPlayeds && lastPlayeds.length > 0">
   <ion-list class="margin" [inset]="true" *ngFor="let item of lastPlayeds;">
-    <ion-item [button]="true" detail="false" (click)="playmusic(item.songId)">
+    <ion-item [button]="true" detail="false" (click)="playmusic(item.songId)" lines="full">
       <div class="unread-indicator-wrapper" slot="start">
         <ion-img src="{{item.song.cover}}" class="image_default" alt="albumcover"></ion-img>
       </div>

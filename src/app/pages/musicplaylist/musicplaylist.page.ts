@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonLabel,IonList } from '@ionic/angular/standalone';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { BehaviorSubject } from 'rxjs';
 import { IUser } from 'src/app/core/interfaces/user';
@@ -30,7 +30,7 @@ export class MusicplaylistPage implements OnInit {
   private serviceFirestore = inject(FirestoreService);
   private localStore = inject(LocalStorageService);
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private route: ActivatedRoute) {}
 
   ngOnInit() {
 
