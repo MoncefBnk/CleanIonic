@@ -22,7 +22,7 @@ import { IonRouterLinkWithHref,
 import { TranslateModule } from '@ngx-translate/core';
 import { addIcons } from 'ionicons';
 import { arrowForward,search,arrowForwardOutline } from 'ionicons/icons';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IAlbum, IAlbumsWithDetails } from 'src/app/core/interfaces/album';
 import { IArtist } from 'src/app/core/interfaces/artist';
 import { LinkItem } from 'src/app/core/interfaces/item';
@@ -39,6 +39,10 @@ import { VerticalCardComponent } from 'src/app/shared/vertical-card/vertical-car
 import { ModalController } from '@ionic/angular';
 import { MusicplayerComponent } from 'src/app/shared/musicplayer/musicplayer.component';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/core/store/app.state';
+import { loadLastPlayed } from 'src/app/core/store/action/user.action';
+import { selectLastPlayeds } from 'src/app/core/store/selector/user.selector';
 
 
 
@@ -86,14 +90,15 @@ export class HomePage {
 
   private serviceFirestore = inject(FirestoreService);
   private localStore = inject(LocalStorageService);
-
+  store = inject(Store<AppState>);
   start_icon : string = "search";
   end_icon : string = "search";
   initial : string =  "";
 
   musiccateg : string[] = ["All","R&B","Pop","Rock"];
   songs : ISongWithDetails[]=[];
-  lastPlayeds: ILastPlayedWithDetails[]=[];
+
+  lastPlayeds$: Observable<ILastPlayedWithDetails[]>  = new Observable<ILastPlayedWithDetails[]>();
   albums : IAlbumsWithDetails[] = [];
   artists : IArtist[] =[];
   playlists : IPlaylist[] =[];
@@ -105,7 +110,8 @@ export class HomePage {
   ngOnInit() {
 
     this.getUser();
-
+    this.store.dispatch(loadLastPlayed({userId: this.user.id}));
+    this.lastPlayeds$ = this.store.select(selectLastPlayeds);
     this.serviceFirestore.getTopSongsWithDetails(5).then(songs => {
       this.songs = songs;
     });
@@ -113,10 +119,7 @@ export class HomePage {
       if(albums)
         this.albums = albums;
     });
-    this.serviceFirestore.getLastPlayed(this.user.id,5).then(lastsongs => {
-      if(lastsongs)
-        this.lastPlayeds = lastsongs;
-    });
+   
     this.serviceFirestore.getTopArtists(5).then(artists => {
       if(artists)
         this.artists = artists;
@@ -129,9 +132,15 @@ export class HomePage {
       if(latest)
         this.latestAlbum = latest;
     });
-
+  
     this.initial = this.getInitials();
   }
+
+  ngAfterViewInit(): void {
+    this.lastPlayeds$.subscribe((lastPlayeds) => {
+    });
+  }
+
 
   getUser() {
     const userSubject: BehaviorSubject<IUser>= this.localStore.getItem<IUser>('user');
@@ -146,6 +155,8 @@ export class HomePage {
   }
 
   async playMusic(song:ISongWithDetails) {
+    await this.serviceFirestore.updateLastPlayed(this.user.id,song.id);
+    console.log('music');
     const modal = await this.modalController.create({
       component: MusicplayerComponent,
       componentProps: {
