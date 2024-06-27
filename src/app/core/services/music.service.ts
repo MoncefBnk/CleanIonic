@@ -11,6 +11,8 @@ export class MusicService {
 
   private audio: HTMLAudioElement;
   private currentTrack: ISongWithDetails | null = null;
+  private trackQueue: ISongWithDetails[] = [];
+  private currentIndex: number = 0;
   private isOnRepeat: BehaviorSubject<boolean>;
   private isPlayingSubject: BehaviorSubject<boolean>;
   private currentTimeSubject: BehaviorSubject<string>;
@@ -54,6 +56,8 @@ export class MusicService {
       if (this.isOnRepeat.value) {
         this.audio.currentTime = 0;
         this.audio.play();
+      }else {
+        this.playNext();
       }
     });
 
@@ -88,6 +92,28 @@ export class MusicService {
     }
   }
 
+  playAll(tracks: ISongWithDetails[]) {
+    this.trackQueue = tracks;
+    this.currentIndex = 0;
+    if (this.trackQueue.length > 0) {
+      this.play(this.trackQueue[this.currentIndex]);
+    }
+  }
+
+  playNext() {
+    if (this.currentIndex < this.trackQueue.length - 1) {
+      this.currentIndex++;
+      this.play(this.trackQueue[this.currentIndex]);
+    }
+  }
+
+  playPrevious() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      this.play(this.trackQueue[this.currentIndex]);
+    }
+  }
+
   pause() {
     if (this.audio) {
       this.audio.pause();
@@ -100,6 +126,7 @@ export class MusicService {
 
       this.audio.currentTime = 0;
       this.currentTrack = null;
+      this.lyrics = [];
       this.isPlayingSubject.next(false);
       this.progressSubject.next(0);
       this.currentTimeSubject.next('0:00');

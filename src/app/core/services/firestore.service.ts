@@ -24,7 +24,7 @@ import { ERole, ILastPlayed, ILastPlayedWithDetails, IPlaylist, IUser } from '..
 import { IArtist, IArtistWithDetails } from '../interfaces/artist';
 import { RequestResponse } from '../interfaces/response';
 import { IElement } from '../interfaces/element';
-import { Observable, from, map, tap } from 'rxjs';
+import { Observable, combineLatest, from, map, of, switchMap, tap } from 'rxjs';
 import { ApiService } from './api.service';
 
 
@@ -72,7 +72,6 @@ export class FirestoreService {
       return null;
     }
   }
-
 
   async getRecentSearched(id:string,limitCount:number): Promise<IElement[] |null> {
     const historySongRef = collection(this.db, 'user/'+id+'/searchHistory');
@@ -173,7 +172,6 @@ export class FirestoreService {
     } else
       return null;
   }
-
 
   async deleteUser(id:string) : Promise<void> {
     const userRef = doc(this.db, 'user',id);
@@ -312,8 +310,6 @@ export class FirestoreService {
       )
     );
   }
-
- 
 
   //search album
   async getSearchAlbum(name: string, search: string): Promise<IAlbum[] | null> {
@@ -459,9 +455,35 @@ export class FirestoreService {
 
   /** start song */
 
+  //update last played songs
+  async updateLastPlayed(userId:string,songId: string) {
+    try {
+      const historySongRef = collection(this.db, 'user/'+userId+'/lastPlayed');
+      const q = query(historySongRef, where('songId', '==', songId));
+      const songsSnapshot = await getDocs(q);
+
+    
+      const songList = songsSnapshot.docs.map((doc) => doc.data());
+      if(songList.length <= 0) {
+        const lastplayedRef = doc(historySongRef);
+        const data = { songId: songId,createdAt: new Date(), updatedAt: new Date};
+        return await setDoc(lastplayedRef,data);
+      } else {
+        const updatePromises = songsSnapshot.docs.map(docsnapshot => 
+          updateDoc(docsnapshot.ref,{updatedAt: new Date()})
+        );
+        await Promise.all(updatePromises);
+        
+      }
+    } catch (error) {
+      console.error('Error updating last played:', error);
+    }
+  }
+
+  //get last played by updated date
   async  getLastPlayed(userId : string,limitCount: number) : Promise<ILastPlayedWithDetails[]|null> {
     const historySongRef = collection(this.db, 'user/'+userId+'/lastPlayed');
-    const q = query(historySongRef, orderBy('createdAt', 'desc'), limit(limitCount));
+    const q = query(historySongRef, orderBy('updatedAt', 'desc'), limit(limitCount));
     const lastPlayedSnapshot = await getDocs(q);
     if (!lastPlayedSnapshot.empty) {
       const lastPlayeds: ILastPlayedWithDetails[] = [];
@@ -488,7 +510,7 @@ export class FirestoreService {
       return null;
     }
   }
-    
+
   async  getTopSongs(limitCount: number): Promise<ISong[]> {
     const songsRef = collection(this.db, 'song');
     const q = query(songsRef, orderBy('searchScore', 'desc'), limit(limitCount));
@@ -588,30 +610,14 @@ export class FirestoreService {
     }
   }
 
-  // Get all albums
-  getSongs(): Observable<ISong[]> {
-    const songsCol = collection(this.db, 'song');
-    
-    const songsSnapshot = from(getDocs(songsCol));
-    
-    return songsSnapshot.pipe(
-      map(
-        (snapshot) =>
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          })) as ISong[]
-      )
-    );
-  }
+  
+  
 
   /** end song */
 
   /** start playlist */
   
   async  getTopPlaylist(userId : string,limitCount: number): Promise<IPlaylist[]|null> {
-    // Récupérer l'utilisateur connecté
-    
     const playlistRef = collection(this.db, 'user/'+userId+'/playlist');
     const q = query(playlistRef, orderBy('lastUpdatedPlayedScore', 'desc'), orderBy('playedScore', 'desc'), limit(limitCount));
     const playlistSnapshot = await getDocs(q);
@@ -629,7 +635,6 @@ export class FirestoreService {
           song: data['song'],
         });
      });
-      console.log(playlists);
       return playlists;
     }else 
       return null;
@@ -638,7 +643,6 @@ export class FirestoreService {
 
 
   async  getPlaylistMusic(userId:string,playlistId : string,limitCount: number): Promise<ISongWithDetails[]|null> {
-    // Récupérer l'utilisateur connecté
     const q = doc(this.db, 'user/'+userId+'/playlist',playlistId);
     const playlistSnapshot = await getDoc(q);
     console.log(userId,playlistId);
@@ -667,6 +671,174 @@ export class FirestoreService {
   /** end playlist */
 
 
+
+
+
+  /** Observables */
+
+   getOneAlbumObservable(id:string) : Observable<IAlbumsWithDetails | null> {
+    const albumDocRef = doc(this.db, 'album', id);
+    return from(getDoc(albumDocRef)).pipe(
+      switchMap(albumSnapshot => {
+        if (albumSnapshot.exists()) {
+          const data = albumSnapshot.data();
+          return this.getOneArtistObservable(data['artistId']).pipe(
+            map(artist => {
+              if (artist) {
+                return {
+                  id: albumSnapshot.id,
+                  title: data['title'],
+                  cover: data['cover'],
+                  artistId: data['artistId'],
+                  releaseDate: data['releaseDate'].toDate(),
+                  createdAt: data['createdAt'].toDate(),
+                  updatedAt: data['updatedAt'].toDate(),
+                  searchScore: data['searchScore'],
+                  lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+                  category: data['category'],
+                  year: data['year'],
+                  song: data['song'],
+                  artist
+                } as IAlbumsWithDetails;
+              } else {
+                console.log('No such artist!');
+                return null;
+              }
+            })
+          );
+        } else {
+          console.log('No such album!');
+          return of(null);
+        }
+      })
+    );
+  
+  }
+
+  getOneArtistObservable(id: string): Observable<IArtist | null> {
+    const artistDocRef = doc(this.db, 'artist', id);
+    return from(getDoc(artistDocRef)).pipe(
+      map(artistSnapshot => {
+        if (artistSnapshot.exists()) {
+          const data = artistSnapshot.data();
+          return {
+            id: artistSnapshot.id,
+            userId: data['userId'],
+            artist: data['artist'],
+            label: data['label'],
+            description: data['description'],
+            avatar: data['avatar'],
+            followers: data['followers'],
+            albums: data['albums'],
+            createdAt: data['createdAt'].toDate(),
+            updatedAt: data['updatedAt'].toDate(),
+            searchScore: data['searchScore'],
+            lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+          } as IArtist;
+        } else {
+          console.log('No such artist!');
+          return null;
+        }
+      })
+    );
+  }
   
   
+
+   getOneSongObservable(id:string): Observable<ISongWithDetails | null> {
+    const songDocRef = doc(this.db, 'song', id);
+    return from(getDoc(songDocRef)).pipe(
+      switchMap(songSnapshot => {
+        if (songSnapshot.exists()) {
+          const data = songSnapshot.data();
+          return this.getOneArtistObservable(data['artistId']).pipe(
+            switchMap(artist => this.getOneAlbumObservable(data['albumId']).pipe(
+              map(album => {
+                if (artist && album) {
+                  const song: ISongWithDetails = {
+                    id: songSnapshot.id,
+                    title: data['title'],
+                    duration: data['duration'],
+                    cover: data['cover'],
+                    fileUrl: data['fileUrl'],
+                    artistId: data['artistId'],
+                    albumId: data['albumId'],
+                    createdAt: data['createdAt'].toDate(),
+                    updatedAt: data['updatedAt'].toDate(),
+                    searchScore: data['searchScore'],
+                    lyrics: data['lyrics'],
+                    lastUpdatedSearchScore: data['lastUpdatedSearchScore'].toDate(),
+                    artist,
+                    album
+                  };
+                  return song;
+                } else {
+                  console.log('No such album!');
+                  return null;
+                }
+              })
+            ))
+          );
+        } else {
+          console.log('No such album!');
+          return of(null);
+        }
+      })
+    );
+  
+  }
+  
+  getUserLastPlayedWithSongDetails(userId: string,limitCount: number): Observable<ILastPlayedWithDetails[]|null> {
+    const historySongRef = collection(this.db, 'user/'+userId+'/lastPlayed');
+    const q = query(historySongRef, orderBy('updatedAt', 'desc'), limit(limitCount));
+
+    return from(getDocs(q)).pipe(
+      switchMap(lastPlayedSnapshot => {
+        if (!lastPlayedSnapshot.empty) {
+          const lastPlayeds$ = lastPlayedSnapshot.docs.map(doc => {
+            const data = doc.data();
+            return this.getOneSongObservable(data['songId']).pipe(
+              map(song => {
+                if (song) {
+                  const lastplayed: ILastPlayed = {
+                    id: doc.id,
+                    songId: data['songId'],
+                    createdAt: data['createdAt'].toDate(),
+                    updatedAt: data['updatedAt'].toDate(),
+                  };
+                  const lastPlayedWithDetails: ILastPlayedWithDetails = { ...lastplayed, song };
+                  return lastPlayedWithDetails;
+                } else {
+                  return null;
+                }
+              })
+            );
+          });
+
+          return combineLatest(lastPlayeds$).pipe(
+            map(lastPlayeds => lastPlayeds.filter(lp => lp !== null) as ILastPlayedWithDetails[])
+          );
+        } else {
+          return of(null);
+        }
+      })
+    );
+
+  }
+
+  getSongs(): Observable<ISong[]> {
+    const songsCol = collection(this.db, 'song');
+    
+    const songsSnapshot = from(getDocs(songsCol));
+    
+    return songsSnapshot.pipe(
+      map(
+        (snapshot) =>
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })) as ISong[]
+      )
+    );
+  }
 }

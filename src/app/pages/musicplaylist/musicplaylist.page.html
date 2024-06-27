@@ -1,7 +1,11 @@
 <app-general-header  [endIcon] ="end_icon" [backbutton] ="backbutton" [title]="title" ></app-general-header>
 
 <ion-content >
-  <ion-item><ion-label>Total : {{songs.length }}</ion-label></ion-item>
+  <ion-item><ion-label>Total : {{songs.length }}</ion-label> 
+    <ion-button (click) = "onplayAll()" >
+    <ion-icon slot="icon-only" size="large"  name="play-circle" ></ion-icon>
+  </ion-button>
+</ion-item>
   <ion-list >
     <app-horizontal-card [song]="item" *ngFor="let item of songs"></app-horizontal-card>
   </ion-list>

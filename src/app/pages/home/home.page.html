@@ -37,7 +37,7 @@
     <app-see-all elementTitle = "{{'Top Songs'|translate}}" link="search/song"></app-see-all>
     <app-vertical-card [songs] = "songs" (songClick)="playMusic($event)"></app-vertical-card>
     <app-see-all elementTitle = "{{'Last Played'|translate}}" link="search"></app-see-all>
-    <app-horizontal1-card [lastPlayeds] = "lastPlayeds"></app-horizontal1-card>
+    <app-horizontal1-card [lastPlayeds] = "lastPlayeds$ |async"></app-horizontal1-card>
     <app-see-all elementTitle = "{{'Top Albums'|translate}}" link="search/album"></app-see-all>
     <app-vertical-card [albums] = "albums"></app-vertical-card>
     <app-see-all elementTitle = "{{'Top Artists'|translate}}" link="search"></app-see-all>
