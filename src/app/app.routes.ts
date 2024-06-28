@@ -22,20 +22,40 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'search',
+    loadComponent: () =>
+      import('./layouts/search/search.page').then((m) => m.SearchPage),
+    children: [
+      {
+        path: 'default',
+        loadComponent: () =>
+          import('./pages/defaultsearch/defaultsearch.page').then( m => m.DefaultsearchPage),
+      },
+      {
+        path: 'artist',
+        loadComponent: () => import('./pages/searchartist/searchartist.page').then( m => m.SearchartistPage)
+      },
+      {
+        path: 'album',
+        loadComponent: () => import('./pages/searchalbum/searchalbum.page').then( m => m.SearchalbumPage)
+      },
+      {
+        path: 'song',
+        loadComponent: () => import('./pages/searchsong/searchsong.page').then( m => m.SearchsongPage)
+      },
+      {
+        path: '',
+        redirectTo: '/search/default',
+        pathMatch: 'full',
+      },
+    ],
+    canActivate: [authGuard]
+  },
   ...tabroutes,
   {
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage),
-    canActivate: [authGuard]
-  },
-  {
-    path: 'search',
-    loadComponent: () => import('./pages/search/search.page').then( m => m.SearchPage),
-    canActivate: [authGuard]
-  },
-  {
-    path: 'player',
-    loadComponent: () => import('./pages/player/player.page').then( m => m.PlayerPage),
     canActivate: [authGuard]
   },
   {
@@ -61,9 +81,7 @@ export const routes: Routes = [
 
   
 
-
-
-
+  
 
 
 ];

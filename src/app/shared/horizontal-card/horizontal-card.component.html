@@ -1,21 +1,31 @@
-<ion-item [button]="true" detail="false" class="relative ">
+<ion-item [button]="true" detail="false" class="relative pt-2" lines="full">
   <div class="unread-indicator-wrapper size-[80px] " slot="start">
-    <ion-img src="assets/test.jpg" alt="albumcover"></ion-img>
+    <ion-img src="{{data.cover}}" alt="albumcover" class=" size-[70px] object-cover" ></ion-img>
   </div>
   <ion-text class="text-left h-20">
-    <h1 class="text-base font-bold">
-      @if (element.type === 'song') { {{element.songtitle}}}
-      @else if(element.type === 'artist') { {{element.artistName}} }
-      @else if(element.type === 'album') { {{element.albumName}} } </h1>
+      @if (data.type == 'song') { <h1 class="text-base font-bold"> {{data.songtitle}}</h1>}
+      @else if(data.type == 'artist') {<h1 class="text-base font-bold">{{data.artistName}}</h1>  }
+      @else if(data.type == 'album') { <h1 class="text-base font-bold">{{data.albumName}} </h1>}
+
     <h3 class="text-sm font-light text-slate-500">
-       @if (element.type === 'song') { {{element.albumName}}}
-      @else if(element.type === 'artist') { {{element.nbrAlbum}} album(s)  }
-      @else if(element.type === 'album') { {{element.artistName}} }</h3>
+       @if (data.type == 'song') { {{data.albumName}}}
+      @else if(data.type == 'artist') { {{data.nbrAlbum}} album(s)  }
+      @else if(data.type == 'album') { {{data.artistName}} }</h3>
   </ion-text>
   <div class="metadata-end-wrapper gap-x-2 flex flex-col justify-between h-full items-end h-20" slot="end">
-    <div>
-      <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
-    </div>
+    @if (data.type == 'song') {
+      <div >
+        <ion-button shape="round" color="light" (click)="playmusic(data.id)">
+          <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
+        </ion-button>
+      </div>
+    }
+    @else {
+      <div >
+        <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
+      </div>
+    }
+
     <div class="space-x-2">
       <ion-button shape="round" color="light" (click)="makeFavorite()">
         <ion-icon class="{{ isFavorite ? 'heart-icon-fav' : 'heart-icon' }}" [name]="isFavorite ? 'heart' : 'heart-outline'"></ion-icon>

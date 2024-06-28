@@ -13,9 +13,16 @@ export interface ISong {
     updatedAt: Date;
     searchScore: number;
     lastUpdatedSearchScore: Date;
+    lyrics?:ILyric [];
   }
 
 export interface ISongWithDetails extends ISong {
     artist: IArtist;
     album: IAlbum;
+  }
+
+export  interface ILyric {
+    end: number;
+    start: number;
+    lyric: string;
   }

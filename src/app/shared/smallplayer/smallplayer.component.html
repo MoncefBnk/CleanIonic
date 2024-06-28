@@ -1,0 +1,43 @@
+
+  @if(currentTrack) {
+    <ion-content class="small-player h-20 bottom-14" (click)="openModal()">
+      <ion-row class="media-buttons h-14">
+        <ion-col class="left" size="2"><ion-img src="{{currentTrack.cover}}" ></ion-img>
+        </ion-col>
+        <ion-col class="left" size="6" >
+          <p class="song-title">{{currentTrack.artist.artist}}</p>
+          <p class="song-subtitle">{{currentTrack.title}}</p>
+        </ion-col>
+        <ion-col class="center" size="4">
+          <ion-icon *ngIf="isPlaying$ | async" name="pause-circle" (click)="playMusic($event)" size="large"></ion-icon>
+          <ion-icon *ngIf="!(isPlaying$ | async)" name="play-circle" (click)="playMusic($event)" size="large"></ion-icon>
+      </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-range
+          class="range h-6"
+          [value]="progress$|async"
+          (ionChange) ="onIonChange($event)"
+        ></ion-range>
+      </ion-row>
+      <!--<ion-row class="media-buttons">
+        <ion-col class="left" size="2">
+          <ion-icon name="repeat" class="{{isOnRepeat? 'repeat-active': 'repeat-inactive'}}" (click)="onRepeat()"></ion-icon>
+        </ion-col>
+        <ion-col class="right" size="2" >
+          <ion-icon name="play-skip-back-outline" (click)="skipBackward()" class="icon"></ion-icon>
+        </ion-col>
+        <ion-col class="center" size="4">
+            <ion-icon *ngIf="isPlaying$ | async" name="pause-circle" (click)="playMusic($event)"></ion-icon>
+            <ion-icon *ngIf="!(isPlaying$ | async)" name="play-circle" (click)="playMusic($event)"></ion-icon>
+        </ion-col>
+        <ion-col class="left" size="2">
+          <ion-icon name="play-skip-forward-outline" (click)="skipForward()"  class="icon"></ion-icon>
+        </ion-col>
+        <ion-col class="right" size="2">
+          <ion-icon name="shuffle" class="icon-sides"></ion-icon>
+        </ion-col>
+      </ion-row>-->
+    </ion-content>
+  }
+  

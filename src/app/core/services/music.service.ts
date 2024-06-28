@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ILyric, ISongWithDetails } from '../interfaces/song';
+import { ApiService } from './api.service';
 
 
 @Injectable({
@@ -8,7 +10,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class MusicService {
 
   private audio: HTMLAudioElement;
-  private currentTrack: string = "";
+  private currentTrack: ISongWithDetails | null = null;
+  private trackQueue: ISongWithDetails[] = [];
+  private currentIndex: number = 0;
   private isOnRepeat: BehaviorSubject<boolean>;
   private isPlayingSubject: BehaviorSubject<boolean>;
   private currentTimeSubject: BehaviorSubject<string>;
@@ -16,15 +20,10 @@ export class MusicService {
   private currentLyricSubject: BehaviorSubject<string>;
   private durationSubject: BehaviorSubject<string>;
 
-  lyrics: string[] = [
-    '...la-la-la-la-la-la-la, la, la La-la-la-la-la-la-la-la la la-la',
-    "Now that I've lost everything to you You say you wanna start something new And it's breakin' my heart you're leavin' Baby, I'm grievin' But if you wanna leave, take good care Hope you have a lot of nice things to wear But then a lot of nice things turn bad out there",
-    "Oh, baby, baby, it's a wild world It's hard to get by just upon a smile Oh, baby, baby, it's a wild world I'll always remember you like a child, girl ",
-    "You know I've seen a lot of what the world can do And it's breakin' my heart in two Because I never wanna see you sad, girl Don't be a bad girl But if you wanna leave, take good care Hope you make a lot of nice friends out there But just remember there's a lot of bad and beware",
-    "Oh, baby, baby, it's a wild world And it's hard to get by just upon a smile Oh, baby, baby, it's a wild world And I'll always remember you like a child, girl",
-    " ...la-la-la-la-la-la-la, la, la La-la-la-la-la-la-la-la la la-la, la Baby, I love you But if you wanna leave, take good care Hope you make a lot of nice friends out there But just remember there's a lot of bad and beware Beware",
-    "Oh, baby, baby, it's a wild world It's hard to get by just upon a smile Oh, baby, baby, it's a wild world And I'll always remember you like a child, girl Oh, baby, baby, it's a wild world And it's hard to get by just upon a smile Oh, baby, baby, it's a wild world And I'll always remember you like a child, girl",
-  ];
+  private apiservice = inject(ApiService);
+
+
+  lyrics : ILyric[]=[];
 
   constructor() {
     this.audio = new Audio();
@@ -57,6 +56,8 @@ export class MusicService {
       if (this.isOnRepeat.value) {
         this.audio.currentTime = 0;
         this.audio.play();
+      }else {
+        this.playNext();
       }
     });
 
@@ -73,14 +74,43 @@ export class MusicService {
     this.isOnRepeat.next(!this.isOnRepeat.value);
   }
 
-  play(trackUrl: string) {
-    if (this.currentTrack !== trackUrl) {
-      this.audio.src = trackUrl;
-      this.audio.load();
+  async play(track: ISongWithDetails) {
+    if (!this.currentTrack || this.currentTrack.id !== track.id) {
+      this.stop();
+      await this.load(track.id);
       this.audio.play();
-      this.currentTrack = trackUrl;
+      this.currentTrack = track;
+      this.isPlayingSubject.next(true);
+      if( track.lyrics)
+        this.lyrics = track.lyrics;
+
     } else if (this.audio.paused) {
       this.audio.play();
+      this.isPlayingSubject.next(true);
+      if( track.lyrics)
+        this.lyrics = track.lyrics;
+    }
+  }
+
+  playAll(tracks: ISongWithDetails[]) {
+    this.trackQueue = tracks;
+    this.currentIndex = 0;
+    if (this.trackQueue.length > 0) {
+      this.play(this.trackQueue[this.currentIndex]);
+    }
+  }
+
+  playNext() {
+    if (this.currentIndex < this.trackQueue.length - 1) {
+      this.currentIndex++;
+      this.play(this.trackQueue[this.currentIndex]);
+    }
+  }
+
+  playPrevious() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      this.play(this.trackQueue[this.currentIndex]);
     }
   }
 
@@ -93,12 +123,16 @@ export class MusicService {
   stop() {
     if (this.audio) {
       this.pause();
+
       this.audio.currentTime = 0;
+      this.currentTrack = null;
+      this.lyrics = [];
       this.isPlayingSubject.next(false);
       this.progressSubject.next(0);
       this.currentTimeSubject.next('0:00');
       this.currentLyricSubject.next('');
       this.durationSubject.next('0:00');
+      
     }
   }
 
@@ -106,7 +140,8 @@ export class MusicService {
     return this.isPlayingSubject.asObservable();
   }
 
-  getCurrentTrack() {
+
+  getCurrentTrack(): ISongWithDetails | null {
     return this.currentTrack;
   }
 
@@ -127,17 +162,7 @@ export class MusicService {
   }
 
   getLyric(currentTime: number): string {
-    const timeIntervals = [
-      { start: 0, end: 11, lyric: this.lyrics[0] },
-      { start: 12, end: 39, lyric: this.lyrics[1] },
-      { start: 40, end: 64, lyric: this.lyrics[2] },
-      { start: 65, end: 91, lyric: this.lyrics[3] },
-      { start: 92, end: 118, lyric: this.lyrics[4] },
-      { start: 121, end: 145, lyric: this.lyrics[5] },
-      { start: 146, end: this.audio.duration, lyric: this.lyrics[6] },
-    ];
-
-    for (let interval of timeIntervals) {
+    for (let interval of this.lyrics) {
       if (currentTime >= interval.start && currentTime <= interval.end) {
         return interval.lyric;
       }
@@ -151,7 +176,7 @@ export class MusicService {
   }
 
   getAllLyrics(): string {
-    return this.lyrics.join('\n\n');
+   return this.lyrics.map(part => part.lyric).join(' ');
   }
 
   updateProgress() {
@@ -185,8 +210,19 @@ export class MusicService {
     this.audio.currentTime = Math.max(this.audio.currentTime - seconds, 0);
   }
 
-  load(id:string = '') {
-    this.audio = new Audio('url/${id}');
-    this.audio.load();
+  load(id:string = ''): Promise<void> {
+
+    return new Promise<void>((resolve, reject) => {
+      this.apiservice.getSongById(id).subscribe(
+        blob => {
+          const url = window.URL.createObjectURL(blob);
+          this.audio.src = url;
+          this.audio.load(); 
+          resolve();
+        }
+      );
+    });
+   
   }
+
 }

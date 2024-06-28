@@ -1,9 +1,54 @@
-<ion-card class="card-css">
-  <ion-card-header>
-    <ion-card-title>Card Title</ion-card-title>
-  </ion-card-header>
 
-  <ion-card-content>
+
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="minimize()"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+      </ion-buttons>
+      <ion-title>Music Player </ion-title>
+      
+    </ion-toolbar>
+ 
+  <ion-content  class="ion-content-player" [fullscreen]="true">
+    <div class="song-image">
+      <ion-img src="{{song.cover}}" alt="SpotyMike" ></ion-img>
+    </div>
+  
+  <ion-row class="song-info">
+    <!-- Song title, subtitle -->
+    <ion-col size="7">
+      <p class="song-title">{{song.artist.artist}}</p>
+      <p class="song-subtitle">{{song.title}}</p>
+    </ion-col>
+    <!-- Share and favorite icons -->
+    <ion-col size="5" class="icons-col">
+      <!--<ion-icon name="share-social-outline" class="share-icon" (click)="openModal(song)" ></ion-icon> -->
+      <ion-icon name="share-social-outline" class="share-icon" (click)="openModal(song)"></ion-icon>
+      <ion-icon
+        name="{{ isFavorite ? 'heart' : 'heart-outline' }}"
+        class="{{ isFavorite ? 'heart-icon-fav' : 'heart-icon' }}"
+        (click)="makeFavorite()"
+      ></ion-icon>
+    </ion-col>
+  </ion-row>
+  
+    <!-- Range slider -->
+    <ion-row>
+  
+        <ion-range
+          class="range"
+          [value]="progress"
+          (ionChange) ="onIonChange($event)"
+        ></ion-range>
+  
+    </ion-row>
+  
+    <!-- Time and duration -->
+    <ion-row>
+      <ion-col size="6" style="text-align: left;" class="time">{{ currentTime }}</ion-col>
+      <ion-col size="6"   style="text-align: right;" class="time">{{ duration }}</ion-col>
+    </ion-row>
+  
+    <!-- Music controls -->
     <ion-row class="media-buttons">
       <!-- Repeat Song -->
       <ion-col class="left" size="2">
@@ -17,17 +62,39 @@
         <ion-icon
           name="{{ isPlaying ? 'pause-circle' : 'play-circle' }}"
           class="icon-play"
-          (click)="playMusic()"
+          (click)="playMusic(song)"
         ></ion-icon>
       </ion-col>
       <!-- Skip forward -->
       <ion-col class="left" size="2">
-        <ion-icon name="play-skip-forward-outline" (click)="skipForward()"  class="icon"></ion-icon>
+        <ion-icon name="play-skip-forward-outline" (click)="skipForward()" class="icon"></ion-icon>
       </ion-col>
       <!-- Shuffle -->
       <ion-col class="right" size="2">
         <ion-icon name="shuffle" class="icon-sides"></ion-icon>
       </ion-col>
     </ion-row>
-  </ion-card-content>
-</ion-card>
+  
+    <!-- Lyrics section -->
+    <div [class.expanded]="isExpanded">
+      <ion-card class="lyrics-card">
+        <ion-card-content>
+          <ion-row class="lyrics-title">
+            <ion-col size="6">
+              <p>Lyrics</p>
+            </ion-col>
+            <!-- Expand/Collapse icon -->
+            <ion-col size="6" class="icons-col">
+              <ion-icon name="{{isExpanded ? 'chevron-collapse-outline' :  'chevron-expand-outline'}}" class="lyrics-icon" (click)="toggleExpand()"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <p *ngIf="!isExpanded">{{ currentLyric }}</p>
+            <p *ngIf="isExpanded">{{ allLyrics }}</p>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-content>
+
+  

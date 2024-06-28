@@ -7,5 +7,6 @@ export interface IElement {
     nbrAlbum ?: number;
     label ?:string;
     year ?:number;
-    image:string;
+    image ?:string;
+    cover ?:string;
   }

@@ -19,7 +19,8 @@ import { IPlaylist, IUser } from 'src/app/core/interfaces/user';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
-import { Horizontal2CardComponent } from 'src/app/shared/horizontal2-card/horizontal2-card.component';
+import { HorizontalCardComponent } from 'src/app/shared/horizontal-card/horizontal-card.component';
+import { Horizontal1CardComponent } from 'src/app/shared/horizontal1-card/horizontal1-card.component';
 import { IElement } from 'src/app/core/interfaces/element';
 
 
@@ -29,22 +30,8 @@ import { IElement } from 'src/app/core/interfaces/element';
   styleUrls: ['playlist.page.scss'],
   standalone: true,
 
-  imports: [
-    IonList,
-    IonItem,
-    IonLabel,
-    IonText,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    ExploreContainerComponent,
-    Horizontal2CardComponent,
-    GeneralHeaderComponent,
-    TranslateModule,
-    CommonModule,
+  imports: [IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, IonList, ExploreContainerComponent,Horizontal1CardComponent,GeneralHeaderComponent,TranslateModule,CommonModule],
 
-  ],
 })
 export class PlaylistPage {
   constructor() {}
@@ -63,7 +50,6 @@ export class PlaylistPage {
     this.serviceFirestore.getTopPlaylist(this.user.id, 5).then((playlists) => {
       if (playlists) this.playlists = playlists;
     });
-    console.log(this.playlists);
   }
 
   getUser() {

@@ -3,6 +3,7 @@ import { addIcons } from 'ionicons';
 import { arrowBack, ellipsisHorizontal,search,settings } from 'ionicons/icons';
 import { IonImg,IonTitle,IonToolbar,IonButtons,IonButton,IonIcon,IonBackButton} from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class GeneralHeaderComponent  implements OnInit {
   @Input() searchType: string|null = "";
   @Input() searchId: string|null = "";
 
-  constructor(private navCtrl: NavController) { 
+  constructor(private navCtrl: NavController,private router: Router) { 
     
   }
 
@@ -32,10 +33,11 @@ export class GeneralHeaderComponent  implements OnInit {
   }
 
   onSearchClick() {
-    this.navCtrl.navigateForward(['/search', {
-      type: this.searchType,
-      id: this.searchId
-    }]);
+    this.router.navigate(['/search/default']);
+  }
+
+  onlinkClick() {
+    this.router.navigate([this.endLink]);
   }
 
 }

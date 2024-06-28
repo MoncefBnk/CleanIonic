@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url_api: 'http://esiea-spotymike.eu-4.evennode.com/v1',
+  url_api: 'https://spotimike.myworkspa.fr',
   firebase: {
     apiKey: 'AIzaSyBb0jg9IupeH3-yxV0FWD_SkzZ52MLyja0',
     authDomain: 'spotymike-80a5d.firebaseapp.com',

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { addIcons } from 'ionicons';
 import {
   chevronCollapseOutline,
@@ -15,6 +15,7 @@ import {
   shareOutline,
   shareSocialOutline,
   shuffle,
+  arrowBackOutline
 } from 'ionicons/icons';
 
 import {
@@ -38,8 +39,12 @@ import {
   IonCardHeader
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
+import { ISongWithDetails } from "src/app/core/interfaces/song";
 import { MusicService } from 'src/app/core/services/music.service';
 import { Subscription } from 'rxjs';
+import { ModalController } from '@ionic/angular';
+import { ModalShareComponent } from 'src/app/shared/modal/modal-share/modal-share.component';
+
 
 @Component({
   selector: 'app-musicplayer',
@@ -71,14 +76,26 @@ import { Subscription } from 'rxjs';
 export class MusicplayerComponent  implements OnInit {
   private subscriptions: Subscription[] = [];
   isPlaying: boolean = true;
-  currentTrack: string = "";
+  currentTrack : ISongWithDetails[]=[];
   currentTime: string = '0:00';
   duration: string = '0:00';
   progress: number = 0;
   currentLyric: string = '';
   isOnRepeat: boolean = false;
 
-  constructor(private musicService: MusicService) { }
+  backbutton: string = "back";
+  end_icon: string = "ellipsis-horizontal";
+  //song = {} as ISongWithDetails;
+  audio!: HTMLAudioElement;
+  isFavorite: boolean = false;
+  allLyrics: string = '';
+  start_icon: string = 'search';
+  image: string = 'assets/icon/logo_mini.png';
+  isExpanded: boolean = false;
+
+  @Input() song= {} as ISongWithDetails;
+
+  constructor(private musicService: MusicService,private modalController: ModalController,private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     addIcons({
@@ -95,13 +112,15 @@ export class MusicplayerComponent  implements OnInit {
       ellipsisHorizontal,
       expand,
       chevronExpandOutline,
-      chevronCollapseOutline
+      chevronCollapseOutline,
+      arrowBackOutline
     });
 
     this.subscriptions.push(
       this.musicService.isPlaying().subscribe(isPlaying => {
         this.isPlaying = isPlaying;
-        this.currentTrack = this.musicService.getCurrentTrack();
+        this.cdr.detectChanges();
+        //this.currentTrack = this.musicService.getCurrentTrack();
       }),
       this.musicService.getCurrentTime().subscribe(currentTime => {
         this.currentTime = currentTime;
@@ -119,23 +138,33 @@ export class MusicplayerComponent  implements OnInit {
         this.isOnRepeat = isOnRepeat;
       })
     );
+    this.initPlayer();
+    //console.log(this.song);
   }
 
   
 
-  playMusic() {
+  playMusic(song:ISongWithDetails) {
     //this.musicService.play(trackUrl);
    console.log(this.isPlaying);
     if (this.isPlaying) {
       this.musicService.pause();
 
     } else {
-      this.musicService.play('assets/songs/Wild_World.mp3');
+      this.musicService.play(song);
     }
+  }
+
+  initPlayer() {
+    this.musicService.play(this.song);
   }
 
   onRepeat() {
     this.musicService.toggleRepeat();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   formatTime(seconds: number): string {
@@ -151,5 +180,46 @@ export class MusicplayerComponent  implements OnInit {
   skipBackward() {
     this.musicService.skipBackward(30); // Skip backward by 30 seconds
   }
+
+  onIonChange(event: any) {
+    this.musicService.onIonChange(event)
+  }
+
+  makeFavorite() {
+    this.isFavorite = !this.isFavorite;
+  }
+
+  toggleExpand() {
+    console.log(this.isExpanded);
+    if(!this.isExpanded) {
+      this.allLyrics = this.musicService.getAllLyrics();
+
+    } else {
+      this.musicService.getCurrentLyric().subscribe(currentLyric =>{
+        this.currentLyric = currentLyric;
+      })
+    }
+
+    this.isExpanded = !this.isExpanded;
+  }
+
+  async openModal(item: any) {
+    const modal = await this.modalController.create({
+      component: ModalShareComponent,
+      initialBreakpoint: 1,
+        breakpoints: [0, 1],
+      componentProps: {
+        item: item // if you also need to pass the item to the modal
+      }
+    });
+    
+    return await modal.present();
+  }
+
+    minimize() {
+      this.modalController.dismiss({
+        minimized: true
+      });
+    }
 
 }
