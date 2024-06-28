@@ -119,10 +119,10 @@ export class HomePage {
       if(albums)
         this.albums = albums;
     });
-    this.serviceFirestore.getLastPlayed(this.user.id,3).then(lastsongs => {
-      if(lastsongs)
-        this.lastPlayeds = lastsongs;
-    });
+    // this.serviceFirestore.getLastPlayed(this.user.id,3).then(lastsongs => {
+    //   if(lastsongs)
+    //     this.lastPlayeds = lastsongs;
+    // });
     this.serviceFirestore.getTopArtists(3).then(artists => {
       if(artists)
         this.artists = artists;
