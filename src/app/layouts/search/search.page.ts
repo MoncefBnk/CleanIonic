@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar,IonBackButton,IonButtons,IonButton,IonSearchbar,IonList,IonItem,IonText } from '@ionic/angular/standalone';
-import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { IonContent, IonHeader, IonTitle, IonToolbar,IonBackButton,IonButtons,IonButton,IonSearchbar,IonList,IonItem,IonText, IonLabel } from '@ionic/angular/standalone';
+import {  RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { arrowBack,search,close } from 'ionicons/icons';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
@@ -13,6 +13,10 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.state';
 import { filterAlbumsByTitle } from 'src/app/core/store/action/album.action';
 import { SearchService } from 'src/app/core/services/search.service';
+import { BehaviorSubject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { HorizontalCardComponent } from 'src/app/shared/horizontal-card/horizontal-card.component';
 
 
 @Component({
@@ -20,10 +24,9 @@ import { SearchService } from 'src/app/core/services/search.service';
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,IonBackButton,IonButtons,IonButton,IonSearchbar,IonList,IonItem,IonText,RouterModule]
+  imports: [IonLabel, HorizontalCardComponent,IonContent, IonHeader, IonTitle, IonToolbar, CommonModule,TranslateModule, FormsModule,IonBackButton,IonButtons,IonButton,IonSearchbar,IonList,IonItem,IonText,RouterModule]
 })
 export class SearchPage implements OnInit {
-  private router = inject(ActivatedRoute);
 
   private serviceFirestore = inject(FirestoreService);
   private localStore = inject(LocalStorageService);
@@ -32,7 +35,9 @@ export class SearchPage implements OnInit {
   buttons : string[] = ["All","Artist","Album","Song"];
   selectedButton: number= 0;
   recentsearchs: IElement[] = [];
-
+  searchFilter: string = "";
+  searchResults: any[] = [];
+  searchFilters: string[] = ["All","Artist","Album","Song"];
   mostsearchs: IElement[] = [
     {
       id: 'string',
@@ -59,58 +64,111 @@ export class SearchPage implements OnInit {
       image:'image',
     }
   ];
-  searchType: string|null ="";
-  searchId: string|null="";
-
+  searchType ="";
   query : string = '';
-  constructor(private route: Router) { }
+  constructor(private route: ActivatedRoute) { }
   store = inject(Store<AppState>);
   searchService = inject(SearchService);
 
   ngOnInit() {
     addIcons({ search,arrowBack });
-    this.route.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.checkUrl(event.urlAfterRedirects);
-      }
+    // this.route.events.subscribe(event => {
+    //   if (event instanceof NavigationEnd) {
+    //     this.checkUrl(event.urlAfterRedirects);
+    //   }
+    // });
+
+    this.getUser();
+
+
+    switch (this.searchType) {
+      case 'artist':
+        this.selectedButton = 1;
+        break;
+      case 'album':
+        this.selectedButton = 2;
+        break;
+      case 'song' :
+        this.selectedButton = 3;
+        break;
+      default :
+        this.selectedButton = 0;
+        break;
+    }
+    console.log('test');
+    this.resolveSearchFilter()
+    this.search('', 2, 'song'); // TEMPORARY FOR TESTING
+    console.log(this.searchResults);
+  }
+
+
+  // onSearchChange(event: any) {
+  //   const query = event.target.value;
+  //   this.searchService.setSearchQuery(query);
+  // }
+
+  // checkUrl(url: string) {
+  //   if(url.includes('search/artist'))
+  //     this.selectedButton = 1;
+  //   else if(url.includes('search/album'))
+  //     this.selectedButton = 2;
+  //   else if(url.includes('search/song'))
+  //     this.selectedButton = 3;
+  //   else
+  //     this.selectedButton = 0;
+  // }
+  search(searchText: string, limit: number,  type: string) {
+    //  IMPLEMENT SEARCH FUNCTION CORRECTLY (HARD CODED FOR TESTING)
+    this.serviceFirestore.searchWithTitle(searchText,limit,type).then(results => {
+      this.searchResults = results;
     });
-    /*this.searchType = this.route.snapshot.paramMap.get('type');
-    this.searchId = this.route.snapshot.paramMap.get('id');*/
   }
 
-
-  onSearchChange(event: any) {
-    const query = event.target.value;
-    this.searchService.setSearchQuery(query);
+  resolveSearchFilter()
+  {
+    switch (this.selectedButton) {
+      case 1:
+        this.searchFilter= "artist";
+        break;
+      case 2:
+        this.searchFilter= "album";
+        break;
+      case 3:
+        this.searchFilter= "song";
+        break;
+      default:
+        this.searchFilter= "all";
+        break;
+    }
   }
 
-  checkUrl(url: string) {
-    if(url.includes('search/artist'))
-      this.selectedButton = 1;
-    else if(url.includes('search/album'))
-      this.selectedButton = 2;
-    else if(url.includes('search/song'))
-      this.selectedButton = 3;
-    else
-      this.selectedButton = 0;
+  getUser() {
+    const userSubject: BehaviorSubject<IUser>= this.localStore.getItem<IUser>('user');
+    const userdata = userSubject.getValue();
+    if(userdata) {
+      this.user = userdata;
+    }
   }
-
   toggleButton(index: number) {
     this.selectedButton = this.selectedButton === index ? 0 : index;
     switch (this.selectedButton) {
       case 1:
-        this.route.navigate(['search/artist']);
+      this.searchFilter= "Artist";
       break;
       case 2:
-        this.route.navigate(['search/album']);
+        this.searchFilter= "Album";
       break;
       case 3:
-        this.route.navigate(['search/song']);
+        this.searchFilter= "Song";
       break;
       default:
-        this.route.navigate(['search/default']);
+        this.searchFilter= "All";
         break;
     }
+  }
+  removeAll() {
+    this.recentsearchs = [];
+    //TODO: clear it in the database
   }
 
 }

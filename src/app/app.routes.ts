@@ -32,18 +32,18 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/defaultsearch/defaultsearch.page').then( m => m.DefaultsearchPage),
       },
-      {
-        path: 'artist',
-        loadComponent: () => import('./pages/searchartist/searchartist.page').then( m => m.SearchartistPage)
-      },
-      {
-        path: 'album',
-        loadComponent: () => import('./pages/searchalbum/searchalbum.page').then( m => m.SearchalbumPage)
-      },
-      {
-        path: 'song',
-        loadComponent: () => import('./pages/searchsong/searchsong.page').then( m => m.SearchsongPage)
-      },
+      // {
+      //   path: 'artist',
+      //   loadComponent: () => import('./pages/searchartist/searchartist.page').then( m => m.SearchartistPage)
+      // },
+      // {
+      //   path: 'album',
+      //   loadComponent: () => import('./pages/searchalbum/searchalbum.page').then( m => m.SearchalbumPage)
+      // },
+      // {
+      //   path: 'song',
+      //   loadComponent: () => import('./pages/searchsong/searchsong.page').then( m => m.SearchsongPage)
+      // },
       {
         path: '',
         redirectTo: '/search/default',
@@ -79,9 +79,9 @@ export const routes: Routes = [
     redirectTo: 'auth/login',
   },
 
-  
 
-  
+
+
 
 
 ];
