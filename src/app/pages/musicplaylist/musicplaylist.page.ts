@@ -39,10 +39,9 @@ export class MusicplaylistPage implements OnInit {
   ngOnInit() {
     addIcons({ playCircle });
     this.getUser();
-    const navigation = this.router.getCurrentNavigation();
-    console.log(navigation);
-    if(navigation && navigation.extras.queryParams  && (navigation.extras.queryParams as any).id) {
-      this.playlistId = (navigation.extras.queryParams as any).id;
+    console.log(this.route.snapshot.queryParams);
+    if(this.route.snapshot.queryParams && (this.route.snapshot.queryParams as any).id) {
+      this.playlistId = (this.route.snapshot.queryParams as any).id;
      
       this.serviceFirestore.getPlaylistMusic(this.user.id,this.playlistId,10).then(songs => {
         if(songs)
@@ -64,6 +63,10 @@ export class MusicplaylistPage implements OnInit {
   
   onplayAll() {
     this.musicservice.playAll(this.songs);
+  }
+
+  ngOnDestroy() {
+    console.log('music playlist destroyed');
   }
 
 }

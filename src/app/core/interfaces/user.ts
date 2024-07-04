@@ -19,6 +19,7 @@ export interface IUser {
   playlist?: IPlaylist[];
   lastPlayed?: ILastPlayed[];
   isActive?:boolean;
+  favoris?: IFavoris[];
 }
 
 interface ISearchHistory {
@@ -41,6 +42,12 @@ export interface IPlaylist {
 export interface ILastPlayed {
   id: string;
   songId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IFavoris {
+  id: string;
   createdAt: Date;
   updatedAt: Date;
 }

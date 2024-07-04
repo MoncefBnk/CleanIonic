@@ -1,5 +1,4 @@
-import { ExploreContainerComponent } from '../../explore-container/explore-container.component';
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
 import { IonRouterLinkWithHref,
   IonRouterLink,
   IonText,
@@ -33,16 +32,16 @@ import { LocalStorageService } from 'src/app/core/services/local-storage.service
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { SeeAllComponent } from 'src/app/shared/header/see-all/see-all.component';
 import { Horizontal1CardComponent } from 'src/app/shared/horizontal1-card/horizontal1-card.component';
-import { SmallplayerComponent } from 'src/app/shared/smallplayer/smallplayer.component';
 import { SwitchableButtonsComponent } from 'src/app/shared/switchable-buttons/switchable-buttons.component';
 import { VerticalCardComponent } from 'src/app/shared/vertical-card/vertical-card.component';
 import { ModalController } from '@ionic/angular';
-import { MusicplayerComponent } from 'src/app/shared/musicplayer/musicplayer.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.state';
 import { loadLastPlayed } from 'src/app/core/store/action/user.action';
 import { selectLastPlayeds } from 'src/app/core/store/selector/user.selector';
+import { SmallplayerComponent } from 'src/app/shared/music/smallplayer/smallplayer.component';
+import { MusicplayerComponent } from 'src/app/shared/music/musicplayer/musicplayer.component';
 
 
 
@@ -72,7 +71,6 @@ import { selectLastPlayeds } from 'src/app/core/store/selector/user.selector';
     IonToolbar,
     IonTitle,
     IonContent,
-    ExploreContainerComponent,
     IonIcon,
     IonButtons,
     IonButton,
@@ -83,7 +81,7 @@ import { selectLastPlayeds } from 'src/app/core/store/selector/user.selector';
   ],
 
 })
-export class HomePage {
+export class HomePage implements OnDestroy {
   constructor(private modalController: ModalController,private cdr: ChangeDetectorRef) {
     addIcons({ search,arrowForward,arrowForwardOutline });
   }
@@ -171,6 +169,12 @@ export class HomePage {
     });
     this.cdr.detectChanges();
     return await modal.present();
+  }
+
+  ngOnDestroy() {
+    console.log('HomePage destroyed');
+    this.start_icon = "";
+    this.end_icon = "";
   }
 
 }

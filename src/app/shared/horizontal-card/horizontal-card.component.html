@@ -15,7 +15,7 @@
   <div class="metadata-end-wrapper gap-x-2 flex flex-col justify-between h-full items-end h-20" slot="end">
     @if (data.type == 'song') {
       <div >
-        <ion-button shape="round" color="light" (click)="playmusic(data.id)">
+        <ion-button  color="light" (click)="playmusic(data.id)">
           <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
         </ion-button>
       </div>
@@ -27,10 +27,10 @@
     }
     
     <div class="space-x-2">
-      <ion-button shape="round" color="light" (click)="makeFavorite()">
+      <ion-button  color="light" (click)="makeFavorite()">
         <ion-icon class="{{ isFavorite ? 'heart-icon-fav' : 'heart-icon' }}" [name]="isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
       </ion-button>
-      <ion-button shape="round" color="light" (click)="openModal(element.id)" >
+      <ion-button  color="light" (click)="openModal(element.id)" >
         <ion-icon name="share-social-outline"  class="absolute"></ion-icon>
       </ion-button>
     </div>

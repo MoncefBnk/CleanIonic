@@ -50,6 +50,10 @@
   --tab-icon-color: #B7B7B7; /* Inactive color */
   --tab-icon-color-selected: #15AB90; /* Active color */
   --ion-color-primary: #15AB90;
+  --ion-color-secondary: #0054e9;
+  //--ion-color-instagram: #ed2a82;
+  --ion-color-tertiary: #E1306C; /* Instagram pink */
+
 }
 
 .left {
@@ -96,4 +100,23 @@ ion-modal::part(backdrop) {
   background: rgba(209, 213, 219);
   opacity: 1;
 }
+
+
+ion-modal#share-modal {
+  --width: fit-content;
+  --min-width: 292px;
+  --height: 125px;
+  --border-radius: 6px;
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+
+ion-header, ion-toolbar {
+  transition: opacity 0.1s ease-in-out;
+}
+
+.general-header {
+  transition: opacity 0.3s ease-in-out; /* Example transition effect */
+}
+
+
 

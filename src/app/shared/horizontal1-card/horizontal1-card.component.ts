@@ -1,16 +1,16 @@
 import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { ISong,ISongWithDetails } from 'src/app/core/interfaces/song';
-import { IonLabel,IonNote,IonText,IonButton,IonButtons,IonIcon,IonItem,IonList,IonImg, IonRow, IonCol, IonGrid } from '@ionic/angular/standalone';
+import { IonHeader,IonLabel,IonNote,IonText,IonButton,IonButtons,IonIcon,IonItem,IonList,IonImg, IonRow, IonCol, IonGrid } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { ellipsisHorizontal } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
 import { ILastPlayedWithDetails, IPlaylist, IUser } from 'src/app/core/interfaces/user';
 import { Router } from '@angular/router';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
-import { ModalController } from '@ionic/angular';
-import { MusicplayerComponent } from '../musicplayer/musicplayer.component';
+import { ModalController,LoadingController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
+import { MusicplayerComponent } from '../music/musicplayer/musicplayer.component';
 
 @Component({
   standalone: true,
@@ -30,6 +30,7 @@ import { LocalStorageService } from 'src/app/core/services/local-storage.service
     IonButton,
     IonButtons,
     IonText,
+    IonHeader,
     CommonModule
   ]
 })
@@ -44,7 +45,7 @@ export class Horizontal1CardComponent  implements OnInit {
   smallPlayerVisible = false;
   user = {} as IUser;
   
-  constructor(private router: Router,private modalController: ModalController,private cdr: ChangeDetectorRef ) {
+  constructor(private router: Router,private modalController: ModalController,private cdr: ChangeDetectorRef, private loadingController: LoadingController ) {
     addIcons({ ellipsisHorizontal });
    }
 
@@ -88,18 +89,15 @@ export class Horizontal1CardComponent  implements OnInit {
       return await modal.present();
   }
 
-   navigatetoPlaylist(id:string) {
-   /* await this.serviceFirestore.getOneSong(id).then(music => {
-      if(music)
-        this.song = music;
+  async navigatetoPlaylist(id:string) {
+    const loading = await this.loadingController.create({
+      message: 'Loading...',
+      duration: 7000
     });
 
-    const navigationExtras = {
-      queryParams: {
-        song: JSON.stringify(this.song)  // The object you want to send
-      }
-    };*/
+    await loading.present();
     this.router.navigate(['music-playlist'], { queryParams: {id:id}});
+    loading.dismiss();
   }
 
   getUser() {
@@ -108,6 +106,11 @@ export class Horizontal1CardComponent  implements OnInit {
     if(userdata) {
       this.user = userdata;
     }
+  }
+
+
+  ngOnDestroy() {
+    console.log('HomePage destroyed');
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators,ReactiveFormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonItemDivider,IonItemGroup,IonLabel,IonIcon,IonList,IonModal,IonButton,IonButtons,IonText,IonToggle, IonTextarea,IonAvatar } from '@ionic/angular/standalone';
+import { IonRadioGroup,IonRadio,IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonItemDivider,IonItemGroup,IonLabel,IonIcon,IonList,IonModal,IonButton,IonButtons,IonText,IonToggle, IonTextarea,IonAvatar } from '@ionic/angular/standalone';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { addIcons } from 'ionicons';
 import { personOutline,keyOutline,languageOutline,logOutOutline,trashBinOutline,closeOutline, mailOutline,cloudDownloadOutline} from 'ionicons/icons';
@@ -21,7 +21,7 @@ import { RequestResponse } from 'src/app/core/interfaces/response';
   templateUrl: './setting.page.html',
   styleUrls: ['./setting.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonItemDivider,IonItemGroup,IonLabel,IonIcon,IonList,IonModal,IonButton,IonButtons,IonText,IonToggle,IonTextarea,IonAvatar,CommonModule, FormsModule,GeneralHeaderComponent,ReactiveFormsModule,TranslateModule]
+  imports: [IonContent, IonRadioGroup,IonRadio, IonHeader, IonTitle, IonToolbar,IonItem,IonItemDivider,IonItemGroup,IonLabel,IonIcon,IonList,IonModal,IonButton,IonButtons,IonText,IonToggle,IonTextarea,IonAvatar,CommonModule, FormsModule,GeneralHeaderComponent,ReactiveFormsModule,TranslateModule]
 })
 export class SettingPage implements OnInit {
 
@@ -33,6 +33,8 @@ export class SettingPage implements OnInit {
 
   isEnglishSelected: boolean = false;
   isFrenchSelected: boolean = false;
+  selectedLanguage: string = 'english';
+
   error: string = '';
   submitForm: boolean = false;
   user = {} as IUser;
@@ -110,12 +112,18 @@ export class SettingPage implements OnInit {
   }
 
   changeLanguage(modal:any) {
-    if (this.isEnglishSelected) {
+    if(this.selectedLanguage == 'english') {
+      this.translate.use('en_US');
+      this.translate.setDefaultLang('en_US');
+    } else  {
+      this.translate.use('fr_FR');
+    }
+    /*if (this.isEnglishSelected) {
       this.translate.use('en_US');
       this.translate.setDefaultLang('en_US');
     } else if (this.isFrenchSelected) {
       this.translate.use('fr_FR');
-    }
+    }*/
    modal.dismiss();
   }
 

@@ -8,7 +8,6 @@ import { IPlaylist } from 'src/app/core/interfaces/user';
 import { NavController,ModalController } from '@ionic/angular';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { Router } from '@angular/router';
-import { MusicplayerComponent } from '../musicplayer/musicplayer.component';
 
 
 
