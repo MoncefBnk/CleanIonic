@@ -1,26 +1,27 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar,IonBackButton,IonButtons,IonButton,IonSearchbar,IonList,IonItem,IonText } from '@ionic/angular/standalone';
-import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons, IonButton, IonSearchbar, IonList, IonItem, IonText, IonLabel } from '@ionic/angular/standalone';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { arrowBack,search,close } from 'ionicons/icons';
+import { arrowBack, search, close } from 'ionicons/icons';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { IUser } from 'src/app/core/interfaces/user';
 import { IElement } from 'src/app/core/interfaces/element';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.state';
-import { filterAlbumsByTitle } from 'src/app/core/store/action/album.action';
 import { SearchService } from 'src/app/core/services/search.service';
-
+import { BehaviorSubject } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
+import { HorizontalCardComponent } from 'src/app/shared/horizontal-card/horizontal-card.component';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,IonBackButton,IonButtons,IonButton,IonSearchbar,IonList,IonItem,IonText,RouterModule]
+  imports: [IonLabel, HorizontalCardComponent, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, TranslateModule, FormsModule, IonBackButton, IonButtons, IonButton, IonSearchbar, IonList, IonItem, IonText, RouterModule]
 })
 export class SearchPage implements OnInit,OnDestroy {
   private router = inject(ActivatedRoute);
@@ -29,10 +30,12 @@ export class SearchPage implements OnInit,OnDestroy {
   private localStore = inject(LocalStorageService);
 
   user = {} as IUser;
-  buttons : string[] = ["All","Artist","Album","Song"];
-  selectedButton: number= 0;
+  buttons: string[] = ["All", "Artist", "Album", "Song"];
+  selectedButton: number = 0;
   recentsearchs: IElement[] = [];
-
+  searchFilter: string = "";
+  searchResults: any[] = [];
+  searchFilters: string[] = ["All", "Artist", "Album", "Song"];
   mostsearchs: IElement[] = [
     {
       id: 'string',
@@ -40,7 +43,7 @@ export class SearchPage implements OnInit,OnDestroy {
       type: 'song',
       albumName: 'Heritage',
       artistName: 'Ange',
-      image:'image',
+      image: 'image',
     },
     {
       id: 'string',
@@ -48,7 +51,7 @@ export class SearchPage implements OnInit,OnDestroy {
       type: 'artist',
       nbrAlbum: 3,
       artistName: 'Ange',
-      image:'image',
+      image: 'image',
     },
     {
       id: 'string',
@@ -56,65 +59,75 @@ export class SearchPage implements OnInit,OnDestroy {
       year: 2024,
       artistName: 'Ange',
       albumName: 'Heritage',
-      image:'image',
+      image: 'image',
     }
   ];
-  searchType: string|null ="";
-  searchId: string|null="";
+  searchType = "";
+  query: string = '';
 
-  query : string = '';
-  constructor(private route: Router) { }
+  constructor(private route: ActivatedRoute) { }
+
   store = inject(Store<AppState>);
   searchService = inject(SearchService);
 
   ngOnInit() {
-    addIcons({ search,arrowBack });
-    this.route.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.checkUrl(event.urlAfterRedirects);
-      }
-    });
-    /*this.searchType = this.route.snapshot.paramMap.get('type');
-    this.searchId = this.route.snapshot.paramMap.get('id');*/
+    addIcons({ search, arrowBack });
+    this.getUser();
+    this.searchType = this.buttons[this.selectedButton];
+    this.resolveSearchFilter();
+    this.search('A', 10, 'all'); // TEMPORARY FOR TESTING
   }
-
 
   onSearchChange(event: any) {
     const query = event.target.value;
-    this.searchService.setSearchQuery(query);
+    this.query = query;
+    this.search(query, 10, this.searchFilter);
   }
 
-  checkUrl(url: string) {
-    if(url.includes('search/artist'))
-      this.selectedButton = 1;
-    else if(url.includes('search/album'))
-      this.selectedButton = 2;
-    else if(url.includes('search/song'))
-      this.selectedButton = 3;
-    else
-      this.selectedButton = 0;
+  search(searchText: string, limit: number, type: string) {
+    this.serviceFirestore.searchWithTitle(searchText, limit, type).then(results => {
+      this.searchResults = results;
+      console.log(this.searchResults);
+    });
   }
 
-  toggleButton(index: number) {
-    this.selectedButton = this.selectedButton === index ? 0 : index;
+  resolveSearchFilter() {
     switch (this.selectedButton) {
       case 1:
-        this.route.navigate(['search/artist']);
-      break;
+        this.searchFilter = "artist";
+        break;
       case 2:
-        this.route.navigate(['search/album']);
-      break;
+        this.searchFilter = "album";
+        break;
       case 3:
-        this.route.navigate(['search/song']);
-      break;
+        this.searchFilter = "song";
+        break;
       default:
-        this.route.navigate(['search/default']);
+        this.searchFilter = "all";
         break;
     }
   }
 
   ngOnDestroy() {
     console.log('search ');
+  }
+
+  getUser() {
+    const userSubject: BehaviorSubject<IUser> = this.localStore.getItem<IUser>('user');
+    const userdata = userSubject.getValue();
+    if (userdata) {
+      this.user = userdata;
+    }
+  }
+
+  toggleButton(index: number) {
+    this.selectedButton = this.selectedButton === index ? 0 : index;
+    this.resolveSearchFilter();
+    this.search(this.query, 10, this.searchFilter);
+  }
+
+  removeAll() {
+    this.recentsearchs = [];
   }
 
 }

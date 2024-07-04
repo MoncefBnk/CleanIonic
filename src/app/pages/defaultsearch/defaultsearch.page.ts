@@ -1,18 +1,20 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonList,IonText,IonLabel } from '@ionic/angular/standalone';
+import { IonContent,IonLabel,IonIcon, IonHeader, IonTitle, IonToolbar,IonBackButton,IonButtons,IonButton,IonSearchbar,IonList,IonItem,IonText } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { arrowBack,search,close } from 'ionicons/icons';
+import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
+import { SwitchableButtonsComponent } from 'src/app/shared/switchable-buttons/switchable-buttons.component';
+import { IElement } from 'src/app/core/interfaces/element';
 import { HorizontalCardComponent } from 'src/app/shared/horizontal-card/horizontal-card.component';
 import { SearchResultComponent } from 'src/app/shared/search-result/search-result.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { BehaviorSubject } from 'rxjs';
-import { addIcons } from 'ionicons';
 import { IUser } from 'src/app/core/interfaces/user';
 import { ActivatedRoute } from '@angular/router';
-import { IElement } from 'src/app/core/interfaces/element';
-import { arrowBack,search,close } from 'ionicons/icons';
 
 @Component({
   selector: 'app-defaultsearch',
@@ -20,16 +22,26 @@ import { arrowBack,search,close } from 'ionicons/icons';
   styleUrls: ['./defaultsearch.page.scss'],
   standalone: true,
   imports: [
-    IonContent, 
-    IonHeader, 
-    IonTitle, 
+    IonContent,
+    IonHeader,
+    IonTitle,
     IonItem,
     IonList,
     IonText,
     IonLabel,
-    IonToolbar, 
-    CommonModule, 
+    IonToolbar,
+    CommonModule,
     FormsModule,
+    IonBackButton,
+    IonButtons,
+    IonList,
+    IonItem,
+    IonText,
+    IonButton,
+    IonSearchbar,
+    IonLabel,
+    IonIcon,
+    SwitchableButtonsComponent,
     HorizontalCardComponent,
     SearchResultComponent,
     TranslateModule]
@@ -43,6 +55,7 @@ export class DefaultsearchPage implements OnInit {
   buttons : string[] = ["All","Artist","Album","Song"];
   selectedButton: number= 0;
   recentsearchs: IElement[] = [];
+  searchResults: any[] = [];
   mostsearchs: IElement[] = [
     {
       id: 'string',
@@ -83,11 +96,34 @@ export class DefaultsearchPage implements OnInit {
       if(recents)
         this.recentsearchs = recents;
     });
-  
+
     this.searchType = this.route.snapshot.paramMap.get('type');
     this.searchId = this.route.snapshot.paramMap.get('id');
     console.log(this.searchType,this.searchId)
-    
+
+    switch (this.searchType) {
+      case 'artist':
+        this.selectedButton = 1;
+        break;
+      case 'album':
+        this.selectedButton = 2;
+        break;
+      case 'song' :
+        this.selectedButton = 3;
+        break;
+      default :
+        this.selectedButton = 0;
+        break;
+    }
+    this.search('search', 3, 'moncef'); // TEMPORARY FOR TESTING
+  }
+
+
+  search(searchText: string, limit: number,  type: string) {
+    //  IMPLEMENT SEARCH FUNCTION CORRECTLY (HARD CODED FOR TESTING)
+    this.serviceFirestore.searchWithTitle(searchText,limit,type).then(results => {
+      // this.searchResults = results;
+    });
   }
 
   getUser() {

@@ -4,15 +4,15 @@
   </div>
   <ion-text class="text-left h-20">
     <h1 class="text-base font-bold">
-      @if (element.type == 'song') { {{element.songtitle}}} 
-      @else if(element.type == 'artist') { {{element.artistName}} }
-      @else if(element.type == 'album') { {{element.albumName}} } </h1>
+      @if (element.type === 'song') { {{element.songtitle}}}
+      @else if(element.type === 'artist') { {{element.artistName}} }
+      @else if(element.type ==='album') { {{element.albumName}} } </h1>
     <h3 class="text-sm font-light text-slate-500">
-       @if (element.type == 'song') { {{element.albumName}}} 
-      @else if(element.type == 'artist') { {{element.nbrAlbum}} album(s)  }
-      @else if(element.type == 'album') { {{element.artistName}} }</h3>
+       @if (element.type === 'song') { {{element.albumName}}}
+      @else if(element.type === 'artist') { {{element.nbrAlbum}} album(s)  }
+      @else if(element.type === 'album') { {{element.artistName}} }</h3>
   </ion-text>
-  <ion-button shape="round" color="light" (click)="removeElement(element.id)" slot="end">
+  <ion-button shape="round" color="light" (click)="null" slot="end">
     <ion-icon name="close"  class="absolute"></ion-icon>
   </ion-button>
 </ion-item>

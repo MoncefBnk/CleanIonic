@@ -1,13 +1,14 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IAlbum } from 'src/app/core/interfaces/album';
 import { ISong } from 'src/app/core/interfaces/song';
-import { ellipsisVertical,heartCircleOutline,shareSocialOutline,heart } from 'ionicons/icons';
+import { ellipsisVertical,heartCircleOutline,shareSocialOutline,heart, heartOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { IonModal,IonLabel,IonText,IonItem,IonList,IonCard,IonCardContent,IonAvatar,IonImg, IonRow, IonCol, IonGrid, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,IonButtons,IonButton } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { IPlaylist } from 'src/app/core/interfaces/user';
 import { ModalShareComponent } from '../modal/modal-share/modal-share.component';
 import { ModalController } from '@ionic/angular';
+import { IElement } from 'src/app/core/interfaces/element';
 
 
 @Component({
@@ -23,13 +24,14 @@ export class Horizontal2CardComponent  implements OnInit {
     addIcons({ ellipsisVertical,heartCircleOutline,shareSocialOutline,heart});
   }
 
-  @Input() albums: IAlbum[] = [];
-  @Input() songs: ISong[] = [];
-  @Input() playlists: IPlaylist[] = [];
+  @Input() element = {} as any;
   isIconDark: boolean = false;
   selectedItem: any;
   isFavorite: boolean = false;
-  ngOnInit() {}
+  ngOnInit() {
+     addIcons({ shareSocialOutline,heart,heartOutline,ellipsisVertical });
+
+  }
 
   async openModal(item: any) {
     const modal = await this.modalController.create({
