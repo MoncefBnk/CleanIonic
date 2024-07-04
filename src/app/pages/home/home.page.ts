@@ -1,4 +1,3 @@
-import { ExploreContainerComponent } from '../../explore-container/explore-container.component';
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { IonRouterLinkWithHref,
   IonRouterLink,
@@ -72,7 +71,6 @@ import { selectLastPlayeds } from 'src/app/core/store/selector/user.selector';
     IonToolbar,
     IonTitle,
     IonContent,
-    ExploreContainerComponent,
     IonIcon,
     IonButtons,
     IonButton,

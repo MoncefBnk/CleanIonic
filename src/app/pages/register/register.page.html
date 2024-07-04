@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" style="padding-top: 5%">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form_css">
   <ion-list class="bg-transparent">
     <p class="input-label">{{ 'auth.register.email'|translate }}</p>
     <ion-item>
@@ -49,7 +49,7 @@
     <ion-row>
       <ion-col>
         <p class="input-label">{{ 'auth.register.first_name'|translate }}</p>
-        <ion-item style="display: flex">
+        <ion-item class="flex">
           <ion-input
             type="text"
             formControlName="firstName"
@@ -60,7 +60,7 @@
       </ion-col>
       <ion-col>
         <p class="input-label">{{ 'auth.register.last_name'|translate }}</p>
-        <ion-item style="display: flex">
+        <ion-item class="flex">
           <ion-input
             type="text"
             formControlName="lastName"

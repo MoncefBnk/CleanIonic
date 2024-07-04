@@ -154,7 +154,7 @@
             <ion-button (click)="artistmodal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
           </ion-buttons>
         </ion-toolbar>
-       <form [formGroup]="form" style="padding-top: 5%">
+       <form [formGroup]="form"  class="form_css">
           <ion-list class="bg-transparent">
             <ion-item class="py-5">
               <ion-avatar aria-hidden="true" slot="start">
@@ -185,7 +185,7 @@
               ></ion-input>
             </ion-item>
             <p class="input-label">{{'Description'|translate }}</p>
-              <ion-item style="display: flex" >
+              <ion-item class="flex">
                   <ion-textarea
                     name="description"
                     formControlName="description"

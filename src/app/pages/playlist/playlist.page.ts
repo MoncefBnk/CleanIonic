@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { ExploreContainerComponent } from './../../explore-container/explore-container.component';
 import { Component, inject } from '@angular/core';
 
 import { IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, IonList } from '@ionic/angular/standalone';
@@ -20,7 +19,7 @@ import { Horizontal1CardComponent } from 'src/app/shared/horizontal1-card/horizo
   styleUrls: ['playlist.page.scss'],
   standalone: true,
 
-  imports: [IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, IonList, ExploreContainerComponent,Horizontal1CardComponent,GeneralHeaderComponent,TranslateModule,CommonModule],
+  imports: [IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, IonList,Horizontal1CardComponent,GeneralHeaderComponent,TranslateModule,CommonModule],
 
 })
 export class PlaylistPage {
