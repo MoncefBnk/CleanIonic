@@ -9,15 +9,15 @@ import { LocalStorageService } from 'src/app/core/services/local-storage.service
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LinkItem } from 'src/app/core/interfaces/item';
 import { SeeAllComponent } from 'src/app/shared/header/see-all/see-all.component';
-import { Horizontal1CardComponent } from 'src/app/shared/horizontal1-card/horizontal1-card.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { HorizontalCardListComponent } from 'src/app/shared/card/horizontal-card-list/horizontal-card-list.component';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.page.html',
   styleUrls: ['./user.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar,IonText,IonGrid,IonRow,IonCol, CommonModule, FormsModule,GeneralHeaderComponent,SeeAllComponent,Horizontal1CardComponent,TranslateModule]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar,IonText,IonGrid,IonRow,IonCol, CommonModule, FormsModule,GeneralHeaderComponent,SeeAllComponent,HorizontalCardListComponent,TranslateModule]
 })
 export class UserPage implements OnInit {
   private localStore = inject(LocalStorageService);

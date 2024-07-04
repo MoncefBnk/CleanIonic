@@ -14,7 +14,7 @@ import { AppState } from 'src/app/core/store/app.state';
 import { SearchService } from 'src/app/core/services/search.service';
 import { BehaviorSubject, Observable, Subscription, combineLatest, map } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
-import { HorizontalCardComponent } from 'src/app/shared/horizontal-card/horizontal-card.component';
+import { HorizontalCardItemComponent } from 'src/app/shared/card/horizontal-card-item/horizontal-card-item.component';
 import { loadLastPlayed } from 'src/app/core/store/action/user.action';
 import { filterAlbumsByTitle, loadAlbums, loadAlbumsSuccess } from 'src/app/core/store/action/album.action';
 import { selectAllAlbums, selectFilteredAlbums } from 'src/app/core/store/selector/album.selector';
@@ -28,7 +28,7 @@ import { selectAllArtists, selectFilteredArtists } from 'src/app/core/store/sele
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
-  imports: [IonLabel, HorizontalCardComponent, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, TranslateModule, FormsModule, IonBackButton, IonButtons, IonButton, IonSearchbar, IonList, IonItem, IonText, RouterModule]
+  imports: [IonLabel, HorizontalCardItemComponent, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, TranslateModule, FormsModule, IonBackButton, IonButtons, IonButton, IonSearchbar, IonList, IonItem, IonText, RouterModule]
 })
 export class SearchPage implements OnInit,OnDestroy {
   private router = inject(ActivatedRoute);
@@ -41,8 +41,6 @@ export class SearchPage implements OnInit,OnDestroy {
   selectedButton: number = 0;
   recentsearchs: IElement[] = [];
   searchFilter: string = "";
-  //searchResults: any[] = [];
-  searchFilters: string[] = ["All", "Artist", "Album", "Song"];
   mostsearchs: IElement[] = [
     {
       id: 'string',
@@ -83,7 +81,12 @@ export class SearchPage implements OnInit,OnDestroy {
   ngOnInit() {
     addIcons({ search, arrowBack });
     this.getUser();
-    this.searchType = this.buttons[this.selectedButton];
+
+    if(this.route.snapshot.queryParams && (this.route.snapshot.queryParams as any).type) {
+      this.searchType = (this.route.snapshot.queryParams as any).type;
+      this.selectedButton = this.buttons.indexOf(this.searchType);
+    }
+    //this.searchType = this.buttons[this.selectedButton];
     this.resolveSearchFilter();
   }
 
@@ -109,11 +112,6 @@ export class SearchPage implements OnInit,OnDestroy {
     });
   }
 
-  /*search(searchText: string, limit: number, type: string) {
-    this.serviceFirestore.searchWithTitle(searchText, limit, type).then(results => {
-      this.searchResults = results;
-    });
-  }*/
 
   resolveSearchFilter() {
     switch (this.selectedButton) {
@@ -165,8 +163,6 @@ export class SearchPage implements OnInit,OnDestroy {
         break;
     }
   }
-
-
 
   getUser() {
     const userSubject: BehaviorSubject<IUser> = this.localStore.getItem<IUser>('user');

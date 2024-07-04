@@ -27,8 +27,7 @@ export const tabroutes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () =>
-          import('../../pages/profile/profile.page').then((m) => m.ProfilePage),
+        loadComponent: () => import('../../pages/profile/user/user.page').then( m => m.UserPage),
         canActivate: [authGuard]
       },
       {

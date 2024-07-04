@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
-import { ModalShareComponent } from '../modal/modal-share/modal-share.component';
+import { ModalShareComponent } from '../../modal/modal-share/modal-share.component';
 import { ModalController } from '@ionic/angular';
 import { IElement } from 'src/app/core/interfaces/element';
 import { addIcons } from 'ionicons';
@@ -10,19 +10,19 @@ import { IPlaylist } from 'src/app/core/interfaces/user';
 import { ISong, ISongWithDetails } from 'src/app/core/interfaces/song';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { Router } from '@angular/router';
-import { MusicplayerComponent } from '../music/musicplayer/musicplayer.component';
+import { MusicplayerComponent } from '../../music/musicplayer/musicplayer.component';
 import { IArtist } from 'src/app/core/interfaces/artist';
 
 
 @Component({
-  selector: 'app-horizontal-card',
-  templateUrl: './horizontal-card.component.html',
-  styleUrls: ['./horizontal-card.component.scss'],
+  selector: 'app-horizontal-card-item',
+  templateUrl: './horizontal-card-item.component.html',
+  styleUrls: ['./horizontal-card-item.component.scss'],
   standalone:true,
   imports: [IonItem,IonText,IonButton,IonIcon,IonImg]
 
 })
-export class HorizontalCardComponent  implements OnInit {
+export class HorizontalCardItemComponent  implements OnInit {
   @Input() element = {} as IElement;
   @Input() album = {} as IAlbumsWithDetails;
   @Input() song = {} as ISongWithDetails;

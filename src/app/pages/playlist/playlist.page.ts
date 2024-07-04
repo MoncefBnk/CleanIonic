@@ -18,9 +18,8 @@ import { IPlaylist, IUser } from 'src/app/core/interfaces/user';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
-import { HorizontalCardComponent } from 'src/app/shared/horizontal-card/horizontal-card.component';
-import { Horizontal1CardComponent } from 'src/app/shared/horizontal1-card/horizontal1-card.component';
 import { IElement } from 'src/app/core/interfaces/element';
+import { HorizontalCardListComponent } from 'src/app/shared/card/horizontal-card-list/horizontal-card-list.component';
 
 
 @Component({
@@ -29,7 +28,7 @@ import { IElement } from 'src/app/core/interfaces/element';
   styleUrls: ['playlist.page.scss'],
   standalone: true,
 
-  imports: [IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, IonList,Horizontal1CardComponent,GeneralHeaderComponent,TranslateModule,CommonModule],
+  imports: [IonItem,IonLabel,IonText,IonHeader, IonToolbar, IonTitle, IonContent, IonList,HorizontalCardListComponent,GeneralHeaderComponent,TranslateModule,CommonModule],
 
 })
 export class PlaylistPage {

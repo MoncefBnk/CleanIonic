@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { HorizontalCardComponent } from './horizontal-card.component';
+import { HorizontalCardListComponent } from './horizontal-card-list.component';
 
-describe('HorizontalCardComponent', () => {
-  let component: HorizontalCardComponent;
-  let fixture: ComponentFixture<HorizontalCardComponent>;
+describe('Horizontal1CardComponent', () => {
+  let component: HorizontalCardListComponent;
+  let fixture: ComponentFixture<HorizontalCardListComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HorizontalCardComponent ],
+      declarations: [ HorizontalCardListComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HorizontalCardComponent);
+    fixture = TestBed.createComponent(HorizontalCardListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

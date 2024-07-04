@@ -1,4 +1,4 @@
-<app-general-header  [endIcon] ="end_icon" [backbutton] ="backbutton" [title]="title" ></app-general-header>
+<app-general-header   [backbutton] ="backbutton" [title]="title" ></app-general-header>
 
 <ion-content >
   <ion-item class="mt-5"><ion-label>Total : {{songs.length }}</ion-label> 
@@ -7,6 +7,6 @@
   </ion-button>
 </ion-item>
   <ion-list class="mt-5">
-    <app-horizontal-card [song]="item" *ngFor="let item of songs"></app-horizontal-card>
+    <app-horizontal-card-item [song]="item" *ngFor="let item of songs"></app-horizontal-card-item>
   </ion-list>
 </ion-content>

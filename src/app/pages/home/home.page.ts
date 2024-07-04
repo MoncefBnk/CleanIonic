@@ -31,9 +31,8 @@ import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { SeeAllComponent } from 'src/app/shared/header/see-all/see-all.component';
-import { Horizontal1CardComponent } from 'src/app/shared/horizontal1-card/horizontal1-card.component';
 import { SwitchableButtonsComponent } from 'src/app/shared/switchable-buttons/switchable-buttons.component';
-import { VerticalCardComponent } from 'src/app/shared/vertical-card/vertical-card.component';
+import { VerticalCardComponent } from 'src/app/shared/card/vertical-card/vertical-card.component';
 import { ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -42,6 +41,7 @@ import { loadLastPlayed } from 'src/app/core/store/action/user.action';
 import { selectLastPlayeds } from 'src/app/core/store/selector/user.selector';
 import { SmallplayerComponent } from 'src/app/shared/music/smallplayer/smallplayer.component';
 import { MusicplayerComponent } from 'src/app/shared/music/musicplayer/musicplayer.component';
+import { HorizontalCardListComponent } from 'src/app/shared/card/horizontal-card-list/horizontal-card-list.component';
 
 
 
@@ -55,7 +55,7 @@ import { MusicplayerComponent } from 'src/app/shared/music/musicplayer/musicplay
     SwitchableButtonsComponent,
     VerticalCardComponent,
     SeeAllComponent,
-    Horizontal1CardComponent,
+    HorizontalCardListComponent,
     IonText,
     IonItem,
     IonList,
@@ -117,10 +117,6 @@ export class HomePage implements OnDestroy {
       if(albums)
         this.albums = albums;
     });
-    // this.serviceFirestore.getLastPlayed(this.user.id,3).then(lastsongs => {
-    //   if(lastsongs)
-    //     this.lastPlayeds = lastsongs;
-    // });
     this.serviceFirestore.getTopArtists(3).then(artists => {
       if(artists)
         this.artists = artists;
@@ -157,7 +153,6 @@ export class HomePage implements OnDestroy {
 
   async playMusic(song:ISongWithDetails) {
     await this.serviceFirestore.updateLastPlayed(this.user.id,song.id);
-    console.log('music');
     const modal = await this.modalController.create({
       component: MusicplayerComponent,
       componentProps: {
@@ -175,7 +170,6 @@ export class HomePage implements OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('HomePage destroyed');
     this.start_icon = "";
     this.end_icon = "";
   }

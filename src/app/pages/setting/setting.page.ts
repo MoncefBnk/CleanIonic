@@ -88,7 +88,6 @@ export class SettingPage implements OnInit {
           this.error = error?.message ?? '';
         } else {
           const success = data as RequestResponse;
-          console.log(success.message);
         }
       } catch(err) {
         console.log(err);

@@ -10,13 +10,13 @@ import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { ModalController,LoadingController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
-import { MusicplayerComponent } from '../music/musicplayer/musicplayer.component';
+import { MusicplayerComponent } from '../../music/musicplayer/musicplayer.component';
 
 @Component({
   standalone: true,
-  selector: 'app-horizontal1-card',
-  templateUrl: './horizontal1-card.component.html',
-  styleUrls: ['./horizontal1-card.component.scss'],
+  selector: 'app-horizontal-card-list',
+  templateUrl: './horizontal-card-list.component.html',
+  styleUrls: ['./horizontal-card-list.component.scss'],
   imports : [
     IonLabel,
     IonNote,
@@ -34,7 +34,7 @@ import { MusicplayerComponent } from '../music/musicplayer/musicplayer.component
     CommonModule
   ]
 })
-export class Horizontal1CardComponent  implements OnInit {
+export class HorizontalCardListComponent  implements OnInit {
 
   @Input() lastPlayeds: ILastPlayedWithDetails[]|null = [];
   @Input() playlists: IPlaylist[] =[];
