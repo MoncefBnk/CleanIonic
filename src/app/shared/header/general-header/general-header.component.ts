@@ -40,4 +40,8 @@ export class GeneralHeaderComponent  implements OnInit {
     this.router.navigate([this.endLink]);
   }
 
+  ngOnDestroy() {
+    console.log('header ');
+  }
+
 }

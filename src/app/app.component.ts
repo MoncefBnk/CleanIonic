@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { register } from 'swiper/element/bundle';
-import { SmallplayerComponent } from './shared/smallplayer/smallplayer.component';
+import { SmallplayerComponent } from './shared/music/smallplayer/smallplayer.component';
 import { MusicService } from './core/services/music.service';
 register();
 
@@ -26,25 +26,9 @@ export class AppComponent implements OnInit {
     this.translate.use('en_US');
     this.translate.setDefaultLang('en_US');
 
-   /* this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        console.log(event.url);
-        if(event.url.startsWith('/player') || event.url ==='/auth/login' || event.url ==='/auth/register') {
-          this.displayplayer = false;
-        } else {
-          this.displayplayer = true;
-        }
-      }
-    });*/
-
     this.musicService.isPlaying().subscribe(isPlaying => {
       this.displayplayer = isPlaying;
-      //this.currentTrack = this.musicService.getCurrentTrack();
       this.cdr.detectChanges();
     })
-    /*const token = localStorage.getItem('token');
-    if (!token) {
-      this.router.navigate(['login']);
-    }*/
   }
 }

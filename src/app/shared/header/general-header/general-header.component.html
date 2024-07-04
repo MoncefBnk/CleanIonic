@@ -1,8 +1,8 @@
 <ion-toolbar>
   <ion-buttons slot="start">
-    <ion-button class="w-9 h-9">
+    <ion-button class="{{ initial ? 'w-9 h-9' : '' }}">
       @if (initial) {
-        <div class="avatar">
+        <div class="avatar ">
           <span>{{ initial }}</span>
         </div>
       }

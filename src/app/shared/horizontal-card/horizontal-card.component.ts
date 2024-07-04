@@ -10,7 +10,7 @@ import { IPlaylist } from 'src/app/core/interfaces/user';
 import { ISong } from 'src/app/core/interfaces/song';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { Router } from '@angular/router';
-import { MusicplayerComponent } from '../musicplayer/musicplayer.component';
+import { MusicplayerComponent } from '../music/musicplayer/musicplayer.component';
 
 
 @Component({
@@ -85,6 +85,8 @@ export class HorizontalCardComponent  implements OnInit {
   async openModal(item: any) {
     const modal = await this.modalController.create({
       component: ModalShareComponent,
+      id:"share-modal"
+
     });
     return await modal.present();
   }

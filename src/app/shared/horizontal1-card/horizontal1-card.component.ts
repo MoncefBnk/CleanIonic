@@ -7,8 +7,8 @@ import { CommonModule } from '@angular/common';
 import { ILastPlayedWithDetails, IPlaylist, IUser } from 'src/app/core/interfaces/user';
 import { Router } from '@angular/router';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
-import { ModalController } from '@ionic/angular';
-import { MusicplayerComponent } from '../musicplayer/musicplayer.component';
+import { ModalController,LoadingController } from '@ionic/angular';
+import { MusicplayerComponent } from '../music/musicplayer/musicplayer.component';
 import { BehaviorSubject } from 'rxjs';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 
@@ -44,7 +44,7 @@ export class Horizontal1CardComponent  implements OnInit {
   smallPlayerVisible = false;
   user = {} as IUser;
   
-  constructor(private router: Router,private modalController: ModalController,private cdr: ChangeDetectorRef ) {
+  constructor(private router: Router,private modalController: ModalController,private cdr: ChangeDetectorRef, private loadingController: LoadingController ) {
     addIcons({ ellipsisHorizontal });
    }
 
@@ -88,18 +88,15 @@ export class Horizontal1CardComponent  implements OnInit {
       return await modal.present();
   }
 
-   navigatetoPlaylist(id:string) {
-   /* await this.serviceFirestore.getOneSong(id).then(music => {
-      if(music)
-        this.song = music;
+  async navigatetoPlaylist(id:string) {
+    const loading = await this.loadingController.create({
+      message: 'Loading...',
+      duration: 3000
     });
 
-    const navigationExtras = {
-      queryParams: {
-        song: JSON.stringify(this.song)  // The object you want to send
-      }
-    };*/
+    await loading.present();
     this.router.navigate(['music-playlist'], { queryParams: {id:id}});
+    loading.dismiss();
   }
 
   getUser() {
@@ -108,6 +105,11 @@ export class Horizontal1CardComponent  implements OnInit {
     if(userdata) {
       this.user = userdata;
     }
+  }
+
+
+  ngOnDestroy() {
+    console.log('HomePage destroyed');
   }
 
 }
