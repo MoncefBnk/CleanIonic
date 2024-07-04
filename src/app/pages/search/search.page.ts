@@ -41,7 +41,7 @@ export class SearchPage implements OnInit,OnDestroy {
   selectedButton: number = 0;
   recentsearchs: IElement[] = [];
   searchFilter: string = "";
-  mostsearchs: IElement[] = [
+  /*mostsearchs: IElement[] = [
     {
       id: 'string',
       songtitle: 'Song1',
@@ -66,7 +66,7 @@ export class SearchPage implements OnInit,OnDestroy {
       albumName: 'Heritage',
       image: 'image',
     }
-  ];
+  ];*/
   searchType = "";
   query: string = '';
 

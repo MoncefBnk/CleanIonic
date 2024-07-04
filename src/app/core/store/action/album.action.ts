@@ -21,3 +21,8 @@ export const filterAlbumsByTitle = createAction(
 export const filterAlbumsBySearchScore = createAction(
   '[Album] Filter Albums By Search Score'
 );
+
+export const incrementAlbumSearchScore = createAction(
+  '[Album] Increment Search Score',
+  props<{ albumId: string }>()
+);

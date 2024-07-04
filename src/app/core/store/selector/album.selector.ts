@@ -19,8 +19,6 @@ export const selectAllAlbums = createSelector(
   (state: AlbumState) => state.albums
 );
 
-
-
 export const selectFilteredAlbums = createSelector(
   selectAlbumState,
   (state: AlbumState) => state.filteredAlbums

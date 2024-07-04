@@ -21,3 +21,8 @@ export const filterArtistsByName = createAction(
 export const filterArtistsBySearchScore = createAction(
   '[Artist] Filter Artists By Search Score'
 );
+
+export const incrementArtistSearchScore = createAction(
+  '[Artist] Increment Search Score',
+  props<{ artistId: string }>()
+);

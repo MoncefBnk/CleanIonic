@@ -18,7 +18,8 @@ import {
   setDoc,
   addDoc,
   startAt,
-  endAt
+  endAt,
+  increment
 } from 'firebase/firestore/lite';
 import { environment } from 'src/environments/environment';
 import { ISong, ISongWithDetails } from '../interfaces/song';
@@ -190,6 +191,17 @@ export class FirestoreService {
 
   /** start album */
 
+  //update album score
+  async updateAlbumScore(id:string) : Promise<void> {
+    const albumRef = doc(this.db, 'album',id);
+    try {
+      updateDoc(albumRef,{searchScore: increment(1)})
+    } catch (error) {
+      console.error('Error updating document:', error);
+      throw error;
+    }
+  }
+
   //Get latest album
   async getLatestAlbum() : Promise<IAlbum | null> {
     const albumsCol = collection(this.db, 'album');
@@ -354,10 +366,136 @@ export class FirestoreService {
     return albumsList;
   }
 
+  getUserLastPlayedWithSongDetails(userId: string,limitCount: number): Observable<ILastPlayedWithDetails[]|null> {
+    const historySongRef = collection(this.db, 'user/'+userId+'/lastPlayed');
+    const q = query(historySongRef, orderBy('updatedAt', 'desc'), limit(limitCount));
+
+    return from(getDocs(q)).pipe(
+      switchMap(lastPlayedSnapshot => {
+        if (!lastPlayedSnapshot.empty) {
+          const lastPlayeds$ = lastPlayedSnapshot.docs.map(doc => {
+            const data = doc.data();
+            return this.getOneSongObservable(data['songId']).pipe(
+              map(song => {
+                if (song) {
+                  const lastplayed: ILastPlayed = {
+                    id: doc.id,
+                    songId: data['songId'],
+                    createdAt: data['createdAt'].toDate(),
+                    updatedAt: data['updatedAt'].toDate(),
+                  };
+                  const lastPlayedWithDetails: ILastPlayedWithDetails = { ...lastplayed, song };
+                  return lastPlayedWithDetails;
+                } else {
+                  return null;
+                }
+              })
+            );
+          });
+
+          return combineLatest(lastPlayeds$).pipe(
+            map(lastPlayeds => lastPlayeds.filter(lp => lp !== null) as ILastPlayedWithDetails[])
+          );
+        } else {
+          return of(null);
+        }
+      })
+    );
+
+  }
+
+
+  async getArtistWithAlbumsAndSongs(artistId: string): Promise<IArtistWithAlbumsAndSongs | null> {
+    try {
+      const artistDocRef = doc(this.db, 'artist', artistId);
+      const artistSnapshot = await getDoc(artistDocRef);
+
+      if (!artistSnapshot.exists()) {
+        console.log('No such artist!');
+        return null;
+      }
+
+      const artistData = artistSnapshot.data() as IArtist;
+      const albums = await this.getAlbumsWithDetails(artistId);
+      const songs = await this.getSongsWithDetails(artistId);
+
+      const artistWithAlbumsAndSongs: IArtistWithAlbumsAndSongs = {
+        ...artistData,
+        albumsDetail: albums,
+        songs: songs
+      };
+
+      return artistWithAlbumsAndSongs;
+    } catch (error) {
+      console.error('Error fetching artist with albums and songs', error);
+      throw error; // Propagate the error
+    }
+  }
+
+  async getAlbumsWithDetails(artistId: string): Promise<IAlbum[]> {
+    try {
+      const albumsCol = collection(this.db, 'album');
+      const q = query(albumsCol, where('artistId', '==', artistId));
+      const albumsSnapshot = await getDocs(q);
+
+      return albumsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as IAlbum));
+    } catch (error) {
+      console.error('Error fetching albums with details', error);
+      throw error; // Propagate the error
+    }
+  }
+
+  async getSongsWithDetails(artistId: string): Promise<ISongWithDetails[]> {
+    try {
+      const songsCol = collection(this.db, 'song');
+      const q = query(songsCol, where('artistId', '==', artistId));
+      const songsSnapshot = await getDocs(q);
+
+      return Promise.all(songsSnapshot.docs.map(async doc => {
+        const songData = doc.data() as ISong;
+        const album = await this.getOneAlbum(songData.albumId);
+        const artist = await this.getOneArtist(artistId);
+
+        return {
+          id: songData.id,
+          title: songData['title'],
+          duration: songData['duration'],
+          cover: songData['cover'],
+          fileUrl: songData['fileUrl'],
+          artistId: songData['artistId'],
+          albumId: songData['albumId'],
+          createdAt: songData['createdAt'],
+          updatedAt: songData['updatedAt'],
+          searchScore: songData['searchScore'],
+          lyrics: songData['lyrics'],
+          lastUpdatedSearchScore: songData['lastUpdatedSearchScore'],
+          artist: artist,
+          album: album
+        } as ISongWithDetails;
+      }));
+    } catch (error) {
+      console.error('Error fetching songs with details', error);
+      throw error;
+    }
+  }
+
   /** end album */
 
   /** start artist */
 
+  //update artist score
+  async updateArtistScore(id:string) : Promise<void> {
+    const artistRef = doc(this.db, 'artist',id);
+    try {
+      updateDoc(artistRef,{searchScore: increment(1)})
+    } catch (error) {
+      console.error('Error updating document:', error);
+      throw error;
+    }
+  }
   async createArtist(userId:string,artistName:string,label:string,description:string,avatar:string) : Promise<RequestResponse>{
     try {
     const data = { userId: userId,artist: artistName, label: label , description: description , avatar: avatar,followers:0,searchScore:0,lastUpdatedSearchScore: new Date(),createdAt: new Date(),updatedAt: new Date()};
@@ -511,6 +649,17 @@ export class FirestoreService {
     /** end artist */
 
   /** start song */
+
+  //update song score
+  async updateSongScore(id:string) : Promise<void> {
+    const songRef = doc(this.db, 'song',id);
+    try {
+      updateDoc(songRef,{searchScore: increment(1)})
+    } catch (error) {
+      console.error('Error updating document:', error);
+      throw error;
+    }
+  }
 
   //update last played songs
   async updateLastPlayed(userId:string,songId: string) {
@@ -1109,121 +1258,6 @@ export class FirestoreService {
   }
 
 
-  getUserLastPlayedWithSongDetails(userId: string,limitCount: number): Observable<ILastPlayedWithDetails[]|null> {
-    const historySongRef = collection(this.db, 'user/'+userId+'/lastPlayed');
-    const q = query(historySongRef, orderBy('updatedAt', 'desc'), limit(limitCount));
-
-    return from(getDocs(q)).pipe(
-      switchMap(lastPlayedSnapshot => {
-        if (!lastPlayedSnapshot.empty) {
-          const lastPlayeds$ = lastPlayedSnapshot.docs.map(doc => {
-            const data = doc.data();
-            return this.getOneSongObservable(data['songId']).pipe(
-              map(song => {
-                if (song) {
-                  const lastplayed: ILastPlayed = {
-                    id: doc.id,
-                    songId: data['songId'],
-                    createdAt: data['createdAt'].toDate(),
-                    updatedAt: data['updatedAt'].toDate(),
-                  };
-                  const lastPlayedWithDetails: ILastPlayedWithDetails = { ...lastplayed, song };
-                  return lastPlayedWithDetails;
-                } else {
-                  return null;
-                }
-              })
-            );
-          });
-
-          return combineLatest(lastPlayeds$).pipe(
-            map(lastPlayeds => lastPlayeds.filter(lp => lp !== null) as ILastPlayedWithDetails[])
-          );
-        } else {
-          return of(null);
-        }
-      })
-    );
-
-  }
-
   
-
-  async getArtistWithAlbumsAndSongs(artistId: string): Promise<IArtistWithAlbumsAndSongs | null> {
-    try {
-      const artistDocRef = doc(this.db, 'artist', artistId);
-      const artistSnapshot = await getDoc(artistDocRef);
-
-      if (!artistSnapshot.exists()) {
-        console.log('No such artist!');
-        return null;
-      }
-
-      const artistData = artistSnapshot.data() as IArtist;
-      const albums = await this.getAlbumsWithDetails(artistId);
-      const songs = await this.getSongsWithDetails(artistId);
-
-      const artistWithAlbumsAndSongs: IArtistWithAlbumsAndSongs = {
-        ...artistData,
-        albumsDetail: albums,
-        songs: songs
-      };
-
-      return artistWithAlbumsAndSongs;
-    } catch (error) {
-      console.error('Error fetching artist with albums and songs', error);
-      throw error; // Propagate the error
-    }
-  }
-
-  async getAlbumsWithDetails(artistId: string): Promise<IAlbum[]> {
-    try {
-      const albumsCol = collection(this.db, 'album');
-      const q = query(albumsCol, where('artistId', '==', artistId));
-      const albumsSnapshot = await getDocs(q);
-
-      return albumsSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as IAlbum));
-    } catch (error) {
-      console.error('Error fetching albums with details', error);
-      throw error; // Propagate the error
-    }
-  }
-
-  async getSongsWithDetails(artistId: string): Promise<ISongWithDetails[]> {
-    try {
-      const songsCol = collection(this.db, 'song');
-      const q = query(songsCol, where('artistId', '==', artistId));
-      const songsSnapshot = await getDocs(q);
-
-      return Promise.all(songsSnapshot.docs.map(async doc => {
-        const songData = doc.data() as ISong;
-        const album = await this.getOneAlbum(songData.albumId);
-        const artist = await this.getOneArtist(artistId);
-
-        return {
-          id: songData.id,
-          title: songData['title'],
-          duration: songData['duration'],
-          cover: songData['cover'],
-          fileUrl: songData['fileUrl'],
-          artistId: songData['artistId'],
-          albumId: songData['albumId'],
-          createdAt: songData['createdAt'],
-          updatedAt: songData['updatedAt'],
-          searchScore: songData['searchScore'],
-          lyrics: songData['lyrics'],
-          lastUpdatedSearchScore: songData['lastUpdatedSearchScore'],
-          artist: artist,
-          album: album
-        } as ISongWithDetails;
-      }));
-    } catch (error) {
-      console.error('Error fetching songs with details', error);
-      throw error;
-    }
-  }
 
 }

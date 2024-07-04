@@ -43,7 +43,13 @@ export const artistReducer = createReducer(
     on(ActionArtist.filterArtistsBySearchScore, state => ({
       ...state,
       filteredArtists: [...state.artists].sort((a, b) => b.searchScore - a.searchScore)
-    }))
+    })),
+    on(ActionArtist.incrementArtistSearchScore, (state, { artistId }) => {
+      const albums = state.artists.map(artist =>
+        artist.id === artistId ? { ...artist, searchScore: artist.searchScore + 1 } : artist
+      );
+      return { ...state, albums };
+    })
 );
 
 // Recupération
