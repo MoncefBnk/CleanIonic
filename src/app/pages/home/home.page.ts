@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
 import { IonRouterLinkWithHref,
   IonRouterLink,
   IonText,
@@ -81,7 +81,7 @@ import { MusicplayerComponent } from 'src/app/shared/music/musicplayer/musicplay
   ],
 
 })
-export class HomePage {
+export class HomePage implements OnDestroy {
   constructor(private modalController: ModalController,private cdr: ChangeDetectorRef) {
     addIcons({ search,arrowForward,arrowForwardOutline });
   }
@@ -173,6 +173,8 @@ export class HomePage {
 
   ngOnDestroy() {
     console.log('HomePage destroyed');
+    this.start_icon = "";
+    this.end_icon = "";
   }
 
 }

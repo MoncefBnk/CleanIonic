@@ -1,4 +1,4 @@
-<ion-toolbar>
+<ion-toolbar class="general-header">
   <ion-buttons slot="start">
     <ion-button class="{{ initial ? 'w-9 h-9' : '' }}">
       @if (initial) {
@@ -9,7 +9,7 @@
       @else{
 
         @if(backbutton){
-          <ion-back-button defaultHref="/home" style="color:grey;"  icon="arrow-back"></ion-back-button>
+          <ion-back-button routerAnimation="Animated" defaultHref="/home" style="color:grey;"  icon="arrow-back"></ion-back-button>
         }@else {
           <ion-icon slot="icon-only" [name]="startIcon"></ion-icon>
         }
@@ -29,5 +29,5 @@
       </ion-button>
     }
   </ion-buttons>
-  <ion-title style="color: grey;" class="text-base  font-bold ion-text-center">{{title}}</ion-title>
+  <ion-title style="color: grey;" class="text-base  font-bold ">{{title}}</ion-title>
 </ion-toolbar>

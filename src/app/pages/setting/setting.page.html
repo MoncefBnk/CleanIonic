@@ -1,21 +1,21 @@
 <app-general-header  endIcon ="ellipsis-horizontal" backbutton ="back" title="{{'Settings'|translate}}" ></app-general-header>
 
 <ion-content [fullscreen]="true">
-  <ion-item-group>
-    <ion-item-divider>
+  <ion-item-group class="mt-2">
+    <ion-item-divider >
       <ion-label>{{ 'Account'|translate }}</ion-label>
     </ion-item-divider>
   
-    <ion-item [button]="true" detail="true">
+    <ion-item [button]="true" detail="true" class="mt-2">
       <ion-icon  slot="start" name="person-outline"></ion-icon>
       <ion-label>{{ 'Account'|translate }}</ion-label>
     </ion-item>
-    <ion-item [button]="true" detail="true" id="verify-modal">
+    <ion-item [button]="true" detail="true" id="verify-modal" class="mt-2">
       <ion-icon  slot="start" name="key-outline"></ion-icon>
       <ion-label>{{ 'Email verification'|translate }}</ion-label>
     </ion-item>
     @if (user.isArtist) {
-      <ion-item [button]="true" detail="true">
+      <ion-item [button]="true" detail="true" class="mt-2">
         <ion-icon  slot="start" name="person-outline"></ion-icon>
         <ion-label>{{ 'Switch to artist account'|translate }}</ion-label>
       </ion-item>
@@ -23,40 +23,40 @@
     
   </ion-item-group>
   
-  <ion-item-group>
+  <ion-item-group >
     <ion-item-divider>
       <ion-label>{{ 'Content'|translate }}</ion-label>
     </ion-item-divider>
   
-    <ion-item [button]="true" detail="true" id="language-modal">
+    <ion-item [button]="true" detail="true" id="language-modal" class="mt-2">
       <ion-icon  slot="start" name="language-outline"></ion-icon>
       <ion-label>{{ 'Language'|translate }}</ion-label>
     </ion-item>
   </ion-item-group>
 
-  <ion-item-group>
-    <ion-item-divider>
+  <ion-item-group >
+    <ion-item-divider >
       <ion-label>{{ 'Connexion'|translate }}</ion-label>
     </ion-item-divider>
     @if (!user.isArtist) {
-      <ion-item [button]="true" detail="true" id="artist-modal">
+      <ion-item [button]="true" detail="true" id="artist-modal" class="mt-2">
         <ion-icon  slot="start" name="person-outline"></ion-icon>
         <ion-label>{{'Become artist'|translate }}</ion-label>
       </ion-item>
     }
     
-    <ion-item [button]="true" detail="true" id="logout-modal">
+    <ion-item [button]="true" detail="true" id="logout-modal" class="mt-2">
       <ion-icon  slot="start" name="log-out-outline"></ion-icon>
       <ion-label>{{'Logout'|translate }}</ion-label>
     </ion-item>
-    <ion-item [button]="true" detail="true" lines="none" id="delete-modal">
+    <ion-item [button]="true" detail="true" lines="none" id="delete-modal" class="mt-2">
       <ion-icon  slot="start" name="trash-bin-outline" color="danger"></ion-icon>
       <ion-label color="danger">{{'Delete account'|translate }}</ion-label>
     </ion-item>
   </ion-item-group>
 
 
-  <ion-modal #languagemodal trigger="language-modal" class="language-modal my-48">
+  <ion-modal #languagemodal trigger="language-modal" class="language-modal my-48" >
     <ng-template>
       <ion-content class="ion-padding">
         <ion-toolbar>
@@ -66,14 +66,17 @@
           </ion-buttons>
         </ion-toolbar>
         <ion-text>
-          <div class=" h-90 py-5 ">
+          <div class=" h-30 py-5 ">
             <h1 class="flex justify-center font-bold">{{'Change Language'|translate }}</h1>
             <p class="flex justify-center">{{'Choose the language you want to use'|translate }}</p>
           </div>
         </ion-text>
-        <ion-toggle [(ngModel)]="isEnglishSelected" [disabled]="isFrenchSelected" labelPlacement="end">{{'English'|translate }}</ion-toggle><br /><br />
-        <ion-toggle [(ngModel)]="isFrenchSelected" [disabled]="isEnglishSelected" labelPlacement="end">{{'French'|translate }}</ion-toggle><br /><br />
-        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
+        <ion-radio-group [(ngModel)]="selectedLanguage" class="flex justify-center space-x-4 ..." alignment="center">
+          <ion-radio value="english"  aria-label="Custom checkbox">{{'English'|translate }}</ion-radio>
+          <ion-radio value="french"  aria-label="Custom checkbox that is checked">{{'French'|translate }}</ion-radio>
+        </ion-radio-group>
+
+        <div class="absolute inset-x-0 bottom-0  flex justify-between px-8 space-x-4">
           <ion-button class="flex-1" expand="block" color="light" (click)="languagemodal.dismiss()">{{'Cancel'|translate }}</ion-button> <ion-button class="flex-1" expand="block" (click)="changeLanguage(languagemodal)">{{'Confirm'|translate }}</ion-button>
         </div>
       </ion-content>

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar,IonBackButton,IonButtons,IonButton,IonSearchbar,IonList,IonItem,IonText } from '@ionic/angular/standalone';
@@ -22,7 +22,7 @@ import { SearchService } from 'src/app/core/services/search.service';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,IonBackButton,IonButtons,IonButton,IonSearchbar,IonList,IonItem,IonText,RouterModule]
 })
-export class SearchPage implements OnInit {
+export class SearchPage implements OnInit,OnDestroy {
   private router = inject(ActivatedRoute);
 
   private serviceFirestore = inject(FirestoreService);
@@ -111,6 +111,10 @@ export class SearchPage implements OnInit {
         this.route.navigate(['search/default']);
         break;
     }
+  }
+
+  ngOnDestroy() {
+    console.log('search ');
   }
 
 }

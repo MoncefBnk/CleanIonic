@@ -13,12 +13,12 @@ export const tabroutes: Routes = [
           import('../../pages/home/home.page').then((m) => m.HomePage),
         canActivate: [authGuard]
       },
-      {
+      /*{
         path: 'tab2',
         loadComponent: () =>
           import('../../pages/tab2/tab2.page').then((m) => m.Tab2Page),
         canActivate: [authGuard]
-      },
+      },*/
       {
         path: 'playlist',
         loadComponent: () =>
