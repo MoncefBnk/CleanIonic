@@ -1,34 +1,37 @@
-<app-general-header  [endIcon] ="end_icon" [title] ="title" [endLink] ="endLink"></app-general-header>
+<app-general-header [backbutton] ="backbutton"  [title] ="title" ></app-general-header>
 
 <ion-content class="ion-padding">
+  
   <div class="flex justify-center">
-    <div class="avatar flex justify-center items-center">
-      <span>SI</span>
-    </div>
+    <ion-avatar class="flex justify-center avatar">
+      <img alt="avatar" [src]="artist.avatar" />
+    </ion-avatar>
   </div>
   <ion-text class="flex justify-center py-1.5">
-    <h1>Singuila</h1>
+    <h1>{{artist.artist}}</h1>
   </ion-text>
-  <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="home">
-        <ion-icon name="play-circle"></ion-icon>
-        Listen Now
-      </ion-tab-button>
-      <ion-tab-button tab="radio">
-        <ion-icon name="radio"></ion-icon>
-        Radio
-      </ion-tab-button>
-      <ion-tab-button tab="library">
-        <ion-icon name="library"></ion-icon>
-        Library
-      </ion-tab-button>
-      <ion-tab-button tab="search">
-        <ion-icon name="search"></ion-icon>
-        Search
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+  <ion-grid [fixed]="true">
+    <ion-row>
+      <ion-col size="4" size-md="4" size-lg="2" class="flex justify-center">
+        <div class=" h-90 py-5 ">
+          <p class="flex justify-center">{{ artist.albums ? artist.albums.length : 0 }}</p>
+          <p>{{'Albums'|translate|uppercase }}</p>
+        </div>
+      </ion-col>
+      <ion-col size="3" size-md="4" size-lg="2" class="flex justify-center">
+        <div class=" h-90 py-5 ">
+          <p class="flex justify-center">{{ artist.songs ? artist.songs.length : 0 }}</p>
+          <p>{{'Songs'|translate|uppercase }}</p>
+        </div>
+      </ion-col>
+      <ion-col size="4" size-md="4" size-lg="2" class="flex justify-center">
+        <div class=" h-90 py-5 ">
+          <p class="flex justify-center">{{ artist.followers}}</p>
+          <p>{{'Followers'|translate|uppercase }}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   
 </ion-content>

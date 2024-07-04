@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
 import { ModalShareComponent } from '../../modal/modal-share/modal-share.component';
-import { ModalController } from '@ionic/angular';
+import { ModalController,LoadingController } from '@ionic/angular';
 import { IElement } from 'src/app/core/interfaces/element';
 import { addIcons } from 'ionicons';
 import { shareSocialOutline,heart,heartOutline,ellipsisVertical } from 'ionicons/icons';
@@ -36,7 +36,7 @@ export class HorizontalCardItemComponent  implements OnInit {
   smallPlayerVisible = false;
   private serviceFirestore = inject(FirestoreService);
 
-  constructor(private modalController: ModalController,private router: Router,private cdr: ChangeDetectorRef) { }
+  constructor(private modalController: ModalController,private router: Router,private cdr: ChangeDetectorRef, private loadingController: LoadingController) { }
 
   ngOnInit() {
     addIcons({ shareSocialOutline,heart,heartOutline,ellipsisVertical });
@@ -133,5 +133,16 @@ export class HorizontalCardItemComponent  implements OnInit {
     });
     this.cdr.detectChanges();
     return await modal.present();
+  }
+
+  async navigateArtist(id:string) {
+    const loading = await this.loadingController.create({
+      message: 'Loading...',
+      duration: 7000
+    });
+
+    await loading.present();
+    this.router.navigate(['artist'], { queryParams: {id:id}});
+    loading.dismiss();
   }
 }

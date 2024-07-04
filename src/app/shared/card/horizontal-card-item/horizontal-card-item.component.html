@@ -24,9 +24,11 @@
         </ion-button>
       </div>
     }
-    @else {
+    @else if (data.type == 'artist'){
       <div >
-        <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
+        <ion-button  color="light" (click)="navigateArtist(data.id)">
+          <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
+        </ion-button>
       </div>
     }
 

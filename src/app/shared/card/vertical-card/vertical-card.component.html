@@ -26,7 +26,7 @@
 <swiper-container [loop]="true" [pagination]="true" slides-per-view="3" *ngIf="artists && artists.length > 0" class="h-52"> 
   <swiper-slide *ngFor="let artist of artists;">
     <div class="swiper-zoom-container row" >
-      <div >
+      <div (click)="navigatetoArtist(artist.id)">
         <div class="flex justify-center"><ion-img class="image_default" src="{{artist.avatar}}" alt="albumcover"></ion-img></div>
         <h3 class="flex justify-center  text-sm font-bold">{{artist.artist}}</h3>
         <h6 class="flex justify-center text-sm font-light text-slate-500">{{ artist.albums ? artist.albums.length : 0 }} album(s)</h6>
