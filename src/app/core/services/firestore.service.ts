@@ -841,12 +841,15 @@ export class FirestoreService {
     } else if (searchFilter === 'album') {
       return this.searchAlbums(searchTerm, limitCount);
     } else if (searchFilter === 'all') {
-      const [songs, artists, albums] = await Promise.all([
-        this.searchSongs(searchTerm, limitCount),
-        this.searchArtists(searchTerm, limitCount),
-        this.searchAlbums(searchTerm, limitCount),
-      ]);
-      return { artists, songs, albums };
+
+      console.log('search all');
+      return[];
+      // const [songs, artists, albums] = await Promise.all([
+      //   this.searchSongs(searchTerm, limitCount),
+      //   this.searchArtists(searchTerm, limitCount),
+      //   this.searchAlbums(searchTerm, limitCount),
+      // ]);
+      // return { artists, songs, albums };
     } else {
       throw new Error('Invalid search filter');
     }
