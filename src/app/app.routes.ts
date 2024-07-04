@@ -24,32 +24,7 @@ export const routes: Routes = [
   },
   {
     path: 'search',
-    loadComponent: () =>
-      import('./layouts/search/search.page').then((m) => m.SearchPage),
-    children: [
-      {
-        path: 'default',
-        loadComponent: () =>
-          import('./pages/defaultsearch/defaultsearch.page').then( m => m.DefaultsearchPage),
-      },
-      // {
-      //   path: 'artist',
-      //   loadComponent: () => import('./pages/searchartist/searchartist.page').then( m => m.SearchartistPage)
-      // },
-      // {
-      //   path: 'album',
-      //   loadComponent: () => import('./pages/searchalbum/searchalbum.page').then( m => m.SearchalbumPage)
-      // },
-      // {
-      //   path: 'song',
-      //   loadComponent: () => import('./pages/searchsong/searchsong.page').then( m => m.SearchsongPage)
-      // },
-      {
-        path: '',
-        redirectTo: '/search/default',
-        pathMatch: 'full',
-      },
-    ],
+    loadComponent: () => import('./pages/search/search.page').then((m) => m.SearchPage),
     canActivate: [authGuard]
   },
   ...tabroutes,

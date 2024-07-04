@@ -18,16 +18,9 @@
     </ion-button>
   </ion-buttons>
   <ion-buttons slot="end" >
-    @if(endLink == '/search/default') {
-      <ion-button (click) = "onSearchClick()" >
-        <ion-icon slot="icon-only" style="color: grey;" [name]="endIcon" ></ion-icon>
-      </ion-button>
-    }
-    @else {
       <ion-button (click) = "onlinkClick()">
         <ion-icon slot="icon-only" style="color: grey;" [name]="endIcon" ></ion-icon>
       </ion-button>
-    }
   </ion-buttons>
   <ion-title style="color: grey;" class="text-base  font-bold ">{{title}}</ion-title>
 </ion-toolbar>

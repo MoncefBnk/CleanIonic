@@ -51,6 +51,7 @@ export class Horizontal1CardComponent  implements OnInit {
 
   ngOnInit() {
     this.getUser();
+    console.log(this.playlists);
   }
 
   formatDuration(seconds: number): string {

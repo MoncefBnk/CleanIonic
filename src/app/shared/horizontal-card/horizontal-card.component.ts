@@ -5,12 +5,13 @@ import { IElement } from 'src/app/core/interfaces/element';
 import { addIcons } from 'ionicons';
 import { shareSocialOutline,heart,heartOutline,ellipsisVertical } from 'ionicons/icons';
 import { IonItem,IonText,IonImg,IonButton,IonIcon } from '@ionic/angular/standalone';
-import { IAlbum } from 'src/app/core/interfaces/album';
+import { IAlbum, IAlbumsWithDetails } from 'src/app/core/interfaces/album';
 import { IPlaylist } from 'src/app/core/interfaces/user';
-import { ISong } from 'src/app/core/interfaces/song';
+import { ISong, ISongWithDetails } from 'src/app/core/interfaces/song';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { Router } from '@angular/router';
 import { MusicplayerComponent } from '../music/musicplayer/musicplayer.component';
+import { IArtist } from 'src/app/core/interfaces/artist';
 
 
 @Component({
@@ -23,8 +24,9 @@ import { MusicplayerComponent } from '../music/musicplayer/musicplayer.component
 })
 export class HorizontalCardComponent  implements OnInit {
   @Input() element = {} as IElement;
-  @Input() album = {} as IAlbum;
-  @Input() song = {} as ISong;
+  @Input() album = {} as IAlbumsWithDetails;
+  @Input() song = {} as ISongWithDetails;
+  @Input() artist = {} as IArtist;
   @Input() playlist = {} as IPlaylist;
 
   data = {} as IElement;
@@ -43,6 +45,8 @@ export class HorizontalCardComponent  implements OnInit {
       this.updateElementFromAlbum();
     } else if(this.song.id) {
       this.updateElementFromSong();
+    } else if(this.artist.id){
+      this.updateElementFromArtist();
     } else if(this.playlist.id){
       this.element = {...this.playlist,type:'playlist'};
       this.data = this.element;
@@ -58,6 +62,20 @@ export class HorizontalCardComponent  implements OnInit {
     if(changes['song'] && changes['song'].currentValue) {
       this.updateElementFromSong();
     } 
+    if(changes['artist'] && changes['artist'].currentValue) {
+      this.updateElementFromArtist();
+    } 
+  }
+
+  updateElementFromArtist() {
+    this.data = {
+      type: 'artist',
+      id: this.artist.id,
+      label: this.artist.label,
+      artistName: this.artist.artist,
+      nbrAlbum: this.artist.albums? this.artist.albums.length : 0,
+      cover: this.artist.avatar
+    };
   }
 
   updateElementFromAlbum() {
@@ -65,18 +83,18 @@ export class HorizontalCardComponent  implements OnInit {
       type: 'album',
       id: this.album.id,
       albumName: this.album.title,
-      artistName: this.album.artistId,
+      artistName: this.album.artist.artist,
       year: this.album.year,
       cover: this.album.cover
     };
-    console.log(this.album);
   }
 
   updateElementFromSong() {
     this.data = {
       type: 'song',
       id: this.song.id,
-      artistName: this.song.artistId,
+      artistName: this.song.artist.artist,
+      albumName: this.song.album?this.song.album.title:'',
       songtitle: this.song.title,
       cover: this.song.cover
     };

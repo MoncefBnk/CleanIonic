@@ -3,17 +3,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { FirestoreService } from '../../services/firestore.service';
-import { loadSongs, loadSongsSuccess } from '../action/song.action';
+import { loadArtists, loadArtistsSuccess } from '../action/artist.action';
 
 @Injectable()
-export class SongEffects {
-    loadSongs$ = createEffect(() =>
+export class ArtistEffects {
+   loadArtists$ = createEffect(() =>
    this.actions$.pipe(
-      ofType(loadSongs),
+      ofType(loadArtists),
       mergeMap(() =>
-        this.firestoreService.getAllSongsWithDetails().pipe(
-          map(songs => loadSongsSuccess({ songs })),
-          catchError(() => of({ type: '[Song] Load Albums Failure' }))
+        this.firestoreService.getArtists().pipe(
+          map(artists => loadArtistsSuccess({ artists })),
+          catchError(() => of({ type: '[Artist] Load Artists Failure' }))
         )
       )
     )

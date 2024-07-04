@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-searchartist',
-  templateUrl: './searchartist.page.html',
-  styleUrls: ['./searchartist.page.scss'],
+  selector: 'app-artist',
+  templateUrl: './artist.page.html',
+  styleUrls: ['./artist.page.scss'],
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export class SearchartistPage implements OnInit {
+export class ArtistPage implements OnInit {
 
   constructor() { }
 

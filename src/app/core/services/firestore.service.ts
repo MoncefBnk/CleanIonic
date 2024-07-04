@@ -27,7 +27,7 @@ import { ERole, ILastPlayed, ILastPlayedWithDetails, IPlaylist, IUser } from '..
 import { IArtist, IArtistWithDetails } from '../interfaces/artist';
 import { RequestResponse } from '../interfaces/response';
 import { IElement } from '../interfaces/element';
-import { Observable, combineLatest, from, map, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, forkJoin, from, map, of, switchMap, tap } from 'rxjs';
 import { ApiService } from './api.service';
 
 
@@ -298,22 +298,7 @@ export class FirestoreService {
 
   }
 
-  // Get all albums
-    getAlbums(): Observable<IAlbum[]> {
-    const albumsCol = collection(this.db, 'album');
 
-    const albumsSnapshot = from(getDocs(albumsCol));
-
-    return albumsSnapshot.pipe(
-      map(
-        (snapshot) =>
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          })) as IAlbum[]
-      )
-    );
-  }
 
   //search album
   async getSearchAlbum(name: string, search: string): Promise<IAlbum[] | null> {
@@ -844,12 +829,6 @@ export class FirestoreService {
 
       console.log('search all');
       return[];
-      // const [songs, artists, albums] = await Promise.all([
-      //   this.searchSongs(searchTerm, limitCount),
-      //   this.searchArtists(searchTerm, limitCount),
-      //   this.searchAlbums(searchTerm, limitCount),
-      // ]);
-      // return { artists, songs, albums };
     } else {
       throw new Error('Invalid search filter');
     }
@@ -896,6 +875,44 @@ export class FirestoreService {
 
   }
 
+  getAlbums(): Observable<IAlbumsWithDetails[]> {
+    const albumsCol = collection(this.db, 'album');
+
+    return from(getDocs(albumsCol)).pipe(
+      switchMap(snapshot => {
+        const albumObservables: Observable<IAlbumsWithDetails>[] = snapshot.docs.map(doc => {
+          const albumData = doc.data() as IAlbum;
+          const artistId = albumData.artistId;
+
+          return from(this.getOneArtist(artistId)).pipe(
+            map(artist => ({
+              id: doc.id,
+              title: albumData.title,
+              artistId: albumData.artistId,
+              releaseDate: albumData.releaseDate,
+              cover: albumData.cover,
+              searchScore: albumData.searchScore,
+              category: albumData.category,
+              year: albumData.year,
+              song: albumData.song,
+              artist: artist // Include artist details in album
+            } as IAlbumsWithDetails)),
+            catchError(err => {
+              console.error(`Error fetching artist for album ${doc.id}`, err);
+              return of({} as IAlbumsWithDetails);
+            })
+          );
+        });
+
+        return forkJoin(albumObservables);
+      }),
+      catchError(err => {
+        console.error('Error fetching albums', err);
+        return of([] as IAlbumsWithDetails[]); // Handle error by returning empty array
+      })
+    );
+  }
+
   getOneArtistObservable(id: string): Observable<IArtist | null> {
     const artistDocRef = doc(this.db, 'artist', id);
     return from(getDoc(artistDocRef)).pipe(
@@ -924,7 +941,35 @@ export class FirestoreService {
     );
   }
 
+  getArtists(): Observable<IArtist[]> {
+    const artistsCol = collection(this.db, 'artist');
 
+    return from(getDocs(artistsCol)).pipe(
+      map(snapshot => 
+        snapshot.docs.map(doc => {
+          const artistData = doc.data();
+          return {
+            id: doc.id,
+            userId: artistData['userId'],
+            artist: artistData['artist'],
+            label: artistData['label'],
+            description: artistData['description'],
+            avatar: artistData['avatar'],
+            followers: artistData['followers'],
+            albums: artistData['albums'],
+            createdAt: artistData['createdAt'].toDate(),
+            updatedAt: artistData['updatedAt'].toDate(),
+            searchScore: artistData['searchScore'],
+            lastUpdatedSearchScore: artistData['lastUpdatedSearchScore'].toDate(),
+          } as IArtist;
+        })
+      ),
+      catchError(err => {
+        console.error('Error fetching artists', err);
+        return of([] as IArtist[]);
+      })
+    );
+  }
 
    getOneSongObservable(id:string): Observable<ISongWithDetails | null> {
     const songDocRef = doc(this.db, 'song', id);
@@ -969,6 +1014,64 @@ export class FirestoreService {
 
   }
 
+  getAllSongsWithDetails(): Observable<ISongWithDetails[]> {
+    const songsCol = collection(this.db, 'song');
+
+    return from(getDocs(songsCol)).pipe(
+      switchMap(snapshot => {
+        const songObservables: Observable<ISongWithDetails | null>[] = snapshot.docs.map(doc => {
+          const songData = doc.data();
+          const artistId = songData['artistId'];
+          const albumId = songData['albumId'];
+
+          return this.getOneArtistObservable(artistId).pipe(
+            switchMap(artist => this.getOneAlbumObservable(albumId).pipe(
+              map(album => {
+                if (artist && album) {
+                  return {
+                    id: doc.id,
+                    title: songData['title'],
+                    duration: songData['duration'],
+                    cover: songData['cover'],
+                    fileUrl: songData['fileUrl'],
+                    artistId: songData['artistId'],
+                    albumId: songData['albumId'],
+                    createdAt: songData['createdAt'].toDate(),
+                    updatedAt: songData['updatedAt'].toDate(),
+                    searchScore: songData['searchScore'],
+                    lyrics: songData['lyrics'],
+                    lastUpdatedSearchScore: songData['lastUpdatedSearchScore'].toDate(),
+                    artist,
+                    album
+                  } as ISongWithDetails;
+                } else {
+                  console.log('No such album or artist!');
+                  return null;
+                }
+              }),
+              catchError(err => {
+                console.error(`Error fetching album for song ${doc.id}`, err);
+                return of(null);
+              })
+            )),
+            catchError(err => {
+              console.error(`Error fetching artist for song ${doc.id}`, err);
+              return of(null);
+            })
+          );
+        });
+
+        return forkJoin(songObservables);
+      }),
+      map(results => results.filter(result => result !== null) as ISongWithDetails[]),
+      catchError(err => {
+        console.error('Error fetching songs', err);
+        return of([] as ISongWithDetails[]);
+      })
+    );
+  }
+
+
   getUserLastPlayedWithSongDetails(userId: string,limitCount: number): Observable<ILastPlayedWithDetails[]|null> {
     const historySongRef = collection(this.db, 'user/'+userId+'/lastPlayed');
     const q = query(historySongRef, orderBy('updatedAt', 'desc'), limit(limitCount));
@@ -1007,20 +1110,6 @@ export class FirestoreService {
 
   }
 
-  getSongs(): Observable<ISong[]> {
-    const songsCol = collection(this.db, 'song');
-
-    const songsSnapshot = from(getDocs(songsCol));
-
-    return songsSnapshot.pipe(
-      map(
-        (snapshot) =>
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          })) as ISong[]
-      )
-    );
-  }
+  
 
 }
