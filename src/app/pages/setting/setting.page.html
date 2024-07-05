@@ -5,7 +5,7 @@
     <ion-item-divider >
       <ion-label>{{ 'Account'|translate }}</ion-label>
     </ion-item-divider>
-  
+
     <ion-item [button]="true" detail="true" class="mt-2">
       <ion-icon  slot="start" name="person-outline"></ion-icon>
       <ion-label>{{ 'Account'|translate }}</ion-label>
@@ -20,14 +20,14 @@
         <ion-label>{{ 'Switch to artist account'|translate }}</ion-label>
       </ion-item>
     }
-    
+
   </ion-item-group>
-  
+
   <ion-item-group >
     <ion-item-divider>
       <ion-label>{{ 'Content'|translate }}</ion-label>
     </ion-item-divider>
-  
+
     <ion-item [button]="true" detail="true" id="language-modal" class="mt-2">
       <ion-icon  slot="start" name="language-outline"></ion-icon>
       <ion-label>{{ 'Language'|translate }}</ion-label>
@@ -44,7 +44,7 @@
         <ion-label>{{'Become artist'|translate }}</ion-label>
       </ion-item>
     }-->
-    
+
     <ion-item [button]="true" detail="true" id="logout-modal" class="mt-2">
       <ion-icon  slot="start" name="log-out-outline"></ion-icon>
       <ion-label>{{'Logout'|translate }}</ion-label>
@@ -76,7 +76,7 @@
           <ion-radio value="french"  aria-label="Custom checkbox that is checked">{{'French'|translate }}</ion-radio>
         </ion-radio-group>
 
-        <div class="absolute inset-x-0 bottom-0  flex justify-between px-8 space-x-4">
+        <div class="modal-btns absolute inset-x-0 bottom-0  flex justify-between px-8 space-x-4 ">
           <ion-button class="flex-1" expand="block" color="light" (click)="resetLanguage(languagemodal)">{{'Cancel'|translate }}</ion-button> <ion-button class="flex-1" expand="block" (click)="changeLanguage(languagemodal)">{{'Confirm'|translate }}</ion-button>
         </div>
       </ion-content>
@@ -119,7 +119,7 @@
             <p class="flex justify-center text-center">{{'Are you sure you want to delete this account? This action cannot be undone.'|translate }}</p>
           </div>
         </ion-text>
-        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
+        <div class=" modal-btns absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
           <ion-button class="flex-1" expand="block" color="light" (click)="deletemodal.dismiss()">{{'Cancel'|translate }}</ion-button> <ion-button class="flex-1" expand="block" color="danger" (click)="deleteAccount(deletemodal)">{{'Confirm'|translate }}</ion-button>
         </div>
       </ion-content>
@@ -141,7 +141,7 @@
             <p class="flex justify-center text-center">{{"We’ll email you a verification code to your email that you used to register on this account"|translate }}</p>
           </div>
         </ion-text>
-        <div class="absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
+        <div class=" modal-btns absolute inset-x-0 bottom-0 h-16 flex justify-between px-8 py-4 space-x-4">
           <ion-button class="flex-1" expand="block">{{'Send'|translate }}</ion-button>
         </div>
       </ion-content>
