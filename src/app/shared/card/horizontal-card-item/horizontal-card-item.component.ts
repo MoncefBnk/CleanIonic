@@ -12,6 +12,7 @@ import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { Router } from '@angular/router';
 import { MusicplayerComponent } from '../../music/musicplayer/musicplayer.component';
 import { IArtist } from 'src/app/core/interfaces/artist';
+import { SongActionComponent } from '../../modal/song-action/song-action.component';
 
 
 @Component({
@@ -135,6 +136,23 @@ export class HorizontalCardItemComponent  implements OnInit {
     return await modal.present();
   }
 
+  async  showSongActions(data: any) {
+    console.log(data);
+    const modal = await this.modalController.create({
+      component: SongActionComponent,
+      breakpoints: [0, .5],
+      initialBreakpoint: .25,
+      componentProps: {
+        songId: data.id,
+        artistId: this.song.artist.id,
+        dismissModal: () => modal.dismiss()
+      }
+    });
+
+    this.cdr.detectChanges();
+    return await modal.present();
+  }
+
   async navigateArtist(id:string) {
     const loading = await this.loadingController.create({
       message: 'Loading...',
@@ -144,5 +162,28 @@ export class HorizontalCardItemComponent  implements OnInit {
     await loading.present();
     this.router.navigate(['artist'], { queryParams: {id:id}});
     loading.dismiss();
+  }
+
+  handleItemClick(data: any) {
+    if (data.type === 'song') {
+      this.playmusic(data.id);
+    } else if (data.type === 'album') {
+      //this.navigateToAlbum(data.id);
+      console.log('album');
+    } else if (data.type === 'artist') {
+      this.navigateArtist(data.id);
+    }
+  }
+
+  handleIconClick(event: Event, data: any) {
+    event.stopPropagation(); 
+    if (data.type === 'song') {
+      this.showSongActions(data);
+    } else if (data.type === 'album') {
+      //this.navigateToAlbum(data.id);
+      console.log('album');
+    } else if (data.type === 'artist') {
+      this.navigateArtist(data.id);
+    }
   }
 }

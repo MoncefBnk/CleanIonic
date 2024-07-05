@@ -1,0 +1,16 @@
+<ion-content>
+  <ion-list lines="none">
+   <!-- <ion-item>
+      <ion-icon aria-hidden="true" name="musical-note-outline" slot="start"></ion-icon>
+      <ion-label>{{'Add to playlist'|translate}}</ion-label>
+    </ion-item>-->
+    <ion-item (click)="onaddToQueue(songId)" >
+      <ion-icon aria-hidden="true" name="add-circle-outline" slot="start"></ion-icon>
+      <ion-label>{{'Add to queue'|translate}}</ion-label>
+    </ion-item>
+    <ion-item (click)="navigateArtist(artistId)">
+      <ion-icon aria-hidden="true" name="person-outline" slot="start"></ion-icon>
+      <ion-label>{{'View artist'|translate}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
