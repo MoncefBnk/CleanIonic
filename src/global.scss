@@ -97,7 +97,11 @@ ion-button {
   font-size: 0.75rem;
 }
 
-
+.modal-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
 
 ion-modal::part(backdrop) {
   background: rgba(209, 213, 219);
