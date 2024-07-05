@@ -27,8 +27,13 @@ export class AppComponent implements OnInit {
     this.translate.setDefaultLang('en_US');
 
     this.musicService.isPlaying().subscribe(isPlaying => {
-      this.displayplayer = isPlaying;
+      this.displayplayer = this.musicService.getCurrentTrack() !== null &&
+                             (isPlaying || this.musicService.isTrackPaused()) &&
+                             this.musicService.hasQueue();
+      console.log(this.displayplayer);
       this.cdr.detectChanges();
     })
+    console.log(this.musicService.getCurrentTrack());
+    
   }
 }

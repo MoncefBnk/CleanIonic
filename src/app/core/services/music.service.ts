@@ -74,14 +74,16 @@ export class MusicService {
     this.isOnRepeat.next(!this.isOnRepeat.value);
   }
 
+
   async play(track: ISongWithDetails) {
     if (!this.currentTrack || this.currentTrack.id !== track.id) {
+      this.addToQueue(track);
       this.stop();
       await this.load(track.id);
       this.audio.play();
       this.currentTrack = track;
       this.isPlayingSubject.next(true);
-      this.trackQueue.push(track);
+      
       if( track.lyrics)
         this.lyrics = track.lyrics;
 
@@ -102,12 +104,21 @@ export class MusicService {
   }
 
   addToQueue(track: ISongWithDetails) {
-    console.log(track,this.currentIndex);
-    this.trackQueue.push(track);
-    if (this.currentIndex === 0) {
-      //this.currentIndex = 0;
-      this.playNext();
+    if (!this.trackQueue.some(t => t.id === track.id)) {
+      console.log(track,this.currentIndex);
+      this.trackQueue.push(track);
+      if (this.currentIndex === 0) {
+        this.playNext();
+      }
     }
+  }
+
+  isTrackPaused(): boolean {
+    return this.audio.paused && !!this.currentTrack;
+  }
+
+  hasQueue(): boolean {
+    return this.trackQueue.length > 0;
   }
 
   playNext() {

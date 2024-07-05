@@ -101,7 +101,8 @@ export class HorizontalCardItemComponent  implements OnInit {
     };
   }
 
-  async openModal(item: any) {
+  async openModal(event: Event,item: any) {
+    event.stopPropagation();
     const modal = await this.modalController.create({
       component: ModalShareComponent,
       id:"share-modal"
@@ -110,7 +111,8 @@ export class HorizontalCardItemComponent  implements OnInit {
     return await modal.present();
   }
 
-  makeFavorite() {
+  makeFavorite(event: Event) {
+    event.stopPropagation(); 
     this.isFavorite = !this.isFavorite;
   }
 

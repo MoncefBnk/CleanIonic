@@ -117,13 +117,17 @@ export class SettingPage implements OnInit {
     } else  {
       this.translate.use('fr_FR');
     }
-    /*if (this.isEnglishSelected) {
-      this.translate.use('en_US');
-      this.translate.setDefaultLang('en_US');
-    } else if (this.isFrenchSelected) {
-      this.translate.use('fr_FR');
-    }*/
+    
    modal.dismiss();
+  }
+  resetLanguage(modal:any) {
+    console.log(this.translate.currentLang);
+    if (this.translate.currentLang == 'en_US') {
+      this.selectedLanguage = 'english';
+    } else {
+      this.selectedLanguage = 'french';
+    }
+    modal.dismiss();
   }
 
   selectImage() {

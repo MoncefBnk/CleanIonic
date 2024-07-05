@@ -108,14 +108,10 @@ export class SmallplayerComponent  implements OnInit {
     
     this.subscriptions.push(
       this.musicService.isPlaying().subscribe(isPlaying => {
-        if (isPlaying) {
+        
           this.currentTrack = this.musicService.getCurrentTrack();
           this.isPlaying = isPlaying;
           this.cdr.detectChanges();
-        } else {
-          this.currentTrack = null;
-          this.cdr.detectChanges();
-        }
       }),
       this.musicService.getIsOnRepeat().subscribe(isOnRepeat =>{
         this.isOnRepeat = isOnRepeat;
@@ -137,9 +133,9 @@ export class SmallplayerComponent  implements OnInit {
 
   playMusic(event: Event) {
    console.log(this.isPlaying);
-    if (this.isPlaying) {
+    
       event.stopPropagation();
-      this.musicService.isPlaying().subscribe(isPlaying => {
+      /*this.musicService.isPlaying().subscribe(isPlaying => {
         if (this.currentTrack) {
           if (isPlaying) {
             this.musicService.pause();
@@ -148,8 +144,15 @@ export class SmallplayerComponent  implements OnInit {
           }
           this.cdr.detectChanges();
         }
-      });
-    }
+      });*/
+      if (this.isPlaying) {
+        this.musicService.pause();
+  
+      } else {
+        if(this.currentTrack)
+          this.musicService.play(this.currentTrack);
+      }
+    
   }
 
   async openModal() {
