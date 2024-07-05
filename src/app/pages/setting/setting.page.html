@@ -62,7 +62,7 @@
         <ion-toolbar>
           <ion-title class="ion-text-center"><ion-icon name="language-outline" size="large"></ion-icon></ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="languagemodal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
+            <ion-button (click)="resetLanguage(languagemodal)"><ion-icon name="close-outline"></ion-icon></ion-button>
           </ion-buttons>
         </ion-toolbar>
         <ion-text>
@@ -77,7 +77,7 @@
         </ion-radio-group>
 
         <div class="absolute inset-x-0 bottom-0  flex justify-between px-8 space-x-4">
-          <ion-button class="flex-1" expand="block" color="light" (click)="languagemodal.dismiss()">{{'Cancel'|translate }}</ion-button> <ion-button class="flex-1" expand="block" (click)="changeLanguage(languagemodal)">{{'Confirm'|translate }}</ion-button>
+          <ion-button class="flex-1" expand="block" color="light" (click)="resetLanguage(languagemodal)">{{'Cancel'|translate }}</ion-button> <ion-button class="flex-1" expand="block" (click)="changeLanguage(languagemodal)">{{'Confirm'|translate }}</ion-button>
         </div>
       </ion-content>
     </ng-template>

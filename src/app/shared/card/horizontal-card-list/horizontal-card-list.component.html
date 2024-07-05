@@ -1,6 +1,6 @@
 <div class="" *ngIf="lastPlayeds && lastPlayeds.length > 0">
-  <ion-list class="margin" [inset]="true" *ngFor="let item of lastPlayeds;">
-    <ion-item [button]="true" detail="false" (click)="playmusic(item.songId)" class="mt-2" lines="full">
+  <ion-list class="margin"  *ngFor="let item of lastPlayeds;" lines="inset">
+    <ion-item [button]="true" detail="false" (click)="playmusic(item.songId)" class="mt-2" >
       <div class="unread-indicator-wrapper" slot="start">
         <ion-img src="{{item.song.cover}}" class="image_default" alt="albumcover"></ion-img>
       </div>
@@ -19,7 +19,7 @@
 </div>
 
 <div *ngIf="playlists && playlists.length > 0">
-  <ion-list class="margin" *ngFor="let item of playlists;">
+  <ion-list class="margin" *ngFor="let item of playlists;" lines="inset">
     <ion-item [button]="true" detail="false" (click)="navigatetoPlaylist(item.id)" class="mt-2">
 
       <ion-label slot="start">
