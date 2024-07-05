@@ -14,13 +14,15 @@ export class SeeAllComponent  implements OnInit {
 
   @Input() elementTitle: string = "";
   @Input() link: string = "";
+  @Input() type: string = "all";
 
   constructor(private router: Router) { }
 
   ngOnInit() {}
 
-  onSearchClick() {
-    this.router.navigate([this.link]);
+  onSearchClick(type:string) {
+    this.router.navigate([this.link], { queryParams: {type:type}});
+    //this.router.navigate(['music-playlist'], { queryParams: {id:id}});
   }
 
 }

@@ -45,7 +45,7 @@ ion-content {
   .image_default {
     border-bottom-right-radius: .625rem !important;
     overflow: hidden;
-    object-fit: fill;
+    object-fit: cover;
     position: absolute;
     width: 100%;
     height: 100%;

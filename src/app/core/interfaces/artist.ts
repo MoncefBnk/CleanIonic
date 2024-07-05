@@ -1,4 +1,5 @@
-import { IAlbum } from "./album";
+import { IAlbum, IAlbumsWithArtistAndSong, IAlbumsWithDetails } from "./album";
+import { ISongWithDetails } from "./song";
 
 export interface IArtist {
     id: string;
@@ -15,6 +16,16 @@ export interface IArtist {
     albums?: string[];
   }
 
+ 
+
+  export interface IArtistWithAlbumsAndSongs extends IArtist {
+    albumsDetail: IAlbum[];
+    songs: ISongWithDetails[];
+  }
+
   export interface IArtistWithDetails extends IArtist {
     artistDetail: IAlbum;
   }
+
+  
+

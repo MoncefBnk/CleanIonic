@@ -1,0 +1,68 @@
+
+<swiper-container [loop]="true" [pagination]="true" slides-per-view="3" *ngIf="albums && albums.length > 0" class="h-52"> 
+  <swiper-slide *ngFor="let album of albums;">
+    <div class="swiper-zoom-container row" >
+      <div>
+        <div class="flex justify-center"><ion-img class="image_default" src="{{album.cover}}" alt="albumcover"></ion-img></div>
+        <h3 class="flex justify-center text-sm font-bold">{{album.title}}</h3>
+        <h6 class="flex justify-center text-sm font-light text-slate-500">{{ album.song ? album.song.length : 0 }} song(s)</h6>
+      </div>
+    </div>
+  </swiper-slide>
+</swiper-container>
+
+<swiper-container [loop]="true" [pagination]="true"  slides-per-view="3" *ngIf="songs && songs.length > 0" class="h-52"> 
+  <swiper-slide *ngFor="let song of songs;">
+    <div class="swiper-zoom-container row" >
+      <div (click)="onSongClick(song)">
+        <div class="flex justify-center py-2"><ion-img class="image_default"  src="{{song.cover}}" alt="songcover"></ion-img></div>
+        <ion-text class="flex justify-center  text-sm font-bold"><h4 >{{song.artist.artist}}</h4></ion-text>
+        <ion-text class="flex justify-center text-sm font-light text-slate-500">{{song.title}}</ion-text>
+      </div>
+    </div>
+  </swiper-slide>
+</swiper-container>
+
+<swiper-container [loop]="true" [pagination]="true" slides-per-view="3" *ngIf="artists && artists.length > 0" class="h-52"> 
+  <swiper-slide *ngFor="let artist of artists;">
+    <div class="swiper-zoom-container row" >
+      <div (click)="navigatetoArtist(artist.id)">
+        <div class="flex justify-center"><ion-img class="image_default" src="{{artist.avatar}}" alt="albumcover"></ion-img></div>
+        <h3 class="flex justify-center  text-sm font-bold">{{artist.artist}}</h3>
+        <h6 class="flex justify-center text-sm font-light text-slate-500">{{ artist.albums ? artist.albums.length : 0 }} album(s)</h6>
+      </div>
+    </div>
+  </swiper-slide>
+</swiper-container>
+
+
+<!--<ion-list class="flex justify-center">
+  <ion-grid>
+    
+
+    <ion-row *ngIf="albums && albums.length > 0">
+      <ion-col *ngFor="let album of albums;" >
+        <div class="flex justify-center"><ion-img class="image_default" src="{{album.cover}}" alt="albumcover"></ion-img></div>
+        <h3 class="flex justify-center text-sm font-bold">{{album.title}}</h3>
+        <h6 class="flex justify-center text-sm font-light text-slate-500">{{ album.song ? album.song.length : 0 }} song(s)</h6>
+      </ion-col>
+    </ion-row>
+    <ion-row  *ngIf="songs && songs.length > 0">
+      <ion-col *ngFor="let song of songs;" >
+        <div (click)="playmusic(song.id)">
+          <div class="flex justify-center py-2"><ion-img class="image_default"  src="{{song.cover}}" alt="songcover"></ion-img></div>
+          <ion-text class="flex justify-center  text-sm font-bold"><h4 >{{song.artist.artist}}</h4></ion-text>
+          <ion-text class="flex justify-center text-sm font-light text-slate-500">{{song.title}}</ion-text>
+        </div>
+        
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="artists && artists.length > 0">
+      <ion-col *ngFor="let artist of artists;" >
+        <div class="flex justify-center"><ion-img class="image_default" src="{{artist.avatar}}" alt="albumcover"></ion-img></div>
+        <h3 class="flex justify-center  text-sm font-bold">{{artist.artist}}</h3>
+        <h6 class="flex justify-center text-sm font-light text-slate-500">{{ artist.albums ? artist.albums.length : 0 }} album(s)</h6>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-list>-->

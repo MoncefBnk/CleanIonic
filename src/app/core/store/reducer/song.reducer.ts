@@ -42,7 +42,13 @@ export const songReducer = createReducer(
     on(ActionSong.filterSongsBySearchScore, state => ({
       ...state,
       filteredAlbums: [...state.songs].sort((a, b) => b.searchScore - a.searchScore)
-    }))
+    })),
+    on(ActionSong.incrementSongSearchScore, (state, { songId }) => {
+      const albums = state.songs.map(song =>
+        song.id === songId ? { ...song, searchScore: song.searchScore + 1 } : song
+      );
+      return { ...state, albums };
+    })
 );
 
 // Recupération

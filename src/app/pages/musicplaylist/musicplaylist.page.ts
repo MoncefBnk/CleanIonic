@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { IUser } from 'src/app/core/interfaces/user';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { ISongWithDetails } from 'src/app/core/interfaces/song';
-import { HorizontalCardComponent } from 'src/app/shared/horizontal-card/horizontal-card.component';
+import { HorizontalCardItemComponent } from 'src/app/shared/card/horizontal-card-item/horizontal-card-item.component';
 import { playCircle } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { MusicService } from 'src/app/core/services/music.service';
@@ -19,7 +19,7 @@ import { MusicService } from 'src/app/core/services/music.service';
   templateUrl: './musicplaylist.page.html',
   styleUrls: ['./musicplaylist.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonLabel,IonList,IonButton,IonIcon, CommonModule, FormsModule,GeneralHeaderComponent,HorizontalCardComponent]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonLabel,IonList,IonButton,IonIcon, CommonModule, FormsModule,GeneralHeaderComponent,HorizontalCardItemComponent]
 })
 export class MusicplaylistPage implements OnInit {
 
@@ -39,14 +39,12 @@ export class MusicplaylistPage implements OnInit {
   ngOnInit() {
     addIcons({ playCircle });
     this.getUser();
-    console.log(this.route.snapshot.queryParams);
     if(this.route.snapshot.queryParams && (this.route.snapshot.queryParams as any).id) {
       this.playlistId = (this.route.snapshot.queryParams as any).id;
      
       this.serviceFirestore.getPlaylistMusic(this.user.id,this.playlistId,10).then(songs => {
         if(songs)
           this.songs = songs;
-        console.log(this.songs);
       });
     }
     

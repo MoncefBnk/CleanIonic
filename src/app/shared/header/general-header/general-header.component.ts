@@ -32,10 +32,6 @@ export class GeneralHeaderComponent  implements OnInit,OnDestroy {
     addIcons({ search,ellipsisHorizontal,settings,arrowBack });
   }
 
-  onSearchClick() {
-    this.router.navigate(['/search/default']);
-  }
-
   onlinkClick() {
     this.router.navigate([this.endLink]);
   }

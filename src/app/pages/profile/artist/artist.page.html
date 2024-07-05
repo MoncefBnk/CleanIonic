@@ -1,0 +1,38 @@
+<app-general-header [backbutton] ="backbutton"  [title] ="title" ></app-general-header>
+
+<ion-content class="ion-padding">
+  
+  <div class="flex justify-center">
+    <ion-avatar class="flex justify-center avatar">
+      <img alt="avatar" [src]="artist.avatar" />
+    </ion-avatar>
+  </div>
+  <ion-text class="flex justify-center py-1.5">
+    <h1>{{artist.artist}}</h1>
+  </ion-text>
+  <ion-grid [fixed]="true">
+    <ion-row>
+      <ion-col size="4" size-md="4" size-lg="2" class="flex justify-center">
+        <div class=" h-90 py-5 ">
+          <p class="flex justify-center">{{ artist.albums ? artist.albums.length : 0 }}</p>
+          <p>{{'Albums'|translate|uppercase }}</p>
+        </div>
+      </ion-col>
+      <ion-col size="3" size-md="4" size-lg="2" class="flex justify-center">
+        <div class=" h-90 py-5 ">
+          <p class="flex justify-center">{{ artist.songs ? artist.songs.length : 0 }}</p>
+          <p>{{'Songs'|translate|uppercase }}</p>
+        </div>
+      </ion-col>
+      <ion-col size="4" size-md="4" size-lg="2" class="flex justify-center">
+        <div class=" h-90 py-5 ">
+          <p class="flex justify-center">{{ artist.followers}}</p>
+          <p>{{'Followers'|translate|uppercase }}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  
+</ion-content>
+

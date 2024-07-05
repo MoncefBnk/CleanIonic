@@ -16,7 +16,12 @@ export interface IAlbum {
     updatedAt: Date;
     song?: string[];
   }
+  export interface IAlbumsWithArtistAndSong extends IAlbum {
+    songs: ISong[];
+  }
 
   export interface IAlbumsWithDetails extends IAlbum {
     artist: IArtist;
   }
+
+ 

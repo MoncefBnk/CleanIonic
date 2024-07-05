@@ -24,40 +24,10 @@ export const routes: Routes = [
   },
   {
     path: 'search',
-    loadComponent: () =>
-      import('./layouts/search/search.page').then((m) => m.SearchPage),
-    children: [
-      {
-        path: 'default',
-        loadComponent: () =>
-          import('./pages/defaultsearch/defaultsearch.page').then( m => m.DefaultsearchPage),
-      },
-      {
-        path: 'artist',
-        loadComponent: () => import('./pages/searchartist/searchartist.page').then( m => m.SearchartistPage)
-      },
-      {
-        path: 'album',
-        loadComponent: () => import('./pages/searchalbum/searchalbum.page').then( m => m.SearchalbumPage)
-      },
-      {
-        path: 'song',
-        loadComponent: () => import('./pages/searchsong/searchsong.page').then( m => m.SearchsongPage)
-      },
-      {
-        path: '',
-        redirectTo: '/search/default',
-        pathMatch: 'full',
-      },
-    ],
+    loadComponent: () => import('./pages/search/search.page').then((m) => m.SearchPage),
     canActivate: [authGuard]
   },
   ...tabroutes,
-  {
-    path: 'profile',
-    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage),
-    canActivate: [authGuard]
-  },
   {
     path: 'music-playlist',
     loadComponent: () => import('./pages/musicplaylist/musicplaylist.page').then( m => m.MusicplaylistPage),
@@ -66,6 +36,11 @@ export const routes: Routes = [
   {
     path: 'setting',
     loadComponent: () => import('./pages/setting/setting.page').then( m => m.SettingPage),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'artist',
+    loadComponent: () => import('./pages/profile/artist/artist.page').then( m => m.ArtistPage),
     canActivate: [authGuard]
   },
   {
@@ -79,9 +54,9 @@ export const routes: Routes = [
     redirectTo: 'auth/login',
   },
 
-  
 
-  
+
+
 
 
 ];
