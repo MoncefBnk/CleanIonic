@@ -81,6 +81,7 @@ export class MusicService {
       this.audio.play();
       this.currentTrack = track;
       this.isPlayingSubject.next(true);
+      this.trackQueue.push(track);
       if( track.lyrics)
         this.lyrics = track.lyrics;
 
@@ -100,10 +101,20 @@ export class MusicService {
     }
   }
 
+  addToQueue(track: ISongWithDetails) {
+    console.log(track,this.currentIndex);
+    this.trackQueue.push(track);
+    if (this.currentIndex === 0) {
+      //this.currentIndex = 0;
+      this.playNext();
+    }
+  }
+
   playNext() {
-    if (this.currentIndex < this.trackQueue.length - 1) {
+    if (this.currentIndex >= 0 && this.currentIndex < this.trackQueue.length) {
+      const nextTrack = this.trackQueue[this.currentIndex];
       this.currentIndex++;
-      this.play(this.trackQueue[this.currentIndex]);
+      this.play(nextTrack);
     }
   }
 

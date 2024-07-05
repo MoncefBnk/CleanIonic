@@ -1,4 +1,4 @@
-<ion-item [button]="true" detail="false" class="relative pt-2" lines="full">
+<ion-item [button]="true" detail="false" class="relative pt-2" lines="full" (click)="handleItemClick(data)">
   <div class="unread-indicator-wrapper size-[80px] " slot="start">
     <ion-img src="{{data.cover}}" alt="albumcover" class=" size-[70px] object-cover" ></ion-img>
   </div>
@@ -17,21 +17,14 @@
        @else if(data.type == 'album') { {{data.artistName}} }</h3>
   </ion-text>
   <div class="metadata-end-wrapper gap-x-2 flex flex-col justify-between h-full items-end h-20" slot="end">
-    @if (data.type == 'song') {
+    @if (data.type == 'artist') {} @else {
       <div >
-        <ion-button  color="light" (click)="playmusic(data.id)">
+        <ion-button  color="light" (click)="handleIconClick($event, data)">
           <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
         </ion-button>
       </div>
     }
-    @else if (data.type == 'artist'){
-      <div >
-        <ion-button  color="light" (click)="navigateArtist(data.id)">
-          <ion-icon name="ellipsis-vertical" class="top-right-icon"></ion-icon>
-        </ion-button>
-      </div>
-    }
-
+    
     <div class="space-x-2">
       <ion-button  color="light" (click)="makeFavorite()">
         <ion-icon class="{{ isFavorite ? 'heart-icon-fav' : 'heart-icon' }}" [name]="isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
