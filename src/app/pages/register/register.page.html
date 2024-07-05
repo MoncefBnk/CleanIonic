@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form_css">
   <ion-list class="bg-transparent">
-    <p class="input-label">{{ 'auth.register.email'|translate }}</p>
+    <p class="input-label">{{ 'auth.register.email' | translate }}</p>
     <ion-item>
       <ion-input
         type="email"
@@ -9,17 +9,12 @@
         placeholder="exemple@exemple.com"
       ></ion-input>
     </ion-item>
-    @if(form.get('email')?.invalid && (form.get('email')?.dirty ||
-    form.get('email')?.touched)){
-      <div>
-        @if(form.get('email')?.errors?.['required'] ){
-        <p class="error start">{{ 'authlogin.email_required'|translate }}</p>
-        } @else if(form.get('email')?.errors?.['pattern'] ){
-        <p class="error start">{{ 'auth.email_format'|translate }}</p>
-        }
-      </div>
-    }
-    <p class="input-label">{{ 'auth.register.password'|translate }}</p>
+    <div *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)">
+      <p *ngIf="form.get('email')?.errors?.['required']" class="error start">{{ 'auth.email_required' | translate }}</p>
+      <p *ngIf="form.get('email')?.errors?.['pattern']" class="error start">{{ 'auth.email_format' | translate }}</p>
+    </div>
+
+    <p class="input-label">{{ 'auth.register.password' | translate }}</p>
     <ion-item>
       <ion-input
         [type]="showPassword ? 'text' : 'password'"
@@ -34,21 +29,14 @@
         (click)="togglePasswordVisibility()"
       ></ion-icon>
     </ion-item>
-    @if(form.get('password')?.invalid && (form.get('password')?.dirty ||
-    form.get('password')?.touched)){
-    <div>
-      @if(form.get('password')?.errors?.['required'] ){
-      <p class="error start">{{ 'auth.password_required'|translate }}</p>
-      } @else if(form.get('password')?.errors?.['pattern'] ){
-      <p class="error start">{{ 'auth.password_fromat'|translate }}</p>
-      } @else if(form.get('password')?.errors?.['minlength'] ){
-      <p class="error start">{{ 'auth.password_minSize'|translate }}</p>
-      }
+    <div *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
+      <p *ngIf="form.get('password')?.errors?.['required']" class="error start">{{ 'auth.password_required' | translate }}</p>
+      <p *ngIf="form.get('password')?.errors?.['minlength']" class="error start">{{ 'auth.password_minSize' | translate }}</p>
     </div>
-    }
+
     <ion-row>
       <ion-col>
-        <p class="input-label">{{ 'auth.register.first_name'|translate }}</p>
+        <p class="input-label">{{ 'auth.register.first_name' | translate }}</p>
         <ion-item class="flex">
           <ion-input
             type="text"
@@ -57,9 +45,12 @@
             placeholder="John"
           ></ion-input>
         </ion-item>
+        <div *ngIf="form.get('firstName')?.invalid && (form.get('firstName')?.dirty || form.get('firstName')?.touched)">
+          <p *ngIf="form.get('firstName')?.errors?.['required']" class="error start">{{ 'auth.first_name_required' | translate }}</p>
+        </div>
       </ion-col>
       <ion-col>
-        <p class="input-label">{{ 'auth.register.last_name'|translate }}</p>
+        <p class="input-label">{{ 'auth.register.last_name' | translate }}</p>
         <ion-item class="flex">
           <ion-input
             type="text"
@@ -68,10 +59,13 @@
             placeholder="Doe"
           ></ion-input>
         </ion-item>
+        <div *ngIf="form.get('lastName')?.invalid && (form.get('lastName')?.dirty || form.get('lastName')?.touched)">
+          <p *ngIf="form.get('lastName')?.errors?.['required']" class="error start">{{ 'auth.last_name_required' | translate }}</p>
+        </div>
       </ion-col>
     </ion-row>
 
-    <p class="input-label">{{ 'auth.register.birth_date'|translate }}</p>
+    <p class="input-label">{{ 'auth.register.birth_date' | translate }}</p>
     <ion-item>
       <ion-input
         type="date"
@@ -80,23 +74,28 @@
         placeholder="01-01-2002"
       ></ion-input>
     </ion-item>
+    <div *ngIf="form.get('birthDate')?.invalid && (form.get('birthDate')?.dirty || form.get('birthDate')?.touched)">
+      <p *ngIf="form.get('birthDate')?.errors?.['required']" class="error start">{{ 'auth.birth_date_required' | translate }}</p>
+    </div>
 
-    <p class="input-label">{{ 'auth.register.phone_number'|translate }}</p>
+    <p class="input-label">{{ 'auth.register.phone_number' | translate }}</p>
     <ion-item>
       <ion-input
         type="text"
         formControlName="phoneNumber"
         name="phoneNumber"
-        placeholder="123-456-7890"
+        placeholder="0123456789"
       ></ion-input>
     </ion-item>
+    <div *ngIf="form.get('phoneNumber')?.invalid && (form.get('phoneNumber')?.dirty || form.get('phoneNumber')?.touched)">
+      <p *ngIf="form.get('phoneNumber')?.errors?.['required']" class="error start">{{ 'auth.phone_number_required' | translate }}</p>
+      <p *ngIf="form.get('phoneNumber')?.errors?.['pattern']" class="error start">{{ 'auth.phone_number_format' | translate }}</p>
+      <p *ngIf="form.get('phoneNumber')?.errors?.['maxlength']" class="error start">{{ 'auth.phone_number_maxlength' | translate }}</p>
+    </div>
   </ion-list>
-  @if(error){
-  <div class="error">{{ error }}</div>
-  }
 
-  <ion-button type="submit" [disabled]="!form.valid && !submitForm"
-    >{{ 'auth.register.register'|translate }}</ion-button
-  >
-  <a href="/auth/login">{{ 'auth.register.already_registered'|translate }}</a>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <ion-button type="submit" [disabled]="!form.valid && !submitForm">{{ 'auth.register.register' | translate }}</ion-button>
+  <a href="/auth/login">{{ 'auth.register.already_registered' | translate }}</a>
 </form>

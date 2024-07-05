@@ -5,6 +5,12 @@
     "password_required": "Password is required",
     "password_minSize": "Password must be at least 8 characters long",
     "password_fromat": "The password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character",
+    "first_name_required": "First name is required",
+    "last_name_required": "Last name is required",
+    "birth_date_required": "Birth date is required",
+    "phone_number_required": "Phone number is required",
+    "phone_number_format": "Phone number must start with 0 and be 10 digits long",
+    "phone_number_maxlength": "Phone number must be at most 10 digits long",
     "login": {
       "email": "Email",
       "password": "Password",
@@ -36,7 +42,7 @@
   "Music Playlist": "Music Playlist",
   "Playlists": "Playlists",
   "Followers": "Followers",
-  
+
   "Account": "Account",
   "Email verification": "Email verification",
   "Switch to artist account": "Switch to artist account",
@@ -63,5 +69,5 @@
   "Description": "Description",
   "Add to queue": "Add to queue",
   "View artist": "View artist"
-  
+
 }

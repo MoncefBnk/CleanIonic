@@ -38,9 +38,9 @@
  */
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; 
-@import '@ionic/angular/css/palettes/dark.system.css';
-*/
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+// @import '@ionic/angular/css/palettes/dark.system.css';
+
 
 /* Global CSS */
 .start {
@@ -53,6 +53,9 @@
   --ion-color-secondary: #0054e9;
   //--ion-color-instagram: #ed2a82;
   --ion-color-tertiary: #E1306C; /* Instagram pink */
+  // TODO : RENAME THIS TO TWITTER
+  --ion-color-warning: #1DA1F2; /* twitter color */
+
 
 }
 
