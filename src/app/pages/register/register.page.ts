@@ -19,12 +19,18 @@ import {
   IonItem,
   IonInput,
   IonButton,
-  IonIcon, IonRow, IonCol } from '@ionic/angular/standalone';
+  IonIcon,
+  IonRow,
+  IonCol,
+} from '@ionic/angular/standalone';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
-import { LoginRequestError, LoginRequestSuccess } from 'src/app/core/interfaces/login';
+import {
+  LoginRequestError,
+  LoginRequestSuccess,
+} from 'src/app/core/interfaces/login';
 
 @Component({
   selector: 'app-register',
@@ -67,16 +73,15 @@ export class RegisterPage implements OnInit {
     ]),
     phoneNumber: new FormControl('', [
       Validators.required,
-      Validators.pattern('^[0-9-]+$'),
+      Validators.pattern('^0[0-9]{9}$'),
+      Validators.maxLength(10),
     ]),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     birthDate: new FormControl('', Validators.required),
   });
 
-  constructor() {
-   
-  }
+  constructor() {}
 
   ngOnInit() {
     addIcons({
@@ -96,13 +101,13 @@ export class RegisterPage implements OnInit {
       this.submitForm = true;
       try {
         const data = await this.serviceAuth.register(
-          this.form.value.email, 
-          this.form.value.password, 
-          this.form.value.phoneNumber, 
-          this.form.value.firstName, 
+          this.form.value.email,
+          this.form.value.password,
+          this.form.value.phoneNumber,
+          this.form.value.firstName,
           this.form.value.lastName,
-          this.form.value.dateBirth
-        )
+          this.form.value.birthDate // Corrected to birthDate from dateBirth
+        );
 
         if (data.error) {
           const error = data as LoginRequestError;
