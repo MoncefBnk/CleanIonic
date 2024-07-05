@@ -19,7 +19,7 @@ export interface IArtist {
  
 
   export interface IArtistWithAlbumsAndSongs extends IArtist {
-    albumsDetail: IAlbum[];
+    albumsDetail: IAlbumsWithDetails[];
     songs: ISongWithDetails[];
   }
 

@@ -418,6 +418,7 @@ export class FirestoreService {
       const artistData = artistSnapshot.data() as IArtist;
       const albums = await this.getAlbumsWithDetails(artistId);
       const songs = await this.getSongsWithDetails(artistId);
+      console.log(songs);
 
       const artistWithAlbumsAndSongs: IArtistWithAlbumsAndSongs = {
         ...artistData,
@@ -432,20 +433,36 @@ export class FirestoreService {
     }
   }
 
-  async getAlbumsWithDetails(artistId: string): Promise<IAlbum[]> {
+  async getAlbumsWithDetails(artistId: string): Promise<IAlbumsWithDetails[]> {
     try {
       const albumsCol = collection(this.db, 'album');
       const q = query(albumsCol, where('artistId', '==', artistId));
       const albumsSnapshot = await getDocs(q);
 
-      return albumsSnapshot.docs.map(doc => ({
+    return Promise.all(albumsSnapshot.docs.map(async doc => {
+      const albumData = doc.data() as IAlbum;
+      const artist = await this.getOneArtist(artistId);
+
+      return {
         id: doc.id,
-        ...doc.data()
-      } as IAlbum));
-    } catch (error) {
-      console.error('Error fetching albums with details', error);
-      throw error; // Propagate the error
-    }
+        title: albumData['title'],
+        cover: albumData['cover'],
+        artistId: albumData['artistId'],
+        releaseDate: albumData['releaseDate'],
+        createdAt: albumData['createdAt'],
+        updatedAt: albumData['updatedAt'],
+        searchScore: albumData['searchScore'],
+        lastUpdatedSearchScore: albumData['lastUpdatedSearchScore'],
+        category: albumData['category'],
+        year: albumData['year'],
+        song: albumData['song'],
+        artist
+      } as IAlbumsWithDetails;
+    }));
+  } catch (error) {
+    console.error('Error fetching albums with details', error);
+    throw error;
+  }
   }
 
   async getSongsWithDetails(artistId: string): Promise<ISongWithDetails[]> {
@@ -460,7 +477,7 @@ export class FirestoreService {
         const artist = await this.getOneArtist(artistId);
 
         return {
-          id: songData.id,
+          id: doc.id,
           title: songData['title'],
           duration: songData['duration'],
           cover: songData['cover'],
