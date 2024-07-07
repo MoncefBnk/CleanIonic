@@ -27,7 +27,6 @@ import { IArtist } from 'src/app/core/interfaces/artist';
 import { LinkItem } from 'src/app/core/interfaces/item';
 import { ISong, ISongWithDetails } from 'src/app/core/interfaces/song';
 import { ILastPlayedWithDetails, IPlaylist, IUser } from 'src/app/core/interfaces/user';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { SeeAllComponent } from 'src/app/shared/header/see-all/see-all.component';
@@ -42,6 +41,10 @@ import { selectLastPlayeds } from 'src/app/core/store/selector/user.selector';
 import { SmallplayerComponent } from 'src/app/shared/music/smallplayer/smallplayer.component';
 import { MusicplayerComponent } from 'src/app/shared/music/musicplayer/musicplayer.component';
 import { HorizontalCardListComponent } from 'src/app/shared/card/horizontal-card-list/horizontal-card-list.component';
+import { UserService } from 'src/app/core/services/user.service';
+import { SongService } from 'src/app/core/services/song.service';
+import { AlbumService } from 'src/app/core/services/album.service';
+import { ArtistService } from 'src/app/core/services/artist.service';
 
 
 
@@ -86,7 +89,12 @@ export class HomePage implements OnDestroy {
     addIcons({ search,arrowForward,arrowForwardOutline });
   }
 
-  private serviceFirestore = inject(FirestoreService);
+
+  private userService = inject(UserService);
+  private songService = inject(SongService);
+  private albumService = inject(AlbumService);
+  private artistService = inject(ArtistService);
+
   private localStore = inject(LocalStorageService);
   store = inject(Store<AppState>);
   start_icon : string = "search";
@@ -110,22 +118,22 @@ export class HomePage implements OnDestroy {
     this.getUser();
     this.store.dispatch(loadLastPlayed({userId: this.user.id}));
     this.lastPlayeds$ = this.store.select(selectLastPlayeds);
-    this.serviceFirestore.getTopSongsWithDetails(3).then(songs => {
+    this.songService.getTopSongsWithDetails(3).then(songs => {
       this.songs = songs;
     });
-    this.serviceFirestore.getTopAlbums(3).then(albums => {
+    this.albumService.getTopAlbums(3).then(albums => {
       if(albums)
         this.albums = albums;
     });
-    this.serviceFirestore.getTopArtists(3).then(artists => {
+    this.artistService.getTopArtists(3).then(artists => {
       if(artists)
         this.artists = artists;
     });
-    this.serviceFirestore.getTopPlaylist(this.user.id,3).then(playlists => {
+    this.userService.getTopPlaylist(this.user.id,3).then(playlists => {
       if(playlists)
         this.playlists = playlists;
     });
-    this.serviceFirestore.getLatestAlbum().then(latest => {
+    this.albumService.getLatestAlbum().then(latest => {
       if(latest)
         this.latestAlbum = latest;
     });
@@ -152,7 +160,7 @@ export class HomePage implements OnDestroy {
   }
 
   async playMusic(song:ISongWithDetails) {
-    await this.serviceFirestore.updateLastPlayed(this.user.id,song.id);
+    await this.userService.updateLastPlayed(this.user.id,song.id);
     const modal = await this.modalController.create({
       component: MusicplayerComponent,
       componentProps: {

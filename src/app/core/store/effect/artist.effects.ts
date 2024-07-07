@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { FirestoreService } from '../../services/firestore.service';
 import { filterArtistsByName, incrementArtistSearchScore, loadArtists, loadArtistsSuccess } from '../action/artist.action';
 import { selectAllArtists } from '../selector/artist.selector';
 import { IArtist } from '../../interfaces/artist';
 import { Store, select } from '@ngrx/store';
+import { ArtistService } from '../../services/artist.service';
 
 @Injectable()
 export class ArtistEffects {
@@ -14,7 +14,7 @@ export class ArtistEffects {
    this.actions$.pipe(
       ofType(loadArtists),
       mergeMap(() =>
-        this.firestoreService.getArtists().pipe(
+        this.artistService.getArtists().pipe(
           map(artists => loadArtistsSuccess({ artists })),
           catchError(() => of({ type: '[Artist] Load Artists Failure' }))
         )
@@ -44,7 +44,7 @@ export class ArtistEffects {
     this.actions$.pipe(
       ofType(incrementArtistSearchScore),
       mergeMap(({ artistId }) => {
-        return this.firestoreService.updateArtistScore(artistId).then(
+        return this.artistService.updateArtistScore(artistId).then(
           () => ({ type: '[Album] Increment Search Score Success' }),
           (error) => ({ type: '[Album] Increment Search Score Failure', error })
         );
@@ -54,7 +54,7 @@ export class ArtistEffects {
 
   constructor(
     private actions$: Actions,
-    private firestoreService: FirestoreService,
+    private artistService: ArtistService,
     private store:Store
   ) {}
 }

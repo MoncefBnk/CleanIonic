@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { IArtist } from 'src/app/core/interfaces/artist';
 import { IPlaylist } from 'src/app/core/interfaces/user';
 import { NavController,ModalController,LoadingController } from '@ionic/angular';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { Router } from '@angular/router';
 
 
@@ -37,7 +36,6 @@ export class VerticalCardComponent  implements OnInit {
   song = {} as ISongWithDetails;
 
 
-  private serviceFirestore = inject(FirestoreService);
   smallPlayerVisible = false;
 
   constructor(private router: Router, private modalController: ModalController, private loadingController: LoadingController) { 

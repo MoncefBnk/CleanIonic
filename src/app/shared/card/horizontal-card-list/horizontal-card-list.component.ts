@@ -6,11 +6,12 @@ import { ellipsisHorizontal } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
 import { ILastPlayedWithDetails, IPlaylist, IUser } from 'src/app/core/interfaces/user';
 import { Router } from '@angular/router';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { ModalController,LoadingController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { MusicplayerComponent } from '../../music/musicplayer/musicplayer.component';
+import { UserService } from 'src/app/core/services/user.service';
+import { SongService } from 'src/app/core/services/song.service';
 
 @Component({
   standalone: true,
@@ -38,8 +39,9 @@ export class HorizontalCardListComponent  implements OnInit {
 
   @Input() lastPlayeds: ILastPlayedWithDetails[]|null = [];
   @Input() playlists: IPlaylist[] =[];
-  private serviceFirestore = inject(FirestoreService);
+  private userService = inject(UserService);
   private localStore = inject(LocalStorageService);
+  private songService = inject(SongService);
 
   song = {} as ISongWithDetails;
   smallPlayerVisible = false;
@@ -68,8 +70,8 @@ export class HorizontalCardListComponent  implements OnInit {
 
   async  playmusic(id:string) {
     
-    await this.serviceFirestore.updateLastPlayed(this.user.id,id);
-    await this.serviceFirestore.getOneSong(id).then(music => {
+    await this.userService.updateLastPlayed(this.user.id,id);
+    await this.songService.getOneSong(id).then(music => {
         if(music)
           this.song = music;
       });

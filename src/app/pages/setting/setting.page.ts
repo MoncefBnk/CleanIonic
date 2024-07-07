@@ -11,8 +11,8 @@ import { IUser } from 'src/app/core/interfaces/user';
 import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { RequestResponse } from 'src/app/core/interfaces/response';
+import { ArtistService } from 'src/app/core/services/artist.service';
 //import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 
@@ -27,9 +27,9 @@ export class SettingPage implements OnInit {
 
   private localStore = inject(LocalStorageService);
   private authService = inject(AuthentificationService);
+  private artistService = inject(ArtistService);
   private router = inject(Router);
   private translate = inject(TranslateService);
-  private firestore = inject(FirestoreService);
 
   isEnglishSelected: boolean = false;
   isFrenchSelected: boolean = false;
@@ -76,7 +76,7 @@ export class SettingPage implements OnInit {
     if (this.form.valid) {
       this.submitForm = true;
       try {
-        const data = await this.firestore.createArtist(
+        const data = await this.artistService.createArtist(
           this.user.id, 
           this.form.value.fullname, 
           this.form.value.label, 

@@ -6,11 +6,11 @@ import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/gen
 import { BehaviorSubject } from 'rxjs';
 import { IPlaylist, IUser } from 'src/app/core/interfaces/user';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LinkItem } from 'src/app/core/interfaces/item';
 import { SeeAllComponent } from 'src/app/shared/header/see-all/see-all.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { HorizontalCardListComponent } from 'src/app/shared/card/horizontal-card-list/horizontal-card-list.component';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -21,7 +21,7 @@ import { HorizontalCardListComponent } from 'src/app/shared/card/horizontal-card
 })
 export class UserPage implements OnInit {
   private localStore = inject(LocalStorageService);
-  private firebaseservice = inject(FirestoreService);
+  private userService = inject(UserService);
   title : string = "Profile"
   end_icon : string = "settings";
   endLink : string = "/setting";
@@ -32,7 +32,7 @@ export class UserPage implements OnInit {
 
   ngOnInit() {
     this.getUser();
-    this.firebaseservice.getTopPlaylist(this.user.id,5).then(playlists => {
+    this.userService.getTopPlaylist(this.user.id,5).then(playlists => {
       if(playlists)
         this.playlists = playlists;
     });

@@ -13,7 +13,6 @@ import { environment } from './environments/environment';
 import { provideHttpClient } from '@angular/common/http';
 import { i18nProviders } from './app/core/providers/i18n.provider';
 import { LocalStorageService } from './app/core/services/local-storage.service';
-import { FirestoreService } from './app/core/services/firestore.service';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { MusicService } from './app/core/services/music.service';
@@ -25,6 +24,10 @@ import { reducers } from './app/core/store/app.state';
 import { provideEffects } from '@ngrx/effects';
 import { appEffects } from './app/core/store/effect';
 import { SearchService } from './app/core/services/search.service';
+import { ArtistService } from './app/core/services/artist.service';
+import { SongService } from './app/core/services/song.service';
+import { AlbumService } from './app/core/services/album.service';
+import { UserService } from './app/core/services/user.service';
 
 if (environment.production) {
   enableProdMode();
@@ -32,7 +35,10 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    FirestoreService,
+    ArtistService,
+    SongService,
+    AlbumService,
+    UserService,
     LocalStorageService,
     MusicService,
     SearchService,

@@ -5,7 +5,6 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons,
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { arrowBack, search, close } from 'ionicons/icons';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { IUser } from 'src/app/core/interfaces/user';
 import { IElement } from 'src/app/core/interfaces/element';
@@ -33,7 +32,7 @@ import { selectAllArtists, selectFilteredArtists } from 'src/app/core/store/sele
 export class SearchPage implements OnInit,OnDestroy {
   private router = inject(ActivatedRoute);
 
-  private serviceFirestore = inject(FirestoreService);
+
   private localStore = inject(LocalStorageService);
 
   user = {} as IUser;

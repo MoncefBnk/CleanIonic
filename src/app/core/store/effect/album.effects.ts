@@ -3,11 +3,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { catchError, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { FirestoreService } from '../../services/firestore.service';
 
 import { filterAlbumsByTitle, incrementAlbumSearchScore, loadAlbums, loadAlbumsSuccess } from '../action/album.action';
 import { selectAllAlbums } from '../selector/album.selector';
 import { IAlbum } from '../../interfaces/album';
+import { AlbumService } from '../../services/album.service';
 
 @Injectable()
 export class AlbumEffects {
@@ -15,7 +15,7 @@ export class AlbumEffects {
    this.actions$.pipe(
       ofType(loadAlbums),
       mergeMap(() =>
-        this.firestoreService.getAlbums().pipe(
+        this.albumService.getAlbums().pipe(
           map(albums => loadAlbumsSuccess({ albums })),
           catchError(() => of({ type: '[Album] Load Albums Failure' }))
         )
@@ -45,7 +45,7 @@ export class AlbumEffects {
     this.actions$.pipe(
       ofType(incrementAlbumSearchScore),
       mergeMap(({ albumId }) => {
-        return this.firestoreService.updateAlbumScore(albumId).then(
+        return this.albumService.updateAlbumScore(albumId).then(
           () => ({ type: '[Album] Increment Search Score Success' }),
           (error) => ({ type: '[Album] Increment Search Score Failure', error })
         );
@@ -55,7 +55,7 @@ export class AlbumEffects {
 
   constructor(
     private actions$: Actions,
-    private firestoreService: FirestoreService,
+    private albumService: AlbumService,
     private store:Store
   ) {}
 }

@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar,IonItem,IonLabel,IonList,IonButton,IonIcon } from '@ionic/angular/standalone';
 import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/general-header.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { BehaviorSubject } from 'rxjs';
 import { IUser } from 'src/app/core/interfaces/user';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
@@ -13,6 +12,7 @@ import { HorizontalCardItemComponent } from 'src/app/shared/card/horizontal-card
 import { playCircle } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { MusicService } from 'src/app/core/services/music.service';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-musicplaylist',
@@ -30,7 +30,7 @@ export class MusicplaylistPage implements OnInit {
   songs : ISongWithDetails[]=[];
   playlistId : string ='';
 
-  private serviceFirestore = inject(FirestoreService);
+  private userService = inject(UserService);
   private musicservice = inject(MusicService);
   private localStore = inject(LocalStorageService);
 
@@ -42,7 +42,7 @@ export class MusicplaylistPage implements OnInit {
     if(this.route.snapshot.queryParams && (this.route.snapshot.queryParams as any).id) {
       this.playlistId = (this.route.snapshot.queryParams as any).id;
      
-      this.serviceFirestore.getPlaylistMusic(this.user.id,this.playlistId,10).then(songs => {
+      this.userService.getPlaylistMusic(this.user.id,this.playlistId,10).then(songs => {
         if(songs)
           this.songs = songs;
       });

@@ -5,9 +5,9 @@ import { addIcons } from 'ionicons';
 import { personOutline,musicalNoteOutline,addCircleOutline } from 'ionicons/icons';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { MusicService } from 'src/app/core/services/music.service';
 import { ISongWithDetails } from 'src/app/core/interfaces/song';
+import { SongService } from 'src/app/core/services/song.service';
 
 @Component({
   selector: 'app-song-action',
@@ -18,7 +18,7 @@ import { ISongWithDetails } from 'src/app/core/interfaces/song';
 })
 export class SongActionComponent  implements OnInit {
 
-  private serviceFirestore = inject(FirestoreService);
+  private songService = inject(SongService);
   private musicservice = inject(MusicService);
 
   @Input() songId : string = '';
@@ -50,7 +50,7 @@ export class SongActionComponent  implements OnInit {
   async onaddToQueue(id:string) {
     this.dismissModal();
     console.log(id);
-    await this.serviceFirestore.getOneSong(id).then(music => {
+    await this.songService.getOneSong(id).then(music => {
       if(music)
         this.song = music;
     });

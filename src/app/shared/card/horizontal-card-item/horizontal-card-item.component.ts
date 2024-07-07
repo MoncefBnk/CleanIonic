@@ -8,11 +8,11 @@ import { IonItem,IonText,IonImg,IonButton,IonIcon } from '@ionic/angular/standal
 import { IAlbum, IAlbumsWithDetails } from 'src/app/core/interfaces/album';
 import { IPlaylist } from 'src/app/core/interfaces/user';
 import { ISong, ISongWithDetails } from 'src/app/core/interfaces/song';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { Router } from '@angular/router';
 import { MusicplayerComponent } from '../../music/musicplayer/musicplayer.component';
 import { IArtist } from 'src/app/core/interfaces/artist';
 import { SongActionComponent } from '../../modal/song-action/song-action.component';
+import { SongService } from 'src/app/core/services/song.service';
 
 
 @Component({
@@ -35,7 +35,7 @@ export class HorizontalCardItemComponent  implements OnInit {
   selectedItem: any;
   isFavorite: boolean = false;
   smallPlayerVisible = false;
-  private serviceFirestore = inject(FirestoreService);
+  private songService = inject(SongService);
 
   constructor(private modalController: ModalController,private router: Router,private cdr: ChangeDetectorRef, private loadingController: LoadingController) { }
 
@@ -117,7 +117,7 @@ export class HorizontalCardItemComponent  implements OnInit {
   }
 
   async  playmusic(id:string) {
-    await this.serviceFirestore.getOneSong(id).then(music => {
+    await this.songService.getOneSong(id).then(music => {
         if(music)
           this.song = music;
       });

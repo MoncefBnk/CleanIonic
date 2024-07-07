@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar,IonText,IonIcon,IonAvatar,IonGrid,IonRow,IonCol,IonSegment,IonSegmentButton,IonLabel,IonList } from '@ionic/angular/standalone';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
-import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { IArtistWithAlbumsAndSongs } from 'src/app/core/interfaces/artist';
 import { ISong } from 'src/app/core/interfaces/song';
 import { IAlbum } from 'src/app/core/interfaces/album';
@@ -11,6 +10,7 @@ import { GeneralHeaderComponent } from 'src/app/shared/header/general-header/gen
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { HorizontalCardItemComponent } from 'src/app/shared/card/horizontal-card-item/horizontal-card-item.component';
+import { ArtistService } from 'src/app/core/services/artist.service';
 
 @Component({
   selector: 'app-artist',
@@ -22,7 +22,8 @@ import { HorizontalCardItemComponent } from 'src/app/shared/card/horizontal-card
 export class ArtistPage implements OnInit {
 
   private localStore = inject(LocalStorageService);
-  private firebaseservice = inject(FirestoreService);
+  private artistService = inject(ArtistService);
+
   title : string = "Artist";
   backbutton : string = "back";
   artist = {} as IArtistWithAlbumsAndSongs;
@@ -34,7 +35,7 @@ export class ArtistPage implements OnInit {
     if(this.route.snapshot.queryParams && (this.route.snapshot.queryParams as any).id) {
       this.idArtist = (this.route.snapshot.queryParams as any).id;
      
-      this.firebaseservice.getArtistWithAlbumsAndSongs(this.idArtist).then(artist => {
+      this.artistService.getArtistWithAlbumsAndSongs(this.idArtist).then(artist => {
         if(artist){
           console.log(artist);
           this.artist = artist;}
