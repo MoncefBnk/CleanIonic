@@ -3,6 +3,12 @@
     "email_required": "L'email est requis",
     "email_format": "Format d'email invalide",
     "password_required": "Le mot de passe est requis",
+    "first_name_required": "Le prénom est requis",
+    "last_name_required": "Le nom est requis",
+    "phone_number_required": "Le numéro de téléphone est requis",
+    "phone_number_format": "Le numéro de téléphone doit commencer par 0 et comporter 10 chiffres",
+    "phone_number_maxlength": "Le numéro de téléphone doit comporter au maximum 10 chiffres",
+    "birth_date_required": "La date de naissance est requise",
     "password_minSize": "Le mot de passe doit comporter au moins 8 caractères",
     "password_fromat": "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial",
     "login": {

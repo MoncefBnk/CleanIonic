@@ -38,9 +38,9 @@
  */
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; 
-@import '@ionic/angular/css/palettes/dark.system.css';
-*/
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+// @import '@ionic/angular/css/palettes/dark.system.css';
+
 
 /* Global CSS */
 .start {
@@ -53,6 +53,9 @@
   --ion-color-secondary: #0054e9;
   //--ion-color-instagram: #ed2a82;
   --ion-color-tertiary: #E1306C; /* Instagram pink */
+  // TODO : RENAME THIS TO TWITTER
+  --ion-color-warning: #1DA1F2; /* twitter color */
+
 
 }
 
@@ -94,7 +97,11 @@ ion-button {
   font-size: 0.75rem;
 }
 
-
+.modal-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
 
 ion-modal::part(backdrop) {
   background: rgba(209, 213, 219);
@@ -105,7 +112,7 @@ ion-modal::part(backdrop) {
 ion-modal#share-modal {
   --width: fit-content;
   --min-width: 292px;
-  --height: 125px;
+  --height: 9rem;
   --border-radius: 6px;
   --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }

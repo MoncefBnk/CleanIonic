@@ -7,7 +7,7 @@ ion-modal {
   }
 
 .language-modal {
-    height: 31%;
+    height: 35%;
 }
 
 .logout-modal {
@@ -30,19 +30,19 @@ ion-modal::part(backdrop) {
   ion-radio {
     --border-radius: 4px;
     --inner-border-radius: 4px;
-  
+
     --color: #ddd;
     --color-checked: #15AB90;
   }
-  
+
   ion-radio.ios::part(container) {
     width: 20px;
     height: 20px;
-  
+
     border: 2px solid #ddd;
     border-radius: 4px;
   }
-  
+
   .radio-checked.ios::part(container) {
     border-color: #15AB90;
   }
