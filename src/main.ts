@@ -17,8 +17,6 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { MusicService } from './app/core/services/music.service';
 import { provideStore } from '@ngrx/store';
-import { albumReducer } from './app/core/store/reducer/album.reducer';
-import { AlbumEffects } from './app/core/store/effect/album.effects';
 import {StoreDevtools,StoreDevtoolsModule} from '@ngrx/store-devtools';
 import { reducers } from './app/core/store/app.state';
 import { provideEffects } from '@ngrx/effects';

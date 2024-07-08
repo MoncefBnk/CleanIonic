@@ -11,6 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { HorizontalCardItemComponent } from 'src/app/shared/card/horizontal-card-item/horizontal-card-item.component';
 import { ArtistService } from 'src/app/core/services/artist.service';
+import { AlbumService } from 'src/app/core/services/album.service';
+import { SongService } from 'src/app/core/services/song.service';
 
 @Component({
   selector: 'app-artist',
@@ -22,7 +24,7 @@ import { ArtistService } from 'src/app/core/services/artist.service';
 export class ArtistPage implements OnInit {
 
   private localStore = inject(LocalStorageService);
-  private artistService = inject(ArtistService);
+  private songService = inject(SongService);
 
   title : string = "Artist";
   backbutton : string = "back";
@@ -35,7 +37,7 @@ export class ArtistPage implements OnInit {
     if(this.route.snapshot.queryParams && (this.route.snapshot.queryParams as any).id) {
       this.idArtist = (this.route.snapshot.queryParams as any).id;
      
-      this.artistService.getArtistWithAlbumsAndSongs(this.idArtist).then(artist => {
+      this.songService.getArtistWithAlbumsAndSongs(this.idArtist).then(artist => {
         if(artist){
           console.log(artist);
           this.artist = artist;}

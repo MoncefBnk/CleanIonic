@@ -6,6 +6,7 @@ import { Observable, catchError, forkJoin, from, map, of, switchMap } from 'rxjs
 import { ISong, ISongWithDetails } from '../interfaces/song';
 import { AlbumService } from './album.service';
 import { ArtistService } from './artist.service';
+import { IArtist, IArtistWithAlbumsAndSongs } from '../interfaces/artist';
 
 
 @Injectable({
@@ -301,5 +302,33 @@ export class SongService {
         return of([] as ISongWithDetails[]);
       })
     );
+  }
+
+  async getArtistWithAlbumsAndSongs(artistId: string): Promise<IArtistWithAlbumsAndSongs | null> {
+    try {
+      const artistDocRef = doc(this.db, 'artist', artistId);
+      const artistSnapshot = await getDoc(artistDocRef);
+
+      if (!artistSnapshot.exists()) {
+        console.log('No such artist!');
+        return null;
+      }
+
+      const artistData = artistSnapshot.data() as IArtist;
+      const albums = await this.albumservice.getAlbumsWithDetails(artistId);
+      const songs = await this.getSongsWithDetails(artistId);
+      console.log(songs);
+
+      const artistWithAlbumsAndSongs: IArtistWithAlbumsAndSongs = {
+        ...artistData,
+        albumsDetail: albums,
+        songs: songs
+      };
+
+      return artistWithAlbumsAndSongs;
+    } catch (error) {
+      console.error('Error fetching artist with albums and songs', error);
+      throw error; // Propagate the error
+    }
   }
 }

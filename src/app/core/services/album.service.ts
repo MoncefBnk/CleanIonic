@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { IAlbum, IAlbumsWithDetails } from '../interfaces/album';
 import { Observable, catchError, forkJoin, from, map, of, switchMap } from 'rxjs';
 import { ArtistService } from './artist.service';
+import { IArtist, IArtistWithAlbumsAndSongs } from '../interfaces/artist';
 
 @Injectable({
   providedIn: 'root'

@@ -5,8 +5,6 @@ import { environment } from 'src/environments/environment';
 import { Observable, catchError, forkJoin, from, map, of, switchMap } from 'rxjs';
 import { RequestResponse } from '../interfaces/response';
 import { IArtist, IArtistWithAlbumsAndSongs } from '../interfaces/artist';
-import { AlbumService } from './album.service';
-import { SongService } from './song.service';
 
 
 @Injectable({
@@ -15,8 +13,6 @@ import { SongService } from './song.service';
 export class ArtistService {
   private app = initializeApp(environment.firebase);
   private db = getFirestore(this.app);
-  private albumService = inject(AlbumService);
-  private songService = inject(SongService);
 
   constructor() { }
 
@@ -209,31 +205,4 @@ export class ArtistService {
     );
   }
 
-  async getArtistWithAlbumsAndSongs(artistId: string): Promise<IArtistWithAlbumsAndSongs | null> {
-    try {
-      const artistDocRef = doc(this.db, 'artist', artistId);
-      const artistSnapshot = await getDoc(artistDocRef);
-
-      if (!artistSnapshot.exists()) {
-        console.log('No such artist!');
-        return null;
-      }
-
-      const artistData = artistSnapshot.data() as IArtist;
-      const albums = await this.albumService.getAlbumsWithDetails(artistId);
-      const songs = await this.songService.getSongsWithDetails(artistId);
-      console.log(songs);
-
-      const artistWithAlbumsAndSongs: IArtistWithAlbumsAndSongs = {
-        ...artistData,
-        albumsDetail: albums,
-        songs: songs
-      };
-
-      return artistWithAlbumsAndSongs;
-    } catch (error) {
-      console.error('Error fetching artist with albums and songs', error);
-      throw error; // Propagate the error
-    }
-  }
 }
